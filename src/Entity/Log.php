@@ -62,7 +62,7 @@ class Log
     /**
      * @var ArrayCollection
      *
-     * @ORM\Column(name="email_to", type="string", nullable=false)
+     * @ORM\Column(name="email_from", type="string", nullable=false)
      */
     private $emailTo;
 
