@@ -21,10 +21,12 @@ class TestMailerController extends AbstractController
     {
         if ($auth !== 'dtvrgg!@') die();
 
-        if (!$this->_sendEmail($mailer))
+        $sendStatus = $this->_sendEmail($mailer);
+
+        if (!$sendStatus)
             return new Response('neOK', 200);
 
-        return new Response('OK', 200);
+        return new Response('ok', 200);
     }
 
 
@@ -38,8 +40,6 @@ class TestMailerController extends AbstractController
     {
         $_from = 'no-reply@mailer.soa.dev.nag.ru';
         $_to = 'e.nachuychenko@nag.ru';
-        //$_cc = false;
-        //$_bcc = false;
         $_body = "BODYBODYBODYBODY";
 
         /** @var \Swift_Message $sm */
@@ -51,8 +51,6 @@ class TestMailerController extends AbstractController
             //->setBcc($_bcc)
             ->setBody($_body);
 
-        $status = $mailer->send($sm);
-
-        return true;
+        return $mailer->send($sm);
     }
 }
