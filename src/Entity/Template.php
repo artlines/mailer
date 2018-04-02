@@ -45,6 +45,13 @@ class Template
     private $isActive;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="template_text", type="text")
+     */
+    private $template;
+
+    /**
      * Template constructor.
      */
     public function __construct()
@@ -106,6 +113,22 @@ class Template
     public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param string $template
+     */
+    public function setTemplate(string $template): void
+    {
+        $this->template = $template;
     }
 
 }
