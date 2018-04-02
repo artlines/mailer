@@ -26,14 +26,14 @@ class Template
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", nullable=false)
+     * @ORM\Column(name="title", type="string", nullable=false, unique=true)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="alias", type="string", nullable=false)
+     * @ORM\Column(name="alias", type="string", nullable=false, unique=true)
      */
     private $alias;
 

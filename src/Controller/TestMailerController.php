@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,19 +18,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestMailerController extends AbstractController
 {
     /**
+     * @Route("/debug")
+     */
+    public function debug()
+    {
+        $clientRepo = $this->getDoctrine()->getRepository('App:Client');
+        $client1 = $clientRepo->find(1);
+        $client2 = $clientRepo->find(1);
+
+        dump($client1);
+        dump($client2);
+
+        return new Response('ok', 200);
+    }
+
+    /**
      * @Route("/send/{auth}")
      */
     public function testSend($auth, \Swift_Mailer $mailer, Request $request)
     {
         if ($auth !== 'dtvrgg!@') die();
 
-        $this->_checkRequest($request);
+        try {
+            $this->_checkRequest($request);
+        } catch (BadRequestHttpException $e) {
+            return new JsonResponse(['errorMessage' => $e->getMessage()]);
+        }
 
         $sendStatus = $this->_sendEmail($mailer);
-
-        var_dump($request->request);
-        var_dump($request->request->get('params'));
-        var_dump($request->request->get('client'));
 
         if (!$sendStatus)
             return new Response('neOK', 200);
@@ -64,7 +81,23 @@ class TestMailerController extends AbstractController
      */
     private function _checkRequest(Request $request)
     {
+        $_requireParams = [
+            'hash',
+            'client',
+            'template',
+            'subject',
+            'params',
+            'send_to'
+        ];
 
+        foreach ($_requireParams as $_param)
+        {
+            if (null === $request->request->get($_param))
+            {
+                throw new BadRequestHttpException("Missing '$_param' parameter.");
+                break;
+            }
+        }
     }
 
 }

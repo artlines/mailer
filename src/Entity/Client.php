@@ -27,21 +27,21 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="title", length=50, type="string")
+     * @ORM\Column(name="title", length=50, type="string", unique=true)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="alias", length=50, nullable=false)
+     * @ORM\Column(name="alias", length=50, nullable=false, unique=true)
      */
     private $alias;
 
     /**
-     * @var ArrayCollection
+     * @var array|null
      *
-     * @ORM\Column(name="allow_ips", type="string", length=255, nullable=false)
+     * @ORM\Column(name="allow_ips", type="string", nullable=true)
      */
     private $allowIPs;
 
@@ -88,8 +88,6 @@ class Client
     public function __construct()
     {
         $this->isActive = true;
-        $this->allowIPs = new ArrayCollection();
-        $this->clientSecret = md5(uniqid());
         $this->templates = new ArrayCollection();
     }
 
@@ -134,19 +132,22 @@ class Client
     }
 
     /**
-     * @return ArrayCollection
+     * @return array
      */
-    public function getAllowIPs(): ArrayCollection
+    public function getAllowIPs(): array
     {
-        return $this->allowIPs;
+        if (null === $this->allowIPs)
+            return 1;
+
+        return json_decode($this->allowIPs, true);
     }
 
     /**
-     * @param ArrayCollection $allowIPs
+     * @param array $allowIPs
      */
-    public function setAllowIPs(ArrayCollection $allowIPs): void
+    public function setAllowIPs(array $allowIPs): void
     {
-        $this->allowIPs = $allowIPs;
+        $this->allowIPs = json_encode($allowIPs);
     }
 
     /**
@@ -155,6 +156,14 @@ class Client
     public function getClientSecret()
     {
         return $this->clientSecret;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setClientSecret()
+    {
+        $this->clientSecret = md5(uniqid());
     }
 
     /**
