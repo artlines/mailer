@@ -27,7 +27,7 @@ class TestMailerController extends AbstractController
         if (!$sendStatus)
             return new Response('neOK', 200);
 
-        var_dump($request->query);
+        var_dump($request);
 
         return new Response('ok', 201);
     }
