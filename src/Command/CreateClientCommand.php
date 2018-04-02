@@ -36,7 +36,6 @@ class CreateClientCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -47,7 +46,7 @@ class CreateClientCommand extends Command
                 ''
             ]);
 
-        $client = $this->clientManager->create('TestClient_1', 'test-client-1', ['127.0.0.1']);
+        $client = $this->clientManager->create('TestClient_'.rand(1,100), 'test-client-'.rand(1,100));
 
         $output->writeln([
             'Client secret key:',

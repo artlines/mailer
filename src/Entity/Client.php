@@ -132,9 +132,9 @@ class Client
     }
 
     /**
-     * @return array
+     * @return array|int
      */
-    public function getAllowIPs(): array
+    public function getAllowIPs()
     {
         if (null === $this->allowIPs)
             return 1;
@@ -217,7 +217,7 @@ class Client
     /**
      * @return ArrayCollection
      */
-    public function getTemplates(): ArrayCollection
+    public function getTemplates()
     {
         return $this->templates;
     }

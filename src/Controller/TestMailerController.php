@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Entity\Template;
+use App\Service\AuthInterface;
+use App\Service\EmailGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,85 +22,120 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestMailerController extends AbstractController
 {
     /**
-     * @Route("/debug")
+     * @Route("/send")
      */
-    public function debug()
+    public function testSend(\Swift_Mailer $mailer, Request $request, AuthInterface $auth, EmailGenerator $emailGenerator)
     {
-        $clientRepo = $this->getDoctrine()->getRepository('App:Client');
-        $client1 = $clientRepo->find(1);
-        $client2 = $clientRepo->find(1);
-
-        dump($client1);
-        dump($client2);
-
-        return new Response('ok', 200);
-    }
-
-    /**
-     * @Route("/send/{auth}")
-     */
-    public function testSend($auth, \Swift_Mailer $mailer, Request $request)
-    {
-        if ($auth !== 'dtvrgg!@') die();
-
+        /**
+         * Проверяем, что в теле запроса есть все обязательные параметры
+         */
         try {
-            $this->_checkRequest($request);
+            $this->_checkRequireParamsExists($request);
         } catch (BadRequestHttpException $e) {
-            return new JsonResponse(['errorMessage' => $e->getMessage()]);
+            return $this->_error($e->getMessage());
         }
 
-        $sendStatus = $this->_sendEmail($mailer);
+        /**
+         * Для удобства определяем массив с пришедшими POST-параметрами
+         */
+        $data = $request->request->all();
 
+        /**
+         * Ищем клиента по его алиасу
+         *
+         * @var Client $client
+         */
+        $client = $this->getDoctrine()
+            ->getRepository('App:Client')->findOneBy(['alias' => $data['client']]);
+        if (!$client)
+            return $this->_error("Client with alias '{$data['client']}' doesn't exist.");
+
+        /**
+         * Проверяем, валиден ли хеш, что пришел в запросе
+         *
+         * @var boolean $isValid
+         */
+        $isValid = $auth->validate($data['hash'], $client, $data['timestamp']);
+        if (!$isValid)
+            return $this->_error("Hash not valid.");
+
+        /**
+         * Ищем шаблон по его алиасу
+         *
+         * @var Template $template
+         */
+        $template = $this->getDoctrine()
+            ->getRepository("App:Template")->findOneBy(['alias' => $data['template']]);
+        if (!$template)
+            return $this->_error("Template with alias '{$data['template']}' doesn't exist.");
+
+        /**
+         * Генерируем тело письма, используя параметры из запроса
+         */
+        $param_array = json_decode($data['params'], true);
+        $emailBody = $emailGenerator->generate($template, $param_array);
+
+        /**
+         * Проверка статуса отправки
+         */
+        $sendStatus = $this->_sendEmail($emailBody, $mailer);
         if (!$sendStatus)
-            return new Response('neOK', 200);
+            return $this->_error("Email doesn't send. Send status: $sendStatus");
 
         return new Response('ok', 201);
     }
 
+    /**
+     * Возвращает готовый JSON ответ с указанием ошибки
+     *
+     * @param $msg
+     * @return JsonResponse
+     */
+    private function _error($msg)
+    {
+        return new JsonResponse(['errorMessage' => $msg]);
+    }
 
     /**
-     * Send email
+     * Собирает и (не)отправляет email
      *
      * @param \Swift_Mailer $mailer
      * @return bool
      */
-    private function _sendEmail(\Swift_Mailer $mailer)
+    private function _sendEmail($emailBody, \Swift_Mailer $mailer)
     {
         $_from = 'no-reply@mailer.soa.dev.nag.ru';
         $_to = 'e.nachuychenko@nag.ru';
-        $_body = "BODYBODYBODYBODY";
 
         /** @var \Swift_Message $sm */
         $sm = new \Swift_Message('Subject');
         $sm
             ->setFrom($_from)
             ->setTo($_to)
-            ->setBody($_body);
+            ->setBody($emailBody, 'text/html');
 
         return $mailer->send($sm);
     }
 
     /**
-     * Check params
+     * Check require parameters
      */
-    private function _checkRequest(Request $request)
+    private function _checkRequireParamsExists(Request $request)
     {
         $_requireParams = [
-            'hash',
             'client',
-            'template',
+            'hash',
             'subject',
+            'send_to',
+            'template',
+            'timestamp',
             'params',
-            'send_to'
         ];
 
         foreach ($_requireParams as $_param)
         {
             if (null === $request->request->get($_param))
-            {
                 throw new BadRequestHttpException("Missing '$_param' parameter.");
-                break;
-            }
         }
     }
 

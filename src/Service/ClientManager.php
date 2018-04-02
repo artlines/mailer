@@ -31,9 +31,10 @@ class ClientManager
      * @param string $title
      * @param string $alias
      * @param array $allowIPs
+     *
      * @return Client
      */
-    public function create(string $title, string $alias, ?array $allowIPs)
+    public function create(string $title, string $alias, ?array $allowIPs = null)
     {
         $client = new Client();
         $client->setTitle($title);
