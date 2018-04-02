@@ -22,12 +22,16 @@ class TestMailerController extends AbstractController
     {
         if ($auth !== 'dtvrgg!@') die();
 
+        $this->_checkRequest($request);
+
         $sendStatus = $this->_sendEmail($mailer);
+
+        var_dump($request->request);
+        var_dump($request->request->get('params'));
+        var_dump($request->request->get('client'));
 
         if (!$sendStatus)
             return new Response('neOK', 200);
-
-        var_dump($request);
 
         return new Response('ok', 201);
     }
@@ -54,4 +58,13 @@ class TestMailerController extends AbstractController
 
         return $mailer->send($sm);
     }
+
+    /**
+     * Check params
+     */
+    private function _checkRequest(Request $request)
+    {
+
+    }
+
 }
