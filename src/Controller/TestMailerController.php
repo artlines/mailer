@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +18,7 @@ class TestMailerController extends AbstractController
     /**
      * @Route("/send/{auth}")
      */
-    public function testSend($auth, \Swift_Mailer $mailer)
+    public function testSend($auth, \Swift_Mailer $mailer, Request $request)
     {
         if ($auth !== 'dtvrgg!@') die();
 
@@ -26,7 +27,9 @@ class TestMailerController extends AbstractController
         if (!$sendStatus)
             return new Response('neOK', 200);
 
-        return new Response('ok', 200);
+        var_dump($request->query);
+
+        return new Response('ok', 201);
     }
 
 
@@ -47,8 +50,6 @@ class TestMailerController extends AbstractController
         $sm
             ->setFrom($_from)
             ->setTo($_to)
-            //->setCc($_cc)
-            //->setBcc($_bcc)
             ->setBody($_body);
 
         return $mailer->send($sm);
