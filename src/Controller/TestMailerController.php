@@ -28,6 +28,7 @@ class TestMailerController extends AbstractController
             return new Response('neOK', 200);
 
         var_dump($request);
+        var_dump(file_get_contents('php://input'));
 
         return new Response('ok', 201);
     }
