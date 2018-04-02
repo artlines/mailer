@@ -13,7 +13,7 @@ doctrine:
         charset: utf8
         default_table_options:
             charset: utf8
-            collate: utf8
+            collate: '%env(resolve:DATABASE_COLLATE)%'
 
         # With Symfony 3.3, remove the `resolve:` prefix
         url: '%env(resolve:DATABASE_URL)%'
