@@ -60,6 +60,14 @@ class Client
     private $isActive;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Template", inversedBy="clients")
+     * @ORM\JoinTable(name="templates_clients")
+     */
+    private $templates;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -82,6 +90,7 @@ class Client
         $this->isActive = true;
         $this->allowIPs = new ArrayCollection();
         $this->clientSecret = md5(uniqid());
+        $this->templates = new ArrayCollection();
     }
 
     /**
@@ -195,5 +204,33 @@ class Client
     {
         return $this->updatedAt;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTemplates(): ArrayCollection
+    {
+        return $this->templates;
+    }
+
+    /**
+     * @param Template $template
+     */
+    public function addTemplate($template)
+    {
+        if (!$this->templates->contains($template))
+            $this->templates->add($template);
+    }
+
+    /**
+     * @param Template $template
+     */
+    public function removeTemplate($template)
+    {
+        if ($this->templates->contains($template))
+            $this->templates->removeElement($template);
+    }
+
+
 
 }

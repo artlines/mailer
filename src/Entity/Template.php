@@ -49,14 +49,21 @@ class Template
      *
      * @ORM\Column(name="template_text", type="text")
      */
-    private $template;
+    private $templateText;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Client", mappedBy="templates")
+     */
+    private $clients;
 
     /**
      * Template constructor.
      */
     public function __construct()
     {
-
+        $this->clients = new ArrayCollection();
     }
 
     /**
@@ -118,17 +125,45 @@ class Template
     /**
      * @return string
      */
-    public function getTemplate()
+    public function getTemplateText()
     {
-        return $this->template;
+        return $this->templateText;
     }
 
     /**
-     * @param string $template
+     * @param string $templateText
      */
-    public function setTemplate(string $template): void
+    public function setTemplateText(string $templateText): void
     {
-        $this->template = $template;
+        $this->templateText = $templateText;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getClients(): ArrayCollection
+    {
+        return $this->clients;
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function addClient($client)
+    {
+        if (!$this->clients->contains($client))
+            $this->clients->add($client);
+    }
+
+    /**
+     * @param Client $client
+     */
+    public function removeClient($client)
+    {
+        if ($this->clients->contains($client))
+            $this->clients->removeElement($client);
+    }
+
+
 
 }
