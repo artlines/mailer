@@ -39,7 +39,6 @@ class Logger
         $log->setMailBody($sm->getBody());
 
         $log->setIpAddress('');
-        $log->setTime(new \DateTime());
 
         try {
             $this->entityManager->persist($log);

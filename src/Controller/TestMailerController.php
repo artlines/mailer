@@ -26,6 +26,8 @@ class TestMailerController extends AbstractController
      */
     public function testSend(\Swift_Mailer $mailer, Request $request, AuthInterface $auth, EmailGenerator $emailGenerator)
     {
+
+        var_dump($request); exit();
         /**
          * Проверяем, что в теле запроса есть все обязательные параметры
          */
