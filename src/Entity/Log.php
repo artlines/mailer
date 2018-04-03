@@ -67,9 +67,16 @@ class Log
     private $emailTo;
 
     /**
-     * @var ArrayCollection
+     * @var array
      *
-     * @ORM\Column(name="email_bcc", type="string", nullable=false)
+     * @ORM\Column(name="email_cc", type="string", nullable=true)
+     */
+    private $emailCc;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="email_bcc", type="string", nullable=true)
      */
     private $emailBcc;
 
@@ -190,6 +197,54 @@ class Log
     public function setEmailBcc(array $emailBcc): void
     {
         $this->emailBcc = json_encode($emailBcc);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     */
+    public function setBody(string $body): void
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmailCc(): array
+    {
+        return $this->emailCc;
+    }
+
+    /**
+     * @param array $emailCc
+     */
+    public function setEmailCc(array $emailCc): void
+    {
+        $this->emailCc = $emailCc;
     }
 
 }

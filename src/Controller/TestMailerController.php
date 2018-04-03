@@ -70,17 +70,35 @@ class TestMailerController extends AbstractController
             return $this->_error("Template with alias '{$data['template']}' doesn't exist.");
 
         /**
+         * Определяем отправителя
+         * Либо используем указанного в клиенте $client, если он не null
+         * TODO: определить, может ли поле sender в базе клиентов быть null
+         * Либо используем указанного в запросе на отправку $data['sender']
+         */
+        if (isset($data['sender']))
+        {
+            $_sender = $data['sender'];
+        }
+        elseif (!(null === $client->getSender()))
+        {
+            $_sender = $client->getSender();
+        }
+        else
+        {
+            $_sender = 'no-reply@mailer.soa.dev.nag.ru';
+        }
+
+        /**
          * Генерируем тело письма, используя параметры из запроса
          */
-        $param_array = json_decode($data['params'], true);
-        $emailBody = $emailGenerator->generate($template, $param_array);
+        $emailBody = $emailGenerator->generate($template, $data['params']);
 
         /**
          * Проверка статуса отправки
          */
-        $sendStatus = $this->_sendEmail($emailBody, $mailer);
+        $sendStatus = $this->_sendEmail($mailer, $data, $_sender, $emailBody);
         if (!$sendStatus)
-            return $this->_error("Email doesn't send. Send status: $sendStatus");
+            return $this->_error("Email doesn't send. Status: $sendStatus");
 
         return new Response('ok', 201);
     }
@@ -102,23 +120,37 @@ class TestMailerController extends AbstractController
      * @param \Swift_Mailer $mailer
      * @return bool
      */
-    private function _sendEmail($emailBody, \Swift_Mailer $mailer)
+    private function _sendEmail(\Swift_Mailer $mailer, $data, $_sender, $emailBody)
     {
-        $_from = 'no-reply@mailer.soa.dev.nag.ru';
-        $_to = 'e.nachuychenko@nag.ru';
+        $_to = $data['send_to'];
+        $_subject = $data['subject'];
 
         /** @var \Swift_Message $sm */
-        $sm = new \Swift_Message('Subject');
+        $sm = new \Swift_Message($_subject);
         $sm
-            ->setFrom($_from)
+            ->setFrom($_sender)
             ->setTo($_to)
             ->setBody($emailBody, 'text/html');
+
+        /**
+         * Проверяем, указаны ли адреса для сиси и бисиси
+         */
+        if (isset($data['send_cc']) && is_array($data['send_cc']) && !empty($data['send_cc']))
+        {
+            $sm->setCc($data['send_cc']);
+        }
+        if (isset($data['send_bcc']) && is_array($data['send_bcc']) && !empty($data['send_bcc']))
+        {
+            $sm->setBcc($data['send_bcc']);
+        }
 
         return $mailer->send($sm);
     }
 
     /**
      * Check require parameters
+     *
+     * @param Request $request
      */
     private function _checkRequireParamsExists(Request $request)
     {

@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Service\ClientManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -30,7 +31,9 @@ class CreateClientCommand extends Command
         $this
             ->setName('app:create-client')
             ->setDescription('Create new client')
-            ->setHelp('This commend create new client which can send mail through this service.');
+            ->setHelp('This commend create new client which can send mail through this service.')
+            ->addArgument('name', InputArgument::REQUIRED, 'Name of the client.')
+            ->addArgument('alias', InputArgument::REQUIRED, 'Alias of the client.');
     }
 
     /**
@@ -46,12 +49,28 @@ class CreateClientCommand extends Command
                 ''
             ]);
 
-        $client = $this->clientManager->create('TestClient_'.rand(1,100), 'test-client-'.rand(1,100));
+        $_name = $input->getArgument('name');
+        $_alias = $input->getArgument('alias');
 
-        $output->writeln([
-            'Client secret key:',
-            $client->getClientSecret()
-        ]);
+        $client = $this->clientManager->create($_name, $_alias);
+
+        if ($client) {
+            $output->writeln([
+                'Client successfully generated.',
+                '',
+                'ID: ' . $client->getId(),
+                'Name: ' . $_name,
+                'Alias: ' . $_alias,
+                'Secret key: ' . $client->getClientSecret()
+            ]);
+        }
+        else
+        {
+            $output->writeln([
+                'Error',
+                ''
+            ]);
+        }
     }
 
 }

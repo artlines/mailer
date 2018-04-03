@@ -39,6 +39,13 @@ class Client
     private $alias;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sender", nullable=true)
+     */
+    private $sender;
+
+    /**
      * @var array|null
      *
      * @ORM\Column(name="allow_ips", type="string", nullable=true)
@@ -145,7 +152,7 @@ class Client
     /**
      * @param array $allowIPs
      */
-    public function setAllowIPs(array $allowIPs): void
+    public function setAllowIPs(?array $allowIPs): void
     {
         $this->allowIPs = json_encode($allowIPs);
     }
@@ -240,6 +247,22 @@ class Client
             $this->templates->removeElement($template);
     }
 
+    /**
+     * @return string
+     */
+    public function getSender()
+    {
+        return $this->sender;
+    }
 
+    /**
+     * @param string $sender
+     */
+    public function setSender(string $sender): void
+    {
+        $this->sender = $sender;
+    }
+
+    
 
 }
