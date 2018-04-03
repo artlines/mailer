@@ -29,11 +29,12 @@ class CreateClientCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:create-client')
+            ->setName('app:client:create')
             ->setDescription('Create new client')
             ->setHelp('This commend create new client which can send mail through this service.')
             ->addArgument('name', InputArgument::REQUIRED, 'Name of the client.')
-            ->addArgument('alias', InputArgument::REQUIRED, 'Alias of the client.');
+            ->addArgument('alias', InputArgument::REQUIRED, 'Alias of the client.')
+            ->addArgument('sender', InputArgument::REQUIRED, 'Sender email address of the client.');
     }
 
     /**
@@ -51,8 +52,9 @@ class CreateClientCommand extends Command
 
         $_name = $input->getArgument('name');
         $_alias = $input->getArgument('alias');
+        $_sender = $input->getArgument('sender');
 
-        $client = $this->clientManager->create($_name, $_alias);
+        $client = $this->clientManager->create($_name, $_alias, $_sender);
 
         if ($client) {
             $output->writeln([
@@ -61,7 +63,10 @@ class CreateClientCommand extends Command
                 'ID: ' . $client->getId(),
                 'Name: ' . $_name,
                 'Alias: ' . $_alias,
-                'Secret key: ' . $client->getClientSecret()
+                'Sender: ' . $_sender,
+                '',
+                'Secret key: ' . $client->getClientSecret(),
+                ''
             ]);
         }
         else

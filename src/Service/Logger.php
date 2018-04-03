@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Entity\Log;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 class Logger
 {
@@ -21,6 +23,8 @@ class Logger
 
     /**
      * @param \Swift_Message $sm
+     *
+     * @return bool
      */
     public function logMail(\Swift_Message $sm)
     {
@@ -37,7 +41,16 @@ class Logger
         $log->setIpAddress('');
         $log->setTime(new \DateTime());
 
+        try {
+            $this->entityManager->persist($log);
+            $this->entityManager->flush();
+        } catch (OptimisticLockException $e) {
+            return false;
+        } catch (ORMException $e) {
+            return false;
+        }
 
+        return true;
     }
 
 }

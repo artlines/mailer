@@ -70,10 +70,16 @@ class TestMailerController extends AbstractController
             return $this->_error("Template with alias '{$data['template']}' doesn't exist.");
 
         /**
+         * Проверяем, активен ли шаблон
+         */
+        if (!$template->isActive())
+            return $this->_error("Template is not active.");
+
+        /**
          * Определяем отправителя
-         * Либо используем указанного в клиенте $client, если он не null
-         * TODO: определить, может ли поле sender в базе клиентов быть null
-         * Либо используем указанного в запросе на отправку $data['sender']
+         *
+         * Используем указанного в запросе на отправку $data['sender']
+         * Если не указан, используем указанного в клиенте $client
          */
         if (isset($data['sender']))
         {
