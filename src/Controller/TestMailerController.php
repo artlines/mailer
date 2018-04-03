@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Template;
 use App\Service\AuthInterface;
 use App\Service\EmailGenerator;
+use App\Service\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +24,17 @@ class TestMailerController extends AbstractController
 {
     /**
      * @Route("/send")
+     *
+     * @param Logger $logger
+     * @param \Swift_Mailer $mailer
+     * @param Request $request
+     * @param AuthInterface $auth
+     * @param EmailGenerator $emailGenerator
+     *
+     * @return JsonResponse|Response
      */
-    public function testSend(\Swift_Mailer $mailer, Request $request, AuthInterface $auth, EmailGenerator $emailGenerator)
+    public function testSend(Logger $logger, \Swift_Mailer $mailer, Request $request, AuthInterface $auth, EmailGenerator $emailGenerator)
     {
-
-        var_dump($request); exit();
         /**
          * Проверяем, что в теле запроса есть все обязательные параметры
          */
@@ -100,7 +107,7 @@ class TestMailerController extends AbstractController
         /**
          * Проверка статуса отправки
          */
-        $sendStatus = $this->_sendEmail($mailer, $data, $_sender, $emailBody);
+        $sendStatus = $this->_sendEmail($mailer, $logger, $data, $_sender, $emailBody, $request->server->get('REMOTE_ADDR'));
         if (!$sendStatus)
             return $this->_error("Email doesn't send. Status: $sendStatus");
 
@@ -122,9 +129,15 @@ class TestMailerController extends AbstractController
      * Собирает и (не)отправляет email
      *
      * @param \Swift_Mailer $mailer
+     * @param Logger $logger
+     * @param $data
+     * @param $_sender
+     * @param $emailBody
+     * @param $ipAddress
+     *
      * @return bool
      */
-    private function _sendEmail(\Swift_Mailer $mailer, $data, $_sender, $emailBody)
+    private function _sendEmail(\Swift_Mailer $mailer, Logger $logger, $data, $_sender, $emailBody, $ipAddress)
     {
         $_to = $data['send_to'];
         $_subject = $data['subject'];
@@ -139,16 +152,17 @@ class TestMailerController extends AbstractController
         /**
          * Проверяем, указаны ли адреса для сиси и бисиси
          */
-        if (isset($data['send_cc']) && is_array($data['send_cc']) && !empty($data['send_cc']))
-        {
-            $sm->setCc($data['send_cc']);
-        }
-        if (isset($data['send_bcc']) && is_array($data['send_bcc']) && !empty($data['send_bcc']))
-        {
-            $sm->setBcc($data['send_bcc']);
-        }
+        $sm->setCc( isset($data['send_cc']) ? $data['send_cc'] : []);
+        $sm->setBcc( isset($data['send_bcc']) ? $data['send_bcc'] : []);
 
-        return $mailer->send($sm);
+        $sendStatus = $mailer->send($sm) ? true : false;
+
+        /**
+         * Лог
+         */
+        $logger->logMail($sm, $ipAddress, $sendStatus);
+
+        return $sendStatus;
     }
 
     /**

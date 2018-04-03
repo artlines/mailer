@@ -41,7 +41,7 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="sender", nullable=true)
+     * @ORM\Column(name="sender_email", nullable=false)
      */
     private $sender;
 
@@ -262,7 +262,5 @@ class Client
     {
         $this->sender = $sender;
     }
-
-    
 
 }

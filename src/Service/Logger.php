@@ -23,14 +23,18 @@ class Logger
 
     /**
      * @param \Swift_Message $sm
+     * @param $ipAddress
+     * @param $isSend
      *
      * @return bool
      */
-    public function logMail(\Swift_Message $sm)
+    public function logMail(\Swift_Message $sm, $ipAddress, $isSend)
     {
         $log = new Log();
 
-        $log->setEmailFrom($sm->getSender());
+        $_from = key($sm->getFrom());
+
+        $log->setEmailFrom($_from);
         $log->setEmailTo($sm->getTo());
         $log->setEmailCc($sm->getCc());
         $log->setEmailBcc($sm->getBcc());
@@ -38,7 +42,8 @@ class Logger
         $log->setMailSubject($sm->getSubject());
         $log->setMailBody($sm->getBody());
 
-        $log->setIpAddress('');
+        $log->setIpAddress($ipAddress);
+        $log->setIsSend($isSend);
 
         try {
             $this->entityManager->persist($log);

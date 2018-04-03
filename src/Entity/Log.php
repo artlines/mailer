@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,28 +52,35 @@ class Log
     private $time;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="send_status", type="boolean")
+     */
+    private $isSend;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="email_to", length=50, type="string", nullable=false)
      */
-    private $emailFrom;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\Column(name="email_from", type="string", nullable=false)
-     */
     private $emailTo;
 
     /**
-     * @var array
+     * @var string
+     *
+     * @ORM\Column(name="email_from", type="string", nullable=false)
+     */
+    private $emailFrom;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="email_cc", type="string", nullable=true)
      */
     private $emailCc;
 
     /**
-     * @var array
+     * @var string
      *
      * @ORM\Column(name="email_bcc", type="string", nullable=true)
      */
@@ -200,43 +206,11 @@ class Log
     }
 
     /**
-     * @return string
-     */
-    public function getSubject(): string
-    {
-        return $this->subject;
-    }
-
-    /**
-     * @param string $subject
-     */
-    public function setSubject(string $subject): void
-    {
-        $this->subject = $subject;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBody(): string
-    {
-        return $this->body;
-    }
-
-    /**
-     * @param string $body
-     */
-    public function setBody(string $body): void
-    {
-        $this->body = $body;
-    }
-
-    /**
      * @return array
      */
     public function getEmailCc(): array
     {
-        return $this->emailCc;
+        return json_decode($this->emailCc, true);
     }
 
     /**
@@ -244,7 +218,23 @@ class Log
      */
     public function setEmailCc(array $emailCc): void
     {
-        $this->emailCc = $emailCc;
+        $this->emailCc = json_encode($emailCc);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSend()
+    {
+        return $this->isSend;
+    }
+
+    /**
+     * @param bool $isSend
+     */
+    public function setIsSend(bool $isSend): void
+    {
+        $this->isSend = $isSend;
     }
 
 }

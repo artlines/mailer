@@ -32,5 +32,8 @@ services:
     App\Service\ClientManager:
         arguments: ['@doctrine.orm.entity_manager']
 
+    App\Service\Logger:
+        arguments: ['@doctrine.orm.entity_manager']
+
     App\Service\AuthInterface:
         arguments: []
