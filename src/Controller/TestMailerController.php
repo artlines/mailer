@@ -60,6 +60,13 @@ class TestMailerController extends AbstractController
             return $this->_error("Client with alias '{$data['client']}' doesn't exist.");
 
         /**
+         * Проверяем, разрешено использовать клиент с данного IP
+         */
+        $isAllow = $this->_checkIp($request, $client);
+        if (!$isAllow)
+            return $this->_error("IP address denied.");
+
+        /**
          * Проверяем, валиден ли хеш, что пришел в запросе
          *
          * @var boolean $isValid
@@ -120,9 +127,9 @@ class TestMailerController extends AbstractController
      * @param $msg
      * @return JsonResponse
      */
-    private function _error($msg)
+    private function _error($msg, int $status = 200)
     {
-        return new JsonResponse(['errorMessage' => $msg]);
+        return new JsonResponse(['errorMessage' => $msg], $status);
     }
 
     /**
@@ -187,6 +194,24 @@ class TestMailerController extends AbstractController
             if (null === $request->request->get($_param))
                 throw new BadRequestHttpException("Missing '$_param' parameter.");
         }
+    }
+
+    private function _checkIp(Request $request, Client $client)
+    {
+        $allowIPs = $client->getAllowIPs();
+
+        if (null === $allowIPs)
+        {
+            return true;
+        }
+
+        $ip = $request->server->get('REMOTE_ADDR');
+        if (in_array($ip, $allowIPs))
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }

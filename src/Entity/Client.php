@@ -139,22 +139,19 @@ class Client
     }
 
     /**
-     * @return array|int
+     * @return array|null
      */
     public function getAllowIPs()
     {
-        if (null === $this->allowIPs)
-            return 1;
-
-        return json_decode($this->allowIPs, true);
+        return is_null($this->allowIPs) ? null : json_decode($this->allowIPs, true);
     }
 
     /**
-     * @param array $allowIPs
+     * @param array|null $allowIPs
      */
     public function setAllowIPs(?array $allowIPs): void
     {
-        $this->allowIPs = json_encode($allowIPs);
+        $this->allowIPs = is_null($allowIPs) ? null : json_encode($allowIPs);
     }
 
     /**

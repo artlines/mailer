@@ -7,8 +7,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CreateClientCommand extends Command
+class ClientCreateCommand extends Command
 {
     /**
      * @var ClientManager $clientManager
@@ -43,18 +44,27 @@ class CreateClientCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output
-            ->writeln([
-                'Client Creator',
-                '==============',
-                ''
-            ]);
-
         $_name = $input->getArgument('name');
         $_alias = $input->getArgument('alias');
         $_sender = $input->getArgument('sender');
 
-        $client = $this->clientManager->create($_name, $_alias, $_sender);
+        $ss = new SymfonyStyle($input, $output);
+        $ss->title('Client Creator');
+        $ss->section("Create new client $_name");
+
+        $_allowIPs_string = $ss->ask(
+                "Choose comma separated IP addresses which have access to this client OR leave empty for access from any IPs",
+                null,
+                function ($_ips) {
+                    if (null === $_ips)
+                        return null;
+                    return $_ips;
+                }
+            );
+
+        $_allowIPs = isset($_allowIPs_string) ? explode(",", $_allowIPs_string) : null;
+
+        $client = $this->clientManager->create($_name, $_alias, $_sender, $_allowIPs);
 
         if ($client) {
             $output->writeln([
@@ -64,6 +74,8 @@ class CreateClientCommand extends Command
                 'Name: ' . $_name,
                 'Alias: ' . $_alias,
                 'Sender: ' . $_sender,
+                '',
+                'Allow IPs: ' . (isset($_allowIPs) ? str_replace(",", " ", $_allowIPs_string) : 'any'),
                 '',
                 'Secret key: ' . $client->getClientSecret(),
                 ''
