@@ -79,13 +79,9 @@ class TestMailerController extends AbstractController
         {
             $_sender = $data['sender'];
         }
-        elseif (!(null === $client->getSender()))
+        elseif (null !== $client->getSender())
         {
             $_sender = $client->getSender();
-        }
-        else
-        {
-            $_sender = 'no-reply@mailer.soa.dev.nag.ru';
         }
 
         /**
