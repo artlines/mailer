@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="template")
  * @ORM\Entity(repositoryClass="App\Repository\TemplateRepository")
+ *
+ * @ORM\HasLifecycleCallbacks()
  */
 class Template
 {
@@ -45,6 +47,13 @@ class Template
     private $isActive;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_private", type="boolean", nullable=false, options={"default":1})
+     */
+    private $isPrivate;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="template_text", type="text")
@@ -54,7 +63,8 @@ class Template
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Client", mappedBy="templates")
+     * @ORM\ManyToMany(targetEntity="Client", inversedBy="templates")
+     * @ORM\JoinTable(name="templates_clients")
      */
     private $clients;
 
@@ -141,7 +151,7 @@ class Template
     /**
      * @return ArrayCollection
      */
-    public function getClients(): ArrayCollection
+    public function getClients()
     {
         return $this->clients;
     }
@@ -164,6 +174,39 @@ class Template
             $this->clients->removeElement($client);
     }
 
+    /**
+     * @return bool
+     */
+    public function isPrivate()
+    {
+        return $this->isPrivate;
+    }
 
+    /**
+     * @ORM\PrePersist()
+     *
+     * TODO: Вынести в настройки
+     */
+    public function setPrivate()
+    {
+        $this->isPrivate = true;
+    }
+
+    /**
+     * Check permissions to usage template
+     *
+     * @param Client $client
+     * @return bool
+     */
+    public function canUseByClient(Client $client)
+    {
+        if (!$this->isPrivate())
+            return true;
+
+        if ($this->clients->contains($client))
+            return true;
+
+        return false;
+    }
 
 }

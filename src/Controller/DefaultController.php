@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Entity\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -9,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class DefaultController
  * @package App\Controller
  */
-class DefaultController
+class DefaultController extends AbstractController
 {
     /**
      * @return Response
@@ -20,4 +23,6 @@ class DefaultController
     {
         return new Response('hi', 200);
     }
+
+
 }

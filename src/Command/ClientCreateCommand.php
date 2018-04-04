@@ -52,6 +52,9 @@ class ClientCreateCommand extends Command
         $ss->title('Client Creator');
         $ss->section("Create new client $_name");
 
+        /**
+         * Настройки IP для клиента
+         */
         $_allowIPs_string = $ss->ask(
                 "Choose comma separated IP addresses which have access to this client OR leave empty for access from any IPs",
                 null,
@@ -64,6 +67,9 @@ class ClientCreateCommand extends Command
 
         $_allowIPs = isset($_allowIPs_string) ? explode(",", $_allowIPs_string) : null;
 
+        /**
+         * Создание клиента
+         */
         $client = $this->clientManager->create($_name, $_alias, $_sender, $_allowIPs);
 
         if ($client) {

@@ -69,8 +69,7 @@ class Client
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Template", inversedBy="clients")
-     * @ORM\JoinTable(name="templates_clients")
+     * @ORM\ManyToMany(targetEntity="Template", mappedBy="clients")
      */
     private $templates;
 
@@ -224,24 +223,6 @@ class Client
     public function getTemplates()
     {
         return $this->templates;
-    }
-
-    /**
-     * @param Template $template
-     */
-    public function addTemplate($template)
-    {
-        if (!$this->templates->contains($template))
-            $this->templates->add($template);
-    }
-
-    /**
-     * @param Template $template
-     */
-    public function removeTemplate($template)
-    {
-        if ($this->templates->contains($template))
-            $this->templates->removeElement($template);
     }
 
     /**

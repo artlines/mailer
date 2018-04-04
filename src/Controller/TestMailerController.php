@@ -92,6 +92,12 @@ class TestMailerController extends AbstractController
             return $this->_error("Template is not active.");
 
         /**
+         * Проверяем, может ли клиент использовать данный шаблон
+         */
+        if (!$template->canUseByClient($client))
+            return $this->_error("Template is private.");
+
+        /**
          * Определяем отправителя
          *
          * Используем указанного в запросе на отправку $data['sender']
