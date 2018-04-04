@@ -73,6 +73,7 @@ class Template
      */
     public function __construct()
     {
+        $this->isPrivate = true;
         $this->clients = new ArrayCollection();
     }
 
@@ -183,13 +184,11 @@ class Template
     }
 
     /**
-     * @ORM\PrePersist()
-     *
-     * TODO: Вынести в настройки
+     * @param $isPrivate boolean
      */
-    public function setPrivate()
+    public function setPrivate($isPrivate)
     {
-        $this->isPrivate = true;
+        $this->isPrivate = $isPrivate;
     }
 
     /**
