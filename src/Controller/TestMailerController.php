@@ -124,7 +124,7 @@ class TestMailerController extends AbstractController
         if (!$sendStatus)
             return $this->_error("Email doesn't send. Status: $sendStatus");
 
-        return new Response('ok', 201);
+        return new Response('SendStatus: ' . $sendStatus, 200);
     }
 
     /**
