@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Class MailerController
@@ -34,6 +35,7 @@ class MailerController extends AbstractController
 
     /**
      * @Route("/send")
+     * @Method({"POST"})
      *
      * @param Request $request
      * @param EmailManager $emailManager
