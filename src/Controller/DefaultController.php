@@ -14,15 +14,4 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
-    /**
-     * @return Response
-     *
-     * @Route("/")
-     */
-    public function index()
-    {
-        return new Response('hi', 200);
-    }
-
-
 }
