@@ -140,7 +140,7 @@ class Client
     /**
      * @return array|null
      */
-    public function getAllowIPs()
+    public function getAllowIPs(): ?array
     {
         return is_null($this->allowIPs) ? null : json_decode($this->allowIPs, true);
     }

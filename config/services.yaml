@@ -26,8 +26,8 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\EmailGenerator:
-        arguments: ['@doctrine.orm.entity_manager']
+    App\Service\EmailManager:
+        arguments: []
 
     App\Service\ClientManager:
         arguments: ['@doctrine.orm.entity_manager']
@@ -35,5 +35,5 @@ services:
     App\Service\Logger:
         arguments: ['@doctrine.orm.entity_manager']
 
-    App\Service\AuthInterface:
+    App\Service\AuthManager:
         arguments: []
