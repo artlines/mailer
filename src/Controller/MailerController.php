@@ -10,7 +10,6 @@ use App\Service\Logger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +31,19 @@ class MailerController extends AbstractController
      */
     private $client;
 
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * MailerController constructor.
+     * @param Logger $logger
+     */
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
 
     /**
      * @Route("/send")
@@ -54,11 +66,13 @@ class MailerController extends AbstractController
             $auth->checkAccessByClient($request, $this->client);
 
             if (!$this->template->isActive()) {
-                throw new \Exception("Template is not active.");
+                throw new \Exception("Template with alias '{$this->template->getAlias()}' is not active.");
             }
 
             if (!$this->template->canUseByClient($this->client)) {
-                throw new \Exception("Template is private.");
+                throw new \Exception(
+                    "Template with alias '{$this->template->getAlias()}' is private."
+                );
             }
 
             $_sender = $request->request->get('sender');
@@ -77,26 +91,32 @@ class MailerController extends AbstractController
             );
 
         } catch (BadRequestHttpException $e) {
-            return $this->_error($e->getMessage());
+            return $this->_error($request, $e->getMessage());
         } catch (\LogicException $e) {
-            return $this->_error($e->getMessage());
+            return $this->_error($request, $e->getMessage());
         } catch (AccessDeniedHttpException $e) {
-            return $this->_error($e->getMessage());
+            return $this->_error($request, $e->getMessage());
         } catch (\Exception $e) {
-            return $this->_error($e->getMessage());
+            return $this->_error($request, $e->getMessage());
         }
 
         return new JsonResponse(['status' => 'ok'], 200);
     }
 
     /**
+     * Логирует ошибку в syslog
      * Возвращает готовый JSON ответ с указанием ошибки
      *
-     * @param $msg
+     * @param Request $request
+     * @param string $msg
+     * @param int $status
+     *
      * @return JsonResponse
      */
-    private function _error($msg, int $status = 200)
+    private function _error($request, $msg, int $status = 200)
     {
+        $this->logger->syslog($this->client ? $this->client->getAlias() : 'undefined')->error("$msg | request_ip: {$request->getClientIp()}");
+
         return new JsonResponse(
             [
                 'status' => 'error',
@@ -109,11 +129,11 @@ class MailerController extends AbstractController
     /**
      * Check require parameters
      *
-     * @param Request $request
+     * @param $request
      *
      * @throw BadRequestHttpException If any param doesn't exist
      */
-    private function _checkRequireParamsExists(Request $request)
+    private function _checkRequireParamsExists($request)
     {
         $_requireParams = [
             'client_alias',

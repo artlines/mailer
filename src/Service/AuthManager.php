@@ -54,6 +54,6 @@ class AuthManager
             return true;
         }
 
-        throw new AccessDeniedHttpException("Access denied.");
+        throw new AccessDeniedHttpException("Access denied by client IP.");
     }
 }

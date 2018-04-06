@@ -6,6 +6,9 @@ use App\Entity\Log;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger as Monolog_Logger;
 
 class Logger
 {
@@ -55,6 +58,22 @@ class Logger
         }
 
         return true;
+    }
+
+    /**
+     * @param string $client
+     *
+     * @return Monolog_Logger
+     */
+    public function syslog(string $client = 'null'): Monolog_Logger
+    {
+        $log = new Monolog_Logger('app');
+        $syslog = new SyslogHandler("[SOA-MAILER.$client]", 'local0');
+        $formatter = new LineFormatter("%level_name%: %message% %context%");
+        $syslog->setFormatter($formatter);
+        $log->pushHandler($syslog);
+
+        return $log;
     }
 
 }

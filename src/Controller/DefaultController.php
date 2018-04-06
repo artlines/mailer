@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\Logger;
 
 /**
  * Class DefaultController
@@ -15,19 +15,14 @@ class DefaultController extends AbstractController
 {
     /**
      * @Route("/")
+     *
+     * @param Logger $logger
+     *
+     * @return Response
      */
-    public function index(LoggerInterface $logger)
+    public function index(Logger $logger)
     {
-        $rand = rand(1,1000);
-
-        $logger->alert('Alert: ' . $rand);
-        $logger->critical('Critical: ' . $rand);
-        $logger->debug('Debug: ' . $rand);
-        $logger->emergency('Emergency: ' . $rand);
-        $logger->error('Error: ' . $rand);
-        $logger->info('Info: ' . $rand);
-        $logger->notice('Notice: ' . $rand);
-        $logger->warning('Warning: ' . $rand);
+        //$logger->syslog()->info("asd");
 
         return new Response('ok', 200);
     }
