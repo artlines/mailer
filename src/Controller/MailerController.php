@@ -81,7 +81,7 @@ class MailerController extends AbstractController
             }
 
             $bodyData = $emailManager->generateBodyFromTemplate($this->template, $request->request->get('params'), EmailManager::CONTENT_HTML);
-            $emailManager->send(
+            $response = $emailManager->send(
                 $request->request->get('subject'),
                 $bodyData,
                 $_sender,
@@ -90,11 +90,19 @@ class MailerController extends AbstractController
                 $request->request->get('send_bcc') ?? []
             );
 
+            $id = $this->logger->logMail($response['sm'], $request, $response['status']);
+
+            if (!$response['status']) {
+                throw new \Swift_SwiftException("E-mail was not sent. | Status: {$response['status']} | Log ID: $id");
+            }
+
         } catch (BadRequestHttpException $e) {
             return $this->_error($request, $e->getMessage());
         } catch (\LogicException $e) {
             return $this->_error($request, $e->getMessage());
         } catch (AccessDeniedHttpException $e) {
+            return $this->_error($request, $e->getMessage());
+        } catch (\Swift_SwiftException $e) {
             return $this->_error($request, $e->getMessage());
         } catch (\Exception $e) {
             return $this->_error($request, $e->getMessage());

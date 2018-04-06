@@ -9,6 +9,7 @@ use Doctrine\ORM\ORMException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Logger as Monolog_Logger;
+use Symfony\Component\HttpFoundation\Request;
 
 class Logger
 {
@@ -26,13 +27,18 @@ class Logger
 
     /**
      * @param \Swift_Message $sm
-     * @param $ipAddress
-     * @param $isSend
+     * @param Request $request
+     * @param boolean $isSend
      *
      * @return bool
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function logMail(\Swift_Message $sm, $ipAddress, $isSend)
+    public function logMail(\Swift_Message $sm, $request, $isSend)
     {
+        $ipAddress = $request->getClientIp();
+
         $log = new Log();
 
         $_from = key($sm->getFrom());
@@ -48,14 +54,8 @@ class Logger
         $log->setIpAddress($ipAddress);
         $log->setIsSend($isSend);
 
-        try {
-            $this->entityManager->persist($log);
-            $this->entityManager->flush();
-        } catch (OptimisticLockException $e) {
-            return false;
-        } catch (ORMException $e) {
-            return false;
-        }
+        $this->entityManager->persist($log);
+        $this->entityManager->flush();
 
         return true;
     }

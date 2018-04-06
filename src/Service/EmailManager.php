@@ -75,7 +75,7 @@ class EmailManager
      * @param array|null $cc
      * @param array|null $bcc
      *
-     * @return \Swift_Message
+     * @return array
      */
     public function send(string $subject, array $bodyData, string $from, $to, array $cc = [], array $bcc = [])
     {
@@ -88,9 +88,10 @@ class EmailManager
             ->setBcc($bcc)
             ->setBody($bodyData['body'], $bodyData['contentType'], $bodyData['charset']);
 
-        $this->mailer->send($sm);
-
-        return $sm;
+        return [
+            'sm' => $sm,
+            'status' => $this->mailer->send($sm) > 0
+        ];
     }
 
 }
