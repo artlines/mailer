@@ -1,0 +1,9 @@
+security:
+    providers:
+        in_memory: { memory: ~ }
+    firewalls:
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
