@@ -1,0 +1,32 @@
+.mdl-card-content {
+	padding: 24px 24px 30px;
+}
+
+#login {
+	margin-top: 25vh;
+}
+
+#login h2 {
+	font-weight: 400;
+}
+
+form .mdl-textfield .prefix {
+	position: absolute;
+	width: 3rem;
+	font-size: 2rem;
+	transition: color .2s;
+	top: 1rem;
+}
+
+form .mdl-textfield .prefix ~ input {
+	margin-left: 3rem;
+	width: calc(100% - 3rem);
+}
+
+form .mdl-textfield .prefix ~ label {
+	margin-left: 3rem;
+}
+
+form .mdl-textfield.is-focused {
+	width: calc(100% - 3rem - 1.5rem) !important;
+}

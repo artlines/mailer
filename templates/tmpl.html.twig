@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <!--======= Basic Metas =======-->
+  <meta charset="utf-8">
+  <meta name="author" content="Седов Станислав">
+  <meta name="copyright" lang="ru" content="">
+  
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+
+  <title>{% block title %}{% endblock %} | Mailer SOA</title>
+  
+  <!--======= Mobile Metas =======-->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no">
+  
+  <!--======= Favicons =======-->
+  
+  <!--======= CSS =======-->
+  {% block stylesheets %}
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link href="{{ asset('/assets/css/app.css') }}" rel="stylesheet" />
+  {% endblock %}
+  
+  <!--======= JS =======-->
+  {% block javascripts %}
+  <script defer src="//code.getmdl.io/1.3.0/material.min.js"></script>
+  {% endblock %}
+</head>
+<body>
+  <div class="mdl-layout mdl-js-layout">
+
+    {% block header %}{% endblock %}
+
+    {% block main %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+  </div>
+  
+</body>
+</html>
