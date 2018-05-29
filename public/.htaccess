@@ -1,4 +1,4 @@
-AllowOverride None
+# AllowOverride None
 Order Allow,Deny
 Allow from All
 
