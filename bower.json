@@ -22,6 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "materialize": "https://github.com/Dogfalo/materialize.git#^0.100.2"
+    "materialize": "https://github.com/Dogfalo/materialize.git#^0.100.2",
+    "fontawesome": "^5.0.13"
   }
 }
