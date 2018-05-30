@@ -1,0 +1,27 @@
+{
+  "name": "mailer",
+  "description": "Libraries for frontend project",
+  "main": "public/index.php",
+  "authors": [
+    "Sedov Stas <SedovSG@ya.ru>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "mail",
+    "send",
+    "notify"
+  ],
+  "homepage": "http://mailer-sedov.nag.how",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "https://github.com/Dogfalo/materialize.git#^0.100.2"
+  }
+}
