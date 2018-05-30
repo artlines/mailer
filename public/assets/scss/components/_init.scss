@@ -1,3 +1,54 @@
-.content-grid {
-	max-width: 1280px;
+@import "../../vendor/materialize/sass/components/color.scss";
+
+$primary-color: color("grey", "darken-2") !default;
+$primary-color-light: lighten($primary-color, 15%) !default;
+$primary-color-dark: darken($primary-color, 15%) !default;
+
+$secondary-color: color("indigo", "darken-2") !default;
+$secondary-color-light: lighten($secondary-color, 15%) !default;
+$secondary-color-dark: darken($secondary-color, 15%) !default;
+
+$success-color: color("green", "base") !default;
+$error-color: color("red", "base") !default;
+$link-color: color("light-blue", "darken-1") !default;
+
+@import "../../vendor/materialize/sass/components/variables";
+
+@import url("../../vendor/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css");
+
+html {
+  color: $primary-color;
+
+  h1, h2, h3 {
+    color: $primary-color-dark;
+  }
+
+  h4, h5, h6 {
+    color: $primary-color-light;
+  }
+
+  .container {
+    width: 95%;
+  }
+
+  a:hover, a:focus {
+    outline: none;
+  }
+
+  i[class*="fa-"] {
+    color: $primary-color-light;
+  }
+
+  .card {
+    padding: 1rem 1.3rem 1.7rem 1.3rem;
+
+    .card-title ~ form {
+      margin-top: 2em;
+
+      .input-field i {
+        font-size: 1.6rem;
+        margin-top: 12px;
+      }
+    }
+  }
 }
