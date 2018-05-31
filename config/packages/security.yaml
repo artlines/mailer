@@ -16,7 +16,7 @@ security:
                 failure_path_parameter: login_fail
             logout:
                 path: /logout
-                target: /login
+                target: /logingit 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*, roles: ROLE_ADMIN }
