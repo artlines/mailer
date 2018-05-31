@@ -15,17 +15,7 @@
   ],
   "main": [
     "dist/js/materialize.js",
-    "dist/css/materialize.css",
-    "dist/fonts/roboto/Roboto-Bold.woff",
-    "dist/fonts/roboto/Roboto-Bold.woff2",
-    "dist/fonts/roboto/Roboto-Light.woff",
-    "dist/fonts/roboto/Roboto-Light.woff2",
-    "dist/fonts/roboto/Roboto-Medium.woff",
-    "dist/fonts/roboto/Roboto-Medium.woff2",
-    "dist/fonts/roboto/Roboto-Regular.woff",
-    "dist/fonts/roboto/Roboto-Regular.woff2",
-    "dist/fonts/roboto/Roboto-Thin.woff",
-    "dist/fonts/roboto/Roboto-Thin.woff2"
+    "dist/css/materialize.css"
   ],
   "ignore": [
     "jade/",
@@ -35,7 +25,6 @@
     "bower.json",
     "README.md",
     "images/",
-    "fonts",
     "js/jquery.timeago.js",
     "js/init.js",
     "js/prism.js",
@@ -49,20 +38,15 @@
     "package.json",
     "Gruntfile.js"
   ],
-  "dependencies": {
-    "jquery": "^3.0.0 || ^2.1.4"
-  },
-  "devDependencies": {},
   "homepage": "https://github.com/Dogfalo/materialize",
-  "version": "0.100.2",
-  "_release": "0.100.2",
+  "version": "1.0.0-rc.1",
+  "_release": "1.0.0-rc.1",
   "_resolution": {
     "type": "version",
-    "tag": "v0.100.2",
-    "commit": "65268df8545c3b4bbc7c9914ea36a95a046f1fef"
+    "tag": "1.0.0-rc.1",
+    "commit": "4f35429cff806e5dceb4254290774bdcfc46cbdd"
   },
   "_source": "https://github.com/Dogfalo/materialize.git",
-  "_target": "^0.100.2",
-  "_originalSource": "https://github.com/Dogfalo/materialize.git",
-  "_direct": true
+  "_target": "^1.0.0-rc.1",
+  "_originalSource": "https://github.com/Dogfalo/materialize.git"
 }

@@ -13,17 +13,25 @@
             <strong class="grey-text text-darken-2">Авторизация</strong>
           </span>
 
-          <form action="#" method="post">
+          <form action="{{ path('login') }}" method="post">
+            {% if error %}
+              <div class="error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">email</i>
-                <input id="email" type="text" name="email" class="validate">
-                <label for="email">Эл. почта</label>
+                <input id="email" type="text" name="_email" class="validate"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ last_username }}">
+                <label for="email">Эл. адрес</label>
+                <span class="helper-text" data-error="Неверный формат эл. адреса" data-success=""></span>
               </div>
+
+              <input type="hidden" name="_target_path" value="/account">
 
               <div class="input-field col s12">
                 <i class="material-icons prefix">https</i>
-                <input id="password" type="password" name="password" class="validate">
+                <input id="password" type="password" name="_password" class="validate">
                 <label for="password">Пароль</label>
               </div>
 
@@ -41,7 +49,6 @@
               <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">Авторизация</h2>
               </div>
-
              
                 <form action="{{ path('login') }}" method="post" class="mdl-cell mdl-cell--12-col">
                   

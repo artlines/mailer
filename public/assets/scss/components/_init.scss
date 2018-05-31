@@ -1,23 +1,13 @@
-@import "../../vendor/materialize/sass/components/color.scss";
-
-$primary-color: color("grey", "darken-2") !default;
-$primary-color-light: lighten($primary-color, 15%) !default;
-$primary-color-dark: darken($primary-color, 15%) !default;
-
-$secondary-color: color("indigo", "darken-2") !default;
-$secondary-color-light: lighten($secondary-color, 15%) !default;
-$secondary-color-dark: darken($secondary-color, 15%) !default;
-
-$success-color: color("green", "base") !default;
-$error-color: color("red", "base") !default;
-$link-color: color("light-blue", "darken-1") !default;
-
+@import "../../vendor/materialize/sass/components/color-variables";
 @import "../../vendor/materialize/sass/components/variables";
+
+$white-color: color("shades", "white");
 
 @import url("../../vendor/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css");
 
 html {
   color: $primary-color;
+  background: $white-color url(/assets/img/covers/cover-bg.png) 0 0 repeat;
 
   h1, h2, h3 {
     color: $primary-color-dark;
@@ -39,15 +29,24 @@ html {
     color: $primary-color-light;
   }
 
+  .error-message {
+    color: $error-color;
+    margin-bottom: 1em;
+  }
+
   .card {
     padding: 1rem 1.3rem 1.7rem 1.3rem;
 
     .card-title ~ form {
       margin-top: 2em;
 
+      .row {
+        margin-bottom: 0;
+      }
+
       .input-field i {
         font-size: 1.6rem;
-        margin-top: 12px;
+        margin-top: 5px;
       }
     }
   }
