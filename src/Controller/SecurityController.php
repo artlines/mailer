@@ -10,12 +10,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Class SecurityController
+ *
  * @package App\Controller
  */
 class SecurityController extends Controller
 {
     
     /**
+     * Метод выводит форму авторизации и осуществляет проверку на доступ.
+     * 
      * @Route("/login", name="login")
      *
      * @param Request              $request
@@ -27,13 +30,12 @@ class SecurityController extends Controller
     {
     	$error = $authenticationUtils->getLastAuthenticationError();
 
-        $lastUsername = $authenticationUtils->getLastUsername();
+      $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
-                'last_username' => $lastUsername,
-                'error'         => $error
-            ]);
-
+      return $this->render('security/login.html.twig', [
+        'last_username' => $lastUsername,
+        'error'         => $error
+      ]);
     }
 
 }
