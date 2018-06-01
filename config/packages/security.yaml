@@ -1,13 +1,42 @@
 security:
+    # Our user class and the algorithm we'll use to encode passwords
+    # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
+    encoders:
+        App\Entity\User: 
+            algorithm: bcrypt
+            cost: 12
     providers:
-        in_memory: { memory: ~ }
+        # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+        # In this example, users are stored via Doctrine in the database
+        # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
+        # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+    # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         main:
+            # this firewall applies to all URLs
+            pattern: ^/
+            http_basic: ~
+            provider: our_db_provider
+            # but the firewall does not require login on every page
+            # denying access is done in access_control or in your controllers
             anonymous: ~
+            # This allows the user to login by submitting a username and password
+            # Reference: https://symfony.com/doc/current/security/form_login_setup.html
             form_login:
+                # The route name that the login form submits to
                 login_path: login
+                # The name of the route where the login form lives
+                # When the user tries to access a protected page, they are redirected here
                 check_path: login
                 use_forward: true
+                # The page users are redirect to when there is no previous page stored in the
+                # session (for example when the users access directly to the login page).
                 default_target_path: /
                 always_use_default_target_path: true
                 username_parameter: _email
@@ -15,8 +44,12 @@ security:
                 target_path_parameter: login_success
                 failure_path_parameter: login_fail
             logout:
+                # The route name the user can go to in order to logout
                 path: /logout
-                target: /logingit 
+                # The name of the route to redirect to after logging out
+                target: /login 
     access_control:
+          # This is a catch-all for the admin area
+          # additional security lives in the controllers
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*, roles: ROLE_ADMIN }

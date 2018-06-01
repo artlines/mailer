@@ -26,7 +26,7 @@ class SecurityController extends Controller
      *
      * @return mixed
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
     	$error = $authenticationUtils->getLastAuthenticationError();
 
