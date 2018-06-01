@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
  * Class Client
@@ -86,6 +88,14 @@ class Client
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var int Идентификатор пользователя
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="clients")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    private $userId;
 
 
     /**
@@ -241,4 +251,62 @@ class Client
         $this->sender = $sender;
     }
 
+    /**
+     * Метод добавляет шаблон письма.
+     * 
+     * @param Template $template Шаблон письма
+     *
+     * @return Client
+     */
+    public function addTemplate(Template $template): self
+    {
+        if (!$this->templates->contains($template)) {
+            $this->templates[] = $template;
+            $template->addClient($this);
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Метод удаляет шаблон письма.
+     * 
+     * @param Template $template Шаблон письма
+     * 
+     * @return Client
+     */
+    public function removeTemplate(Template $template): self
+    {
+        if ($this->templates->contains($template)) {
+            $this->templates->removeElement($template);
+            $template->removeClient($this);
+        }
+
+        return $this;
+    }
+    
+    /**
+     * Метод возвращает идентификатор пользователя.
+     * 
+     * @return User
+     */
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+    
+    /**
+     * Метод устанавливает идентификатор пользователя.
+     * 
+     * @param User $userId Иденитификатор пользователя
+     *
+     * @return Client
+     */
+    public function setUserId(?User $userId): self
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+    
 }
