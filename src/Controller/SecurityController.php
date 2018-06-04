@@ -9,15 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
- * Class SecurityController
+ * Контроллер безопасности приложения.
  *
- * @package App\Controller
+ * @category   Symfony
+ * @package    App\Controller
+ * @author     Седов Стас, <s.sedov@nag.ru>
+ * @copyright  Copyright (c) 20018 NAG LLC. (https://www.shop.nag.ru)
+ * @version    0.0.4
  */
 class SecurityController extends Controller
 {
     
     /**
-     * Метод выводит форму авторизации и осуществляет проверку на доступ.
+     * Метод выводит форму авторизации и осуществляет аутентификацию пользователя.
      * 
      * @Route("/login", name="login")
      *
@@ -36,6 +40,20 @@ class SecurityController extends Controller
         'last_username' => $lastUsername,
         'error'         => $error
       ]);
+    }
+    
+    /**
+     * Метод выполняет выход пользователя из системы.
+     * 
+     * @Route("/logout", name="logout")
+     *
+     * @param Request              $request
+     *
+     * @return mixed
+     */
+    public function logout(Request $request)
+    {
+      # code...
     }
 
 }

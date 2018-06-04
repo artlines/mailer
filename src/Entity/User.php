@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,10 +15,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @author     Седов Стас, <s.sedov@nag.ru>
  * @copyright  Copyright (c) 20018 NAG LLC. (https://www.shop.nag.ru)
  * @version    0.0.4
- * 
+ *
+ * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var  int
@@ -244,6 +246,72 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * Метод возвращает соль.
+     * 
+     * @return string|null
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+    
+    /**
+     * Метод возвращает роль пользователя.
+     * 
+     * @return array
+     */
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+    
+    /**
+     * Метод стирает учётные данные.
+     */
+    public function eraseCredentials(): void
+    {
+        # code...
+    }
+    
+    /**
+     * Метод возвращает имя пользователя.
+     */
+    public function getUsername(): void
+    {
+        # code...
+    }
+    
+    /**
+     * Метод генерирует представление.
+     * 
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+          $this->id,
+          $this->email,
+          $this->password,
+          $this->fullname
+        ]);
+    }
+    
+    /**
+     * Метод создаёт PHP-значение из представления.
+     * 
+     * @param  string $serialized Представление
+     */
+    public function unserialize($serialized)
+    {
+        list (
+          $this->id,
+          $this->email,
+          $this->password,
+          $this->fullname
+        ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 
 }

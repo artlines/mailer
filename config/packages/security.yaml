@@ -41,8 +41,6 @@ security:
                 always_use_default_target_path: true
                 username_parameter: _email
                 password_parameter: _password
-                target_path_parameter: login_success
-                failure_path_parameter: login_fail
             logout:
                 # The route name the user can go to in order to logout
                 path: /logout
@@ -52,4 +50,4 @@ security:
           # This is a catch-all for the admin area
           # additional security lives in the controllers
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/.*, roles: ROLE_ADMIN }
+        - { path: ^/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
