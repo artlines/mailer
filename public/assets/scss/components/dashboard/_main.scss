@@ -1,0 +1,33 @@
+#main {
+  #slide-out {
+    margin-top: 64px;
+
+    .background {
+      background: url('/assets/img/bg.jpg') 0 0 no-repeat;
+      background-size: cover;
+      margin-bottom: 15px;
+      padding: 25px 0 15px 15px;
+      line-height: 44px;
+
+      .row {
+        margin-bottom: 0;
+      }
+
+      #user-details {
+        .profile-btn {
+          margin: 0;
+          text-transform: capitalize;
+          padding: 0;
+          text-shadow: 1px 1px 1px #444;
+          font-size: 15px;
+        }
+        p {
+          color: #fff;
+          margin-top: -16px;
+          font-size: 13px;
+          text-shadow: 1px 1px 1px #444;
+        }
+      }
+    }
+  }
+}

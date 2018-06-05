@@ -1,0 +1,20 @@
+#header {
+  h1 {
+    &.logo-wrapper {
+      margin: 0;
+
+      .logo-text {
+        display: none;
+      }
+    }
+
+    .brand-logo {
+      padding: 0 20px;
+      height: 64px;
+
+      img {
+        width: 172px;
+      }
+    }
+  }
+}

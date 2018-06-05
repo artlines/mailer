@@ -1,0 +1,54 @@
+{% extends "tmpl.html.twig" %}
+
+{% block title %}Панель администратора{% endblock %}
+
+{% block header %}
+  <header id="header" class="page-topbar">
+    <div class="navbar-fixed">
+      <nav class="navbar-color">
+        <div class="nav-wrapper">
+          <ul class="left">                      
+           <li>
+            <h1 class="logo-wrapper">
+              <a href="index.html" class="brand-logo darken-1">
+                <img src="{{ asset('/assets/img/materialize-logo.png') }}" alt="materialize logo"></a>
+                <span class="logo-text">Materialize</span>
+              </h1>
+            </li>
+         </ul>
+       </div>
+      </nav>
+    </div>
+  </header>
+{% endblock %}
+
+{% block main %}
+  <main id="main">
+    <div class="wrapper">
+      <aside id="left-sidebar-nav">
+        <ul id="slide-out" class="sidenav sidenav-fixed leftside-navigation">
+          <li class="background cyan darken-2">
+            <div class="row">
+              <div class="col s4 m4 l4">
+                <img src="{{ asset('/assets/img/avatar.jpg') }}" alt="Седов" class="circle responsive-img valign profile-image">
+              </div>
+
+              <div class="col col s8 m8 l8" id="user-details">
+                <ul id="profile-dropdown" class="dropdown-content">
+                  <li><a href="#!">one</a></li>
+                  <li><a href="#!">two</a></li>
+                  <li class="divider" tabindex="-1"></li>
+                  <li><a href="#!">three</a></li>
+                  <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                  <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                </ul>
+                <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn" href="#" data-target="profile-dropdown">Седов Станислав<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                <p class="user-roal">Администратор</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+{% endblock %}

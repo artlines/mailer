@@ -32,7 +32,7 @@ class SecurityController extends Controller
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-    	$error = $authenticationUtils->getLastAuthenticationError();
+      $error = $authenticationUtils->getLastAuthenticationError();
 
       $lastUsername = $authenticationUtils->getLastUsername();
 

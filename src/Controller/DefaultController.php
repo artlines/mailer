@@ -14,8 +14,6 @@ use App\Service\Logger;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/")
-     *
      * @param Logger $logger
      *
      * @return Response
