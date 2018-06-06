@@ -63,10 +63,16 @@ class User implements UserInterface, \Serializable
      */
     private $clients;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ActionLog", mappedBy="userId")
+     */
+    private $actionLog;
+
     public function __construct()
     {   
         $this->isActive = true;
         $this->clients = new ArrayCollection();
+        $this->actionLog = new ArrayCollection();
     }
     
     /**
@@ -312,6 +318,37 @@ class User implements UserInterface, \Serializable
           $this->password,
           $this->fullname
         ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|ActionLog[]
+     */
+    public function getActionLog(): Collection
+    {
+        return $this->actionLog;
+    }
+
+    public function addActionLog(ActionLog $actionLog): self
+    {
+        if (!$this->actionLog->contains($actionLog)) {
+            $this->actionLog[] = $actionLog;
+            $actionLog->setUsersId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActionLog(ActionLog $actionLog): self
+    {
+        if ($this->actionLog->contains($actionLog)) {
+            $this->actionLog->removeElement($actionLog);
+            // set the owning side to null (unless already changed)
+            if ($actionLog->getUsersId() === $this) {
+                $actionLog->setUsersId(null);
+            }
+        }
+
+        return $this;
     }
 
 }
