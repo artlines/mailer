@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\Logger;
 
 /**
  * Class DefaultController
@@ -14,15 +13,13 @@ use App\Service\Logger;
 class DefaultController extends AbstractController
 {
     /**
-     * @param Logger $logger
+     * @Route("/")
      *
      * @return Response
      */
-    public function index(Logger $logger)
+    public function index()
     {
-        //$logger->syslog()->info("asd");
-
-        return new Response('ok', 200);
+        return $this->redirectToRoute('login', [], 301);
     }
 
 }

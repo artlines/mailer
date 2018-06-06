@@ -38,6 +38,7 @@ security:
                 # The page users are redirect to when there is no previous page stored in the
                 # session (for example when the users access directly to the login page).
                 default_target_path: /dashboard
+                failure_path: /login
                 always_use_default_target_path: true
                 username_parameter: _email
                 password_parameter: _password
@@ -45,8 +46,9 @@ security:
                 # The route name the user can go to in order to logout
                 path: /logout
                 # The name of the route to redirect to after logging out
-                target: /login 
+                target: / 
     access_control:
           # This is a catch-all for the admin area
           # additional security lives in the controllers
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/*, roles: IS_AUTHENTICATED_REMEMBERED }
