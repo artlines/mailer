@@ -2,6 +2,10 @@
   #slide-out {
     margin-top: 64px;
 
+    @media #{$small-and-down} {
+      margin-top: 56px;
+    }
+
     .background {
       background: url('/assets/img/bg.jpg') 0 0 no-repeat;
       background-size: cover;
@@ -29,5 +33,9 @@
         }
       }
     }
+  }
+
+  #breadcrumbs-wrapper {
+    
   }
 }

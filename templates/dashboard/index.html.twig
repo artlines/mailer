@@ -5,10 +5,13 @@
 {% block header %}
   <header id="header" class="page-topbar">
     <div class="navbar-fixed">
-      <nav class="navbar-color">
+      <nav class="top-navbar">
         <div class="nav-wrapper">
           <ul class="left">                      
            <li>
+            <a href="#" class="sidenav-trigger full hide-on-large-only" data-target="slide-out">
+              <i class="material-icons">menu</i>
+            </a>
             <h1 class="logo-wrapper">
               <a href="index.html" class="brand-logo darken-1">
                 <img src="{{ asset('/assets/img/materialize-logo.png') }}" alt="materialize logo"></a>
@@ -16,7 +19,7 @@
               </h1>
             </li>
          </ul>
-       </div>
+        </div>
       </nav>
     </div>
   </header>
@@ -27,7 +30,7 @@
     <div class="wrapper">
       <aside id="left-sidebar-nav">
         <ul id="slide-out" class="sidenav sidenav-fixed leftside-navigation">
-          <li class="background cyan darken-2">
+          <li class="background">
             <div class="row">
               <div class="col s4 m4 l4">
                 <img src="{{ asset('/assets/img/avatar.jpg') }}" alt="Седов" class="circle responsive-img valign profile-image">
@@ -42,13 +45,37 @@
                   <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
                   <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
                 </ul>
-                <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn" href="#" data-target="profile-dropdown">Седов Станислав<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn" href="#" data-target="profile-dropdown">Седов Станислав<i class="material-icons right">arrow_drop_down</i></a>
                 <p class="user-roal">Администратор</p>
               </div>
             </div>
           </li>
+          <li><a href="#"><i class="material-icons">drafts</i>Рассылки</a></li>
+          <li><a href="#"><i class="material-icons">receipt</i>Шаблоны</a></li>
+          <li><a href="#"><i class="material-icons">toc</i>Списки рассылок</a></li>
+          <li><a href="#"><i class="material-icons">supervisor_account</i>Пользователи</a></li>
+          <li><a href="#"><i class="material-icons">trending_up</i>Отчёты</a></li>
+          <li><a href="#"><i class="material-icons">call_to_action</i>Журнал событий</a></li>
         </ul>
       </aside>
+
+      <section id="content">
+        <nav id="breadcrumbs-wrapper" class="grey lighten-2">
+          <div class="container">
+            <div class="row">
+              <div class="col s12 m12 l12">
+                <h5 class="breadcrumbs-title">Панель управления</h5>
+                
+                <div class="nav-wrapper">
+                  <a href="#!" class="breadcrumb">First</a>
+                  <a href="#!" class="breadcrumb">Second</a>
+                  <a href="#!" class="breadcrumb">Third</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </section>
     </div>
   </main>
 {% endblock %}
