@@ -1,4 +1,10 @@
-#main {
+#mainer {
+  padding-left: 300px;
+
+  @media #{$medium-and-down} {
+    padding-left: 0;
+  }
+
   #slide-out {
     margin-top: 64px;
 
@@ -36,6 +42,16 @@
   }
 
   #breadcrumbs-wrapper {
-    
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  #mainer > .card-panel {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  #main {
+    margin-top: 1em;
   }
 }

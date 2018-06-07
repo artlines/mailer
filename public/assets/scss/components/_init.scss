@@ -18,7 +18,8 @@ html {
   }
 
   .container {
-    width: 95%;
+    width: 96%;
+    max-width: inherit;
   }
 
   a:hover, a:focus {

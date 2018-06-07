@@ -24,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-      return $this->redirectToRoute('users/list', [], 301);
+      return $this->redirectToRoute('users_list', [], 301);
     }
     
     /**
@@ -36,9 +36,11 @@ class UsersController extends Controller
      */
     public function list($page = 1)
     {
-      return $this->render('dashboard/users.html.twig', [
-        'controller_name' => 'UsersController',
-      ]);
+      $content = [
+        'title_page' => 'Пользователи'
+      ];
+
+      return $this->render('dashboard/users.html.twig', $content);
     }
 
     /**

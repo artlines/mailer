@@ -28,8 +28,10 @@ class DashboardController extends Controller
         spl_object_id(new \App\Entity\User)
       ]);
 
-      return $this->render('dashboard/index.html.twig', [
-        'controller_name' => 'DashboardController',
-      ]);
+      $content = [
+        'title_page' => 'Панель администратора'
+      ];
+
+      return $this->render('dashboard/index.html.twig', $content);
     }
   }
