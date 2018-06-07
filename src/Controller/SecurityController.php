@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Service\Logger;
+use App\Service\ActionLogger;
 
 /**
  * Контроллер безопасности приложения.
@@ -20,7 +20,14 @@ use App\Service\Logger;
  */
 class SecurityController extends Controller
 {
-    
+
+    private $log = null;
+
+    function __construct(ActionLogger $log)
+    {
+      $this->log = $log;
+    }
+
     /**
      * Метод выводит форму авторизации и осуществляет аутентификацию пользователя.
      * 

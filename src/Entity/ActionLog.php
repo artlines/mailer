@@ -91,7 +91,7 @@ class ActionLog
      * 
      * @return \DateTimeInterface|null
      */
-    public function getDatetime(): ?\DateTimeInterface
+    public function getDatetime(): ?\DateTime
     {
         return $this->datetime;
     }
@@ -103,9 +103,9 @@ class ActionLog
      *
      * @return ActionLog
      */
-    public function setDatetime(\DateTimeInterface $datetime): self
+    public function setDatetime(): self
     {
-        $this->datetime = $datetime;
+        $this->datetime = new \DateTime();
 
         return $this;
     }
