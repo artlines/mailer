@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use App\Entity\User;
 
 /**
@@ -21,6 +22,7 @@ class UsersController extends Controller
 {
     /**
      * @Route("/users", name="users")
+     * @Method({"GET"})
      */
     public function index()
     {
@@ -28,7 +30,8 @@ class UsersController extends Controller
     }
     
     /**
-     * @Route("/users/list/{page}", name="users/list", requirements={"page": "\d+"}, name="users_list")
+     * @Route("/users/list/{page}", name="users_list", requirements={"page": "\d+"})
+     * @Method({"GET"})
      *
      * @param  int $page Номер страницы
      *
@@ -45,6 +48,7 @@ class UsersController extends Controller
 
     /**
      * @Route("/users/{id}", name="users_show")
+     * @Method({"GET"})
      *
      * @param  int $id Идентификатор записи
      *
@@ -58,7 +62,8 @@ class UsersController extends Controller
     }
 
     /**
-    * @Route("/users/delete/{id}", name="users_delete")
+    * @Route("/users/{id}", name="users_delete")
+    * @Method({"DELETE"})
     * 
     * @param  int $id Идентификатор записи
     * 
@@ -72,7 +77,8 @@ class UsersController extends Controller
     }
 
     /**
-     * @Route("/users/create", name="users_create")
+     * @Route("/users", name="users_create")
+     * @Method({"POST"})
      * 
      * @param Request $request
      * 
@@ -86,7 +92,8 @@ class UsersController extends Controller
     }
     
     /**
-     * @Route("/users/edit/{id}", name="users_edit")
+     * @Route("/users/{id}", name="users_edit")
+     * @Method({"PUT"})
      * 
      * @param  Request $request
      * @param  int  $id Идентификатор записи

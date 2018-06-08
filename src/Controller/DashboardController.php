@@ -21,12 +21,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-      $this->log->info([
-        'login',
-        'Пользователь успешно авторизовался',
-        'User',
-        spl_object_id(new \App\Entity\User)
-      ]);
+      // $this->log->info([
+      //   'login',
+      //   'Пользователь успешно авторизовался',
+      //   'User',
+      //   spl_object_id(new \App\Entity\User)
+      // ]);
 
       $content = [
         'title_page' => 'Панель администратора'

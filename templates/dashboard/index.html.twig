@@ -38,12 +38,9 @@
 
               <div class="col col s8 m8 l8" id="user-details">
                 <ul id="profile-dropdown" class="dropdown-content">
-                  <li><a href="#!">one</a></li>
-                  <li><a href="#!">two</a></li>
+                  <li><a href="#!"><i class="material-icons">person_outline</i>Профиль</a></li>
                   <li class="divider" tabindex="-1"></li>
-                  <li><a href="#!">three</a></li>
-                  <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                  <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                  <li><a href="/logout"><i class="material-icons">exit_to_app</i>Выход</a></li>
                 </ul>
                 <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn" href="#" data-target="profile-dropdown">Седов Станислав<i class="material-icons right">arrow_drop_down</i></a>
                 <p class="user-roal">Администратор</p>
@@ -61,9 +58,30 @@
       
       {% block content %}
       <section id="content">
-        <div id="breadcrumbs-wrapper" class="">
+        <div id="box-sticky" class="card-panel">
           <div class="row">
-            <h5 class="breadcrumbs-title">{{ title_page }}</h5>
+            <div class="col s12">
+              <div class="box-icons">
+                <span id="add" class="clickAjax modal-trigger" data-target="window" data-title="Создание элемента" data-action="/users" data-method="POST" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
+                  <i class="far fa-file" title="Создать элемент"></i>
+                </span>
+
+                <span id="edit" class="clickAjax modal-trigger hide" data-target="window" data-title="Редактирование элемента" data-action="/users/" data-method="GET" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
+                  <i class="far fa-edit" title="Редактировать элемент"></i>
+                </span>
+
+                <span id="trash" class="clickAjax hide" data-action="/users/" data-method="DELETE" data-update="on" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
+                  <i class="far fa-trash-alt" title="Удалить элемент"></i>
+                </span>
+              </div>
+              <h5 class="breadcrumbs-title">{{ title_page }}</h5>
+              
+              <div class="box-icons-right">
+                <span id="back-top">
+                  <i class="fas fa-arrow-up" title="Вверх"></i>
+                </span>
+              </div>
+          </div>
               
               <!--<div class="nav-wrapper">
                 <a href="#!" class="breadcrumb">First</a>
@@ -76,17 +94,17 @@
       </section>
  
       <section id="main">
-          <div class="card-panel">
+          <div class="card-panel" id="main-wrap">
             <div class="row">
               <div class="col s12 m12 l12">
                
                <table class="responsive-table">
                  <thead>
                    <tr>
-                       <th>id</th>
+                       <th>#</th>
                        <th>
                          <label>
-                          <input type="checkbox">
+                          <input type="checkbox" value="1" class="check-all" value="all">
                            <span></span>
                          </label>
                        </th>
@@ -102,7 +120,7 @@
                      <td>1</td>
                      <td>
                        <label>
-                        <input type="checkbox">
+                        <input type="checkbox" value="1">
                          <span></span>
                        </label>
                      </td>
@@ -115,7 +133,7 @@
                      <td>2</td>
                      <td>
                        <label>
-                        <input type="checkbox">
+                        <input type="checkbox" value="2">
                          <span></span>
                        </label>
                      </td>
@@ -128,7 +146,7 @@
                      <td>3</td>
                      <td>
                        <label>
-                        <input type="checkbox">
+                        <input type="checkbox" value="3">
                          <span></span>
                        </label>
                      </td>
@@ -137,9 +155,152 @@
                      <td>4</td>
                      <td><i class="material-icons">check</i></td>
                    </tr>
+                   <tr>
+                     <td>1</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="4">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>2</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="5">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">remove</i></td>
+                   </tr>
+                   <tr>
+                     <td>3</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="6">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>1</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="7">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>2</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="8">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">remove</i></td>
+                   </tr>
+                   <tr>
+                     <td>3</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="9">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>1</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="10">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>2</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="11">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">remove</i></td>
+                   </tr>
+                   <tr>
+                     <td>3</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="12">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>1</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="13">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">check</i></td>
+                   </tr>
+                   <tr>
+                     <td>2</td>
+                     <td>
+                       <label>
+                        <input type="checkbox" value="14">
+                         <span></span>
+                       </label>
+                     </td>
+                     <td>Владимир Ярославаович</td>
+                     <td>mail@mail.ru</td>
+                     <td>4</td>
+                     <td><i class="material-icons">remove</i></td>
+                   </tr>
+              
                  </tbody>
-               </table>
-                     
+               </table>  
               </div>
             </div>
           </div>
@@ -147,4 +308,18 @@
     {% endblock %}
     </div>
   </main>
+
+  <div id="window" class="modal">
+    <div class="modal-title">
+      <h5>Modal Header</h5>
+    </div>
+    <div class="modal-content">
+      
+      <p>scfsdgdfh</p>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Сохранить</button>
+    </div>
+  </div>
 {% endblock %}

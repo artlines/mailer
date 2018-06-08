@@ -22,6 +22,14 @@ html {
     max-width: inherit;
   }
 
+  .hide {
+    display: none;
+  }
+
+  .show {
+    display: block;
+  }
+
   a:hover, a:focus {
     outline: none;
   }
@@ -49,6 +57,30 @@ html {
         font-size: 1.6rem;
         margin-top: 5px;
       }
+    }
+  }
+
+  .modal {
+    padding: 0;
+    padding-bottom: 15px;
+
+    .modal-content, .modal-footer, .modal-title {
+      padding: 10px 50px;
+    }
+
+    .modal-title {
+      border-bottom: 1px solid rgba(0,0,0,.2);
+    }
+
+    .modal-footer {
+      padding: 10px 50px;
+      border-top: 1px solid rgba(0,0,0,.1);
+    }
+  }
+
+  table {
+    input[type="checkbox"] + span {
+      top: 3px;
     }
   }
 }
