@@ -13,19 +13,22 @@ class UserFixtures extends Fixture
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
-      $this->encoder = $encoder;
+        $this->encoder = $encoder;
     }
 
     public function load(ObjectManager $manager)
     {
-      $user = new User();
-      $user->setFullname('test');
-      $user->setEmail('test@test.ru');
+        for ($i = 0; $i++ < 100;) {
 
-      $password = $this->encoder->encodePassword  ($user, 'ZafsdfsdfsdfZ');
-      $user->setPassword($password);
+            $user = new User();
+            $user->setFullname('Пользователь ' . $i);
+            $user->setEmail($i . 'test@test.ru');
 
-      $manager->persist($user);
-      $manager->flush();
+            $password = $this->encoder->encodePassword($user, 'ZafsdfsdfsdfZ');
+            $user->setPassword($password);
+
+            $manager->persist($user);
+            $manager->flush();
+        }
     }
 }

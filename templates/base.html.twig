@@ -1,14 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}
-            {{ body }}
-        {% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+
+    <title>{% block title %}{% endblock %} | Mailer SOA</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/vendor/materialize/dist/css/materialize.min.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="{{ asset('/assets/css/main.min.css') }}">
+    {% endblock %}
+</head>
+
+<body>
+
+{% block header %}{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block javascripts %}
+    <script defer src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script defer src="{{ asset('assets/vendor/materialize/dist/js/materialize.min.js') }}"></script>
+    <script defer src="{{ asset('assets/js/main.js') }}"></script>
+{% endblock %}
+</body>
 </html>

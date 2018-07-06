@@ -1,0 +1,84 @@
+<table class="responsive-table" id="list">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Ф.И.О.</th>
+        <th>Email</th>
+        <th>Кол-во клиентов</th>
+        <th>API</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for user in data %}
+        <tr data-id="{{ user.id }}">
+            <td>{{ user.id }}</td>
+            <td>{{ user.fullname }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.clients|length }}</td>
+            <td>
+                <label for="api-{{ user.id }}">
+                    <input type="checkbox" id="api-{{ user.id }}" {{ user.api ? 'checked'}} disabled/>
+                    <span></span>
+                </label>
+            </td>
+            <td><i class="far fa-edit" title="Редактировать элемент"></i> </td>
+            <td><i class="far fa-trash-alt" title="Удалить элемент"></i> </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#add_user_modal" data-entity="{{ template }}"><i class="material-icons">add</i></a>
+</div>
+
+<div id="add_user_modal" class="modal">
+    <div class="modal-title">
+        <h5>Создание пользователя</h5>
+    </div>
+    <form action="/users/create" id="create_user" class="col s12">
+        <div class="modal-content">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Имя пользователя" id="fullname" type="text" class="validate">
+                    <label for="fullname"></label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Email" id="email" type="text" class="validate">
+                    <label for="email"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Пароль" id="password" type="text" class="validate">
+                    <label for="fullname"></label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Подтвердите пароль" id="password_confirm" type="text" class="validate">
+                    <label for="password_confirm"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4">
+                    <label>
+                        <input id="api" type="checkbox" class="validate">
+                        <span>Разрешены запросы по api</span>
+                    </label>
+                </div>
+                <div class="input-field col s8">
+                    <input placeholder="api-ключ" id="api_generate" type="text" class="validate">
+                    <a class="waves-effect waves-light btn">Генерация api-ключа</a>
+                    <label for="password_confirm"></label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Сохранить</button>
+        </div>
+    </form>
+
+</div>

@@ -1,325 +1,78 @@
-{% extends "tmpl.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}{{ title_page }}{% endblock %}
 
 {% block header %}
-  <header id="header" class="page-topbar">
-    <div class="navbar-fixed">
-      <nav class="top-navbar">
-        <div class="nav-wrapper">
-          <ul class="left">                      
-           <li>
-            <a href="#" class="sidenav-trigger full hide-on-large-only" data-target="slide-out">
-              <i class="material-icons">menu</i>
-            </a>
-            <h1 class="logo-wrapper">
-              <a href="/dashboard" class="brand-logo darken-1">
-                <img src="{{ asset('/assets/img/materialize-logo.png') }}" alt="materialize logo"></a>
-                <span class="logo-text">Materialize</span>
-              </h1>
-            </li>
-         </ul>
+    <header id="header" class="page-topbar">
+        <div class="navbar-fixed">
+            <nav class="top-navbar">
+                <div class="nav-wrapper">
+                    <ul class="left">
+                        <li>
+                            <a href="#" class="sidenav-trigger full hide-on-large-only" data-target="slide-out">
+                                <i class="material-icons">menu</i>
+                            </a>
+                            <h1 class="logo-wrapper">
+                                <a href="/dashboard" class="brand-logo darken-1">
+                                    <img src="{{ asset('/assets/img/materialize-logo.png') }}"
+                                         alt="materialize logo"></a>
+                                <span class="logo-text">Materialize</span>
+                            </h1>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-      </nav>
-    </div>
-  </header>
+    </header>
 {% endblock %}
 
-{% block main %}
-  <main id="mainer">
-    <div class="container">
-      <aside id="left-sidebar-nav">
-        <ul id="slide-out" class="sidenav sidenav-fixed leftside-navigation">
-          <li class="background">
-            <div class="row">
-              <div class="col s4 m4 l4">
-                <img src="{{ asset('/assets/img/avatar.jpg') }}" alt="Седов" class="circle responsive-img valign profile-image">
-              </div>
+{% block body %}
+    <main id="mainer">
+        <div class="container">
+            <aside id="left-sidebar-nav">
+                <ul id="slide-out" class="sidenav sidenav-fixed leftside-navigation">
+                    <li class="background">
+                        <div class="row">
+                            <div class="col s4 m4 l4">
+                                <img src="{{ asset('/assets/img/avatar.jpg') }}" alt="Седов"
+                                     class="circle responsive-img valign profile-image">
+                            </div>
 
-              <div class="col col s8 m8 l8" id="user-details">
-                <ul id="profile-dropdown" class="dropdown-content">
-                  <li><a href="#!"><i class="material-icons">person_outline</i>Профиль</a></li>
-                  <li class="divider" tabindex="-1"></li>
-                  <li><a href="/logout"><i class="material-icons">exit_to_app</i>Выход</a></li>
+                            <div class="col col s8 m8 l8" id="user-details">
+                                <ul id="profile-dropdown" class="dropdown-content">
+                                    <li><a href="#!"><i class="material-icons">person_outline</i>Профиль</a></li>
+                                    <li class="divider" tabindex="-1"></li>
+                                    <li><a href="/logout"><i class="material-icons">exit_to_app</i>Выход</a></li>
+                                </ul>
+                                <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn"
+                                   href="#" data-target="profile-dropdown">Седов Станислав<i
+                                            class="material-icons right">arrow_drop_down</i></a>
+                                <p class="user-roal">Администратор</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#"><i class="material-icons">drafts</i>Рассылки</a></li>
+                    <li><a href="#"><i class="material-icons">receipt</i>Шаблоны</a></li>
+                    <li><a href="#"><i class="material-icons">toc</i>Списки рассылок</a></li>
+                    <li><a href="/users"><i class="material-icons">supervisor_account</i>Пользователи</a></li>
+                    <li><a href="#"><i class="material-icons">trending_up</i>Отчёты</a></li>
+                    <li><a href="#"><i class="material-icons">call_to_action</i>Журнал событий</a></li>
                 </ul>
-                <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn" href="#" data-target="profile-dropdown">Седов Станислав<i class="material-icons right">arrow_drop_down</i></a>
-                <p class="user-roal">Администратор</p>
-              </div>
-            </div>
-          </li>
-          <li><a href="#"><i class="material-icons">drafts</i>Рассылки</a></li>
-          <li><a href="#"><i class="material-icons">receipt</i>Шаблоны</a></li>
-          <li><a href="#"><i class="material-icons">toc</i>Списки рассылок</a></li>
-          <li><a href="/users"><i class="material-icons">supervisor_account</i>Пользователи</a></li>
-          <li><a href="#"><i class="material-icons">trending_up</i>Отчёты</a></li>
-          <li><a href="#"><i class="material-icons">call_to_action</i>Журнал событий</a></li>
-        </ul>
-      </aside>
-      
-      {% block content %}
-      <section id="content">
-        <div id="box-sticky" class="card-panel">
-          <div class="row">
-            <div class="col s12">
-              <div class="box-icons">
-                <span id="add" class="clickAjax modal-trigger" data-target="window" data-title="Создание элемента" data-action="/users" data-method="POST" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
-                  <i class="far fa-file" title="Создать элемент"></i>
-                </span>
+            </aside>
 
-                <span id="edit" class="clickAjax modal-trigger hide" data-target="window" data-title="Редактирование элемента" data-action="/users/" data-method="GET" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
-                  <i class="far fa-edit" title="Редактировать элемент"></i>
-                </span>
-
-                <span id="trash" class="clickAjax hide" data-action="/users/" data-method="DELETE" data-update="on" data-wrap="#wrap" data-target="#main" data-response="#main-wrap">
-                  <i class="far fa-trash-alt" title="Удалить элемент"></i>
-                </span>
-              </div>
-              <h5 class="breadcrumbs-title">{{ title_page }}</h5>
-              
-              <div class="box-icons-right">
-                <span id="back-top">
-                  <i class="fas fa-arrow-up" title="Вверх"></i>
-                </span>
-              </div>
-          </div>
-              
-              <!--<div class="nav-wrapper">
-                <a href="#!" class="breadcrumb">First</a>
-                <a href="#!" class="breadcrumb">Second</a>
-                <a href="#!" class="breadcrumb">Third</a>
-              </div>-->
-  
-          </div>
+            {% block content %}
+                <section id="main">
+                    <div class="card-panel" id="main-wrap">
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                {% if template is defined %}
+                                    {% include('/dashboard/'~template~'/list.html.twig') %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endblock %}
         </div>
-      </section>
- 
-      <section id="main">
-          <div class="card-panel" id="main-wrap">
-            <div class="row">
-              <div class="col s12 m12 l12">
-               
-               <table class="responsive-table">
-                 <thead>
-                   <tr>
-                       <th>#</th>
-                       <th>
-                         <label>
-                          <input type="checkbox" value="1" class="check-all" value="all">
-                           <span></span>
-                         </label>
-                       </th>
-                       <th>Ф.И.О.</th>
-                       <th>Email</th>
-                       <th>Кол-во клиентов</th>
-                       <th>API</th>
-                   </tr>
-                 </thead>
-
-                 <tbody>
-                   <tr>
-                     <td>1</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="1">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>2</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="2">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">remove</i></td>
-                   </tr>
-                   <tr>
-                     <td>3</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="3">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>1</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="4">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>2</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="5">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">remove</i></td>
-                   </tr>
-                   <tr>
-                     <td>3</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="6">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>1</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="7">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>2</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="8">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">remove</i></td>
-                   </tr>
-                   <tr>
-                     <td>3</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="9">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>1</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="10">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>2</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="11">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">remove</i></td>
-                   </tr>
-                   <tr>
-                     <td>3</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="12">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>1</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="13">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">check</i></td>
-                   </tr>
-                   <tr>
-                     <td>2</td>
-                     <td>
-                       <label>
-                        <input type="checkbox" value="14">
-                         <span></span>
-                       </label>
-                     </td>
-                     <td>Владимир Ярославаович</td>
-                     <td>mail@mail.ru</td>
-                     <td>4</td>
-                     <td><i class="material-icons">remove</i></td>
-                   </tr>
-              
-                 </tbody>
-               </table>  
-              </div>
-            </div>
-          </div>
-      </section>
-    {% endblock %}
-    </div>
-  </main>
-
-  <div id="window" class="modal">
-    <div class="modal-title">
-      <h5>Modal Header</h5>
-    </div>
-    <div class="modal-content">
-      
-      <p>scfsdgdfh</p>
-    </div>
-    <div class="modal-footer">
-      <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Сохранить</button>
-    </div>
-  </div>
+    </main>
 {% endblock %}

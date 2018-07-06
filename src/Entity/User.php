@@ -68,8 +68,13 @@ class User implements UserInterface, \Serializable
      */
     private $actionLog;
 
+    /**
+     * @ORM\Column(name="api", type="boolean", nullable=false, options={"default":false})
+     */
+    private $api;
+
     public function __construct()
-    {   
+    {
         $this->isActive = true;
         $this->clients = new ArrayCollection();
         $this->actionLog = new ArrayCollection();

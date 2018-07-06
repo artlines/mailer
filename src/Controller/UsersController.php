@@ -26,9 +26,9 @@ class UsersController extends Controller
      */
     public function index()
     {
-      return $this->redirectToRoute('users_list', [], 301);
+        return $this->redirectToRoute('users_list', [], 301);
     }
-    
+
     /**
      * @Route("/users/list/{page}", name="users_list", requirements={"page": "\d+"})
      * @Method({"GET"})
@@ -39,11 +39,17 @@ class UsersController extends Controller
      */
     public function list($page = 1)
     {
-      $content = [
-        'title_page' => 'Пользователи'
-      ];
+        $users = $this->getDoctrine()->getRepository(User::class)->findBy(['isActive' => true],['id' => 'ASC']);
 
-      return $this->render('dashboard/users.html.twig', $content);
+        $content = [
+            'title_page' => 'Пользователи',
+            'template' => 'users',
+            'data' => $users
+        ];
+
+//        dump($users);
+
+        return $this->render('dashboard/index.html.twig', $content);
     }
 
     /**
@@ -56,54 +62,53 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-      return $this->render('dashboard/users.html.twig', [
-        'controller_name' => 'UsersController',
-      ]);
+        return $this->render('dashboard/list.html.twig', [
+            'controller_name' => 'UsersController',
+        ]);
     }
 
     /**
-    * @Route("/users/{id}", name="users_delete")
-    * @Method({"DELETE"})
-    * 
-    * @param  int $id Идентификатор записи
-    * 
-    * @return Response
-    */
+     * @Route("/users/{id}", name="users_delete")
+     * @Method({"DELETE"})
+     *
+     * @param  int $id Идентификатор записи
+     *
+     * @return Response
+     */
     public function delete($id)
     {
-      return $this->render('dashboard/users.html.twig', [
-        'controller_name' => 'UsersController',
-      ]);
+        return $this->render('dashboard/list.html.twig', [
+            'controller_name' => 'UsersController',
+        ]);
     }
 
     /**
-     * @Route("/users", name="users_create")
+     * @Route("/users/create", name="users_create")
      * @Method({"POST"})
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Response
      */
     public function create(Request $request)
     {
-      return $this->render('dashboard/users.html.twig', [
-        'controller_name' => 'UsersController',
-      ]);
+        //create
+        return $this->redirectToRoute('users_list', []);
     }
-    
+
     /**
      * @Route("/users/{id}", name="users_edit")
      * @Method({"PUT"})
-     * 
+     *
      * @param  Request $request
-     * @param  int  $id Идентификатор записи
-     * 
+     * @param  int $id Идентификатор записи
+     *
      * @return Responce
      */
     public function update(Request $request, $id)
     {
-      return $this->render('dashboard/users.html.twig', [
-        'controller_name' => 'UsersController',
-      ]);
+        return $this->render('dashboard/list.html.twig', [
+            'controller_name' => 'UsersController',
+        ]);
     }
-  }
+}
