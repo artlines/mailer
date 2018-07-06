@@ -21,7 +21,7 @@ security:
         main:
             # this firewall applies to all URLs
             pattern: ^/
-            http_basic: ~
+            # http_basic: ~
             provider: our_db_provider
             # but the firewall does not require login on every page
             # denying access is done in access_control or in your controllers
