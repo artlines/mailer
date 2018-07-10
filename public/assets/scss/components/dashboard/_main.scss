@@ -120,3 +120,18 @@
     z-index: 1;
   }
 }
+
+button.button--no-style{
+  background: none;
+  border: none;
+  &:hover{
+    cursor: pointer;
+  }
+  &:focus{
+    background: none;
+  }
+}
+
+.feedback-message{
+  display: none;
+}

@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Service\ActionLogger;
 
@@ -29,7 +27,7 @@ class UserController extends Controller
      */
     public function index(): Response
     {
-        $users = $this->getDoctrine()->getRepository(User::class)->findBy(['isActive' => true],['id' => 'ASC']);
+        $users = $this->getDoctrine()->getRepository(User::class)->findBy(['isActive' => true], ['id' => 'ASC']);
         return $this->render('user/index.html.twig', ['users' => $users]);
     }
 
@@ -52,6 +50,13 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->log->info([
+                'user_new',
+                'Создан новый пользователь',
+                'User',
+                $user->getId()
+            ]);
+
             return $this->json([]);
         }
         return $this->render('user/new.html.twig', [
@@ -70,11 +75,18 @@ class UserController extends Controller
         $data = $form->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$user->getApiKey()){
+            if (!$user->getApiKey()) {
                 $api_key = $data->getApi() ? md5(random_bytes(18)) : null;
                 $user->setApiKey($api_key);
             }
             $this->getDoctrine()->getManager()->flush();
+
+            $this->log->info([
+                'user_edit',
+                'Отредактирован пользователь' . $user->getId(),
+                'User',
+                $user->getId()
+            ]);
 
             return $this->json([]);
         }
@@ -90,11 +102,18 @@ class UserController extends Controller
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $user->setIsActive(0);
             $em->persist($user);
             $em->flush();
+
+            $this->log->info([
+                'user_delete',
+                'Удалён пользователь' . $user->getId(),
+                'User',
+                $user->getId()
+            ]);
         }
 
         return $this->redirectToRoute('user_index');
