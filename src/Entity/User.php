@@ -33,7 +33,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string Ф.И.О. пользователя
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=true)
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
      */
     private $fullname;
 
@@ -73,9 +73,15 @@ class User implements UserInterface, \Serializable
      */
     private $api;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $api_key;
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->api = false;
         $this->clients = new ArrayCollection();
         $this->actionLog = new ArrayCollection();
     }
@@ -352,6 +358,18 @@ class User implements UserInterface, \Serializable
                 $actionLog->setUsersId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiKey(): ?string
+    {
+        return $this->api_key;
+    }
+
+    public function setApiKey(?string $api_key): self
+    {
+        $this->api_key = $api_key;
 
         return $this;
     }

@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block title %}User index{% endblock %}
+
+{% block inner %}
+    {{ parent() }}
+    <h2>Пользователи системы</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Количество клиентов</th>
+            <th>Api</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.fullname }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.clients|length }}</td>
+                <td>
+                    <label>
+                        <input id="api" type="checkbox" disabled {{ user.api ? 'checked' : '' }} class="validate">
+                        <span></span>
+                    </label>
+                </td>
+                <td><a href="#user_modal" data-action="{{ path('user_edit', {'id': user.id}) }}" class="edit_user">
+                        <i class="far fa-edit" title="Редактировать элемент"></i>
+                    </a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('user_delete', {'id': user.id}) }}" onsubmit="return confirm('Вы уверены?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="button--no-style"><i class="far fa-trash-alt" title="Удалить элемент"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
+           data-action="{{ path('user_new') }}" href="#user_modal" id="create_user">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="user_modal" class="modal">
+        <div id="user_modal_content"></div>
+    </div>
+
+
+    <style>
+        {#перенести в стили при сборке#}
+        .button--no-style{
+            background: none;
+            border: none;
+        }
+        .button--no-style:hover{
+            cursor: pointer;
+        }
+        button.button--no-style:focus{
+            background: none;
+        }
+        .feedback-message{
+            display: none;
+        }
+    </style>
+{% endblock %}
+

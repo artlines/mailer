@@ -15,14 +15,29 @@ $(document).ready(function () {
     });
 
     //создание новой сущности
-    $('#create_user').submit(function (e) {
-        e.preventDefault();
+    $('#create_user').click(function (e) {
         $.ajax({
             type: "POST",
-            url: e.target.action,
+            url: $(this).data('action'),
             data: {},
-            success: function(response) {}
+            success: function(data) {
+                $('#user_modal_content').html(data);
+            }
         });
     });
+
+    //создание и редактирование сущности
+    $('.edit_user').click(function (e) {
+        $('.modal').modal('open');
+        $.ajax({
+            type: "POST",
+            url: $(this).data('action'),
+            data: {},
+            success: function(data) {
+                $('#user_modal_content').html(data);
+            }
+        });
+    });
+
 
 });

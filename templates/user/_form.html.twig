@@ -1,0 +1,99 @@
+{{ form_start(form, {'action': action}) }}
+    <div class="modal-title">
+        <h5>{{ title }}</h5>
+    </div>
+    <div class="modal-content">
+        <div class="row">
+            <div class="input-field col s6">
+                {{ form_widget(form.fullname) }}
+                <label for="user[fullname]">Имя</label>
+                <span class="red-text">{{ form_errors(form.fullname) }}</span>
+            </div>
+            <div class="input-field col s6">
+                {{ form_widget(form.email) }}
+                <label for="user[email]">Email</label>
+                <span class="red-text">{{ form_errors(form.email) }}</span>
+            </div>
+        </div>
+        {% if form.password is defined %}
+            <div class="row">
+                <div class="input-field col s6">
+                    {{ form_widget(form.password.first) }}
+                    <label for="user[password][first]">Пароль</label>
+                    <span class="red-text">{{ form_errors(form.password.first) }}</span>
+                </div>
+                <div class="input-field col s6">
+                    {{ form_widget(form.password.second) }}
+                    <label for="user[password][second]">Подтвердите пароль</label>
+                    <span class="red-text">{{ form_errors(form.password.second) }}</span>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="input-field col s2">
+                <label>
+                    {{ form_widget(form.isActive) }}
+                    <span>Активен</span>
+                    <span class="red-text">{{ form_errors(form.isActive) }}</span>
+                </label>
+            </div>
+            <div class="input-field col s4">
+                <label>
+                    {{ form_widget(form.api) }}
+                    <span>Разрешены запросы по api</span>
+                    <span class="red-text">{{ form_errors(form.api) }}</span>
+                </label>
+            </div>
+            <div class="input-field col s6">
+                <input disabled id="api_generate" type="text" class="validate" value="{{ form_errors(form.api) }}">
+                <label for="api_generate">api-ключ</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
+        <button class="btn waves-effect waves-light" type="submit" name="action">{{ button_label|default('Сохранить') }}</button>
+    </div>
+    <div class="card-panel feedback-message" id="feedback"></div>
+    </div>
+{{ form_end(form) }}
+<script>
+    $(function () {
+        var invalidMessage = 'Ошибка на сервере, обратитесь к администратору';
+        var sucessMessage = 'Успешно сохранено!';
+
+        M.updateTextFields();
+
+        $('#user_api').change(function () {
+            if (this.checked){
+                $('[for="api_generate"]').text('api-ключ будет сгенерирован автоматически')
+            }else{
+                $('[for="api_generate"]').text('api-ключ')
+            }
+        });
+
+        $('[name="user"]').submit(function (e) {
+           e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(data, textStatus, xhr) {
+                    if (xhr.status === 200){
+                        if (xhr.getResponseHeader('content-type') === 'application/json'){
+                            $('#feedback').addClass('light-green').text(sucessMessage).show();
+                            setTimeout(function () {
+                                $('.modal').modal('close');
+                            }, 2000);
+                        }else{
+                            $('#user_modal_content').html(data);
+                        }
+                    }else{
+                        $('#feedback').addClass('red').text(invalidMessage).show();
+                    }
+
+                }
+            });
+        });
+    });
+</script>
