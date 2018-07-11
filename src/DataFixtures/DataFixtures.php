@@ -23,7 +23,7 @@ class DataFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i++ < 100;) {
+        for ($i = 0; $i++ < 30;) {
 
             $user = new User();
             $user->setFullname('Пользователь ' . $i);
@@ -37,8 +37,8 @@ class DataFixtures extends Fixture
 
             $sendList = new SendList();
             $sendList->setName('Список ' . $i);
-            $sendList->setEmails( '
-                test@test.ru
+            $sendList->setEmails(
+                'test@test.ru
                 test@test.ru
                 test@test.ru
                 test@test.ru
@@ -50,7 +50,7 @@ class DataFixtures extends Fixture
                 test@test.ru
             ');
             $sendList->setUserId($user);
-            $sendList->setCreatedAt($this->dateTime->setDate('201'.$i, 02, 12));
+            $sendList->setCreatedAt($this->dateTime->setDate('2018', 02, $i));
 
             $manager->persist($sendList);
             $manager->flush();

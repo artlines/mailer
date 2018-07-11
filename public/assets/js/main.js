@@ -15,26 +15,26 @@ $(document).ready(function () {
     });
 
     //создание новой сущности
-    $('#create_user').click(function (e) {
+    $('#create_entity').click(function (e) {
         $.ajax({
             type: "POST",
             url: $(this).data('action'),
             data: {},
             success: function(data) {
-                $('#user_modal_content').html(data);
+                $('#modal_content').html(data);
             }
         });
     });
 
-    //создание и редактирование сущности
-    $('.edit_user').click(function (e) {
+    //вызов модалочки и подгрузка в него данных
+    $('.get_modal').click(function (e) {
         $('.modal').modal('open');
         $.ajax({
             type: "POST",
             url: $(this).data('action'),
             data: {},
             success: function(data) {
-                $('#user_modal_content').html(data);
+                $('#modal_content').html(data);
             }
         });
     });

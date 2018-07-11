@@ -1,11 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}New SendList{% endblock %}
-
-{% block body %}
-    <h1>Create new SendList</h1>
-
-    {{ include('send_list/_form.html.twig') }}
-
-    <a href="{{ path('send_list_index') }}">back to list</a>
-{% endblock %}
+{{ include('send_list/_form.html.twig', {'action': '/send_list/new', 'title': 'Создание списка рассылки'}) }}

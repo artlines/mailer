@@ -28,8 +28,10 @@ class SendList
     private $created_at;
 
     /**
+     * @var int Идентификатор пользователя
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sendList")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $userId;
 
@@ -79,9 +81,9 @@ class SendList
         return $this;
     }
 
-    public function getEmails(): ?string
+    public function getEmails(): array
     {
-        return $this->emails;
+        return  explode("\n", $this->emails);
     }
 
     public function setEmails(?string $emails): self

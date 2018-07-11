@@ -9,12 +9,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\ActionLogger;
 
 /**
- * @Route("/send/list")
+ * @Route("/send_list")
  */
 class SendListController extends Controller
 {
+    private $log = null;
+
+    function __construct(ActionLogger $log)
+    {
+        $this->log = $log;
+    }
     /**
      * @Route("/", name="send_list_index", methods="GET")
      */
@@ -37,12 +44,20 @@ class SendListController extends Controller
             $em->persist($sendList);
             $em->flush();
 
-            return $this->redirectToRoute('send_list_index');
+            $this->log->info([
+                'send_list_new',
+                'Создан новый список рассылки',
+                'SendList',
+                $sendList->getId()
+            ]);
+
+            return $this->json([]);
         }
 
         return $this->render('send_list/new.html.twig', [
             'send_list' => $sendList,
             'form' => $form->createView(),
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -71,6 +86,7 @@ class SendListController extends Controller
         return $this->render('send_list/edit.html.twig', [
             'send_list' => $sendList,
             'form' => $form->createView(),
+            'user' => $this->getUser(),
         ]);
     }
 
