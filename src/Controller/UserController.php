@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Service\ActionLogger;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/user")
@@ -75,10 +76,15 @@ class UserController extends Controller
         $data = $form->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             if (!$user->getApiKey()) {
                 $api_key = $data->getApi() ? md5(random_bytes(18)) : null;
-                $user->setApiKey($api_key);
+            }else{
+                $api_key = $data->getApi() ? $user->getApiKey() : null;
             }
+
+            $user->setApiKey($api_key);
+
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([

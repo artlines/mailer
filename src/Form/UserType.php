@@ -35,6 +35,9 @@ class UserType extends AbstractType
             ->add('api',  CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('apiKey',  TextType::class, [
+                'required' => false,
+            ])
         ;
     }
 

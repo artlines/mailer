@@ -64,6 +64,11 @@ class User implements UserInterface, \Serializable
     private $clients;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SendList", mappedBy="userId")
+     */
+    private $sendLists;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\ActionLog", mappedBy="userId")
      */
     private $actionLog;
@@ -76,13 +81,14 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $api_key;
+    private $apiKey;
 
     public function __construct()
     {
         $this->isActive = true;
         $this->api = false;
         $this->clients = new ArrayCollection();
+        $this->sendLists = new ArrayCollection();
         $this->actionLog = new ArrayCollection();
     }
     
@@ -266,6 +272,51 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Метод возвращает списки расслыки.
+     *
+     * @return Collection|SendList[]
+     */
+    public function getSendLists(): Collection
+    {
+        return $this->sendLists;
+    }
+
+    /**
+     * Метод добавляет список рассылки.
+     *
+     * @param SendList $sendLists Идентификатор списка рассылки.
+     *
+     * @return User
+     */
+    public function addSendList(SendList $sendList): self
+    {
+        if (!$this->sendLists->contains($sendList)) {
+            $this->sendLists[] = $sendList;
+            $sendList->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Метод удаляет список рассылки.
+     * @param  SendList $sendLists Идентификатор списка рассылки.
+     *
+     * @return User
+     */
+    public function removeSendList(SendList $sendList): self
+    {
+        if ($this->sendLists->contains($sendList)) {
+            $this->sendLists->removeElement($sendList);
+            if ($sendList->getUserId() === $this) {
+                $sendList->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Метод возвращает соль.
      * 
      * @return string|null
@@ -364,12 +415,12 @@ class User implements UserInterface, \Serializable
 
     public function getApiKey(): ?string
     {
-        return $this->api_key;
+        return $this->apiKey;
     }
 
-    public function setApiKey(?string $api_key): self
+    public function setApiKey(?string $apiKey): self
     {
-        $this->api_key = $api_key;
+        $this->apiKey = $apiKey;
 
         return $this;
     }

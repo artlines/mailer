@@ -133,5 +133,10 @@ button.button--no-style{
 }
 
 .feedback-message{
-  display: none;
+  display: inline-block;
+  opacity: 0;
+  text-align: center;
+  padding: 0.4em 2em;
+  border-radius: 2px;
+  color: #fff;
 }

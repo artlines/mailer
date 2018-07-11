@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit SendList{% endblock %}
+
+{% block body %}
+    <h1>Edit SendList</h1>
+
+    {{ include('send_list/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('send_list_index') }}">back to list</a>
+
+    {{ include('send_list/_delete_form.html.twig') }}
+{% endblock %}

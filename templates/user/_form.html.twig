@@ -45,16 +45,17 @@
                 </label>
             </div>
             <div class="input-field col s6">
-                <input disabled id="api_generate" type="text" class="validate" value="{{ form_errors(form.api) }}">
+                {{ form_widget(form.apiKey, {'attr': {'disabled': 'disabled'}}) }}
                 <label for="api_generate">api-ключ</label>
             </div>
         </div>
     </div>
     <div class="modal-footer">
+        <div class="feedback-message" id="feedback"></div>
         <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
         <button class="btn waves-effect waves-light" type="submit" name="action">{{ button_label|default('Сохранить') }}</button>
     </div>
-    <div class="card-panel feedback-message" id="feedback"></div>
+
     </div>
 {{ form_end(form) }}
 <script>
@@ -67,7 +68,7 @@
         $('#user_api').change(function () {
             if (this.checked){
                 $('[for="api_generate"]').text('api-ключ будет сгенерирован автоматически')
-            }else{
+            }else if($('[for="api_generate"]').val().length == 0){
                 $('[for="api_generate"]').text('api-ключ')
             }
         });
@@ -81,15 +82,15 @@
                 success: function(data, textStatus, xhr) {
                     if (xhr.status === 200){
                         if (xhr.getResponseHeader('content-type') === 'application/json'){
-                            $('#feedback').addClass('light-green').text(sucessMessage).show();
+                            $('#feedback').addClass('light-green').text(sucessMessage).fadeTo(0, 1);
                             setTimeout(function () {
-                                $('.modal').modal('close');
-                            }, 2000);
+                                location.reload();
+                            }, 1000);
                         }else{
                             $('#user_modal_content').html(data);
                         }
                     }else{
-                        $('#feedback').addClass('red').text(invalidMessage).show();
+                        $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
                     }
 
                 }
