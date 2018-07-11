@@ -53,7 +53,7 @@ class UserController extends Controller
 
             $this->log->info([
                 'user_new',
-                'Создан новый пользователь',
+                'Создан новый пользователь '.$user->getId(),
                 'User',
                 $user->getId()
             ]);
@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user)->remove('password');;
+        $form = $this->createForm(UserType::class, $user)->remove('password');
         $form->handleRequest($request);
         $data = $form->getData();
 
@@ -89,7 +89,7 @@ class UserController extends Controller
 
             $this->log->info([
                 'user_edit',
-                'Отредактирован пользователь' . $user->getId(),
+                'Отредактирован пользователь ' . $user->getId(),
                 'User',
                 $user->getId()
             ]);

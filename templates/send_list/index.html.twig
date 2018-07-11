@@ -24,7 +24,7 @@
                 <td>{{ send_list.name }}</td>
                 <td>
                     <a href="#send_list_modal" data-action="{{ path('send_list_edit', {'id': send_list.id}) }}" class="get_modal">
-                        {{ send_list.emails|length }}
+                        {{ send_list.emails|split('\n')|length }}
                     </a>
                 </td>
                 <td>{{ send_list.createdAt ? send_list.createdAt|date('d-m-Y H:i:s') : '' }}</td>

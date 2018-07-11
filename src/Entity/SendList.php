@@ -81,9 +81,9 @@ class SendList
         return $this;
     }
 
-    public function getEmails(): array
+    public function getEmails(): ?string
     {
-        return  explode("\n", $this->emails);
+        return $this->emails;
     }
 
     public function setEmails(?string $emails): self

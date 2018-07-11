@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ActionLogger;
+use DateTimeImmutable;
 
 /**
  * @Route("/send_list")
@@ -17,17 +18,21 @@ use App\Service\ActionLogger;
 class SendListController extends Controller
 {
     private $log = null;
+    private $dateTime;
 
     function __construct(ActionLogger $log)
     {
         $this->log = $log;
+        $this->dateTime = new DateTimeImmutable();
     }
     /**
      * @Route("/", name="send_list_index", methods="GET")
      */
     public function index(SendListRepository $sendListRepository): Response
     {
-        return $this->render('send_list/index.html.twig', ['send_lists' => $sendListRepository->findAll()]);
+        return $this->render('send_list/index.html.twig', [
+            'send_lists' => $sendListRepository->findBy([], ['id' => 'ASC']),
+        ]);
     }
 
     /**
@@ -41,12 +46,14 @@ class SendListController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $sendList->setUserId($this->getUser());
+            $sendList->setCreatedAt($this->dateTime);
             $em->persist($sendList);
             $em->flush();
 
             $this->log->info([
                 'send_list_new',
-                'Создан новый список рассылки',
+                'Создан новый список рассылки '.$sendList->getId(),
                 'SendList',
                 $sendList->getId()
             ]);
@@ -62,14 +69,6 @@ class SendListController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="send_list_show", methods="GET")
-     */
-    public function show(SendList $sendList): Response
-    {
-        return $this->render('send_list/show.html.twig', ['send_list' => $sendList]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="send_list_edit", methods="GET|POST")
      */
     public function edit(Request $request, SendList $sendList): Response
@@ -80,7 +79,14 @@ class SendListController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('send_list_edit', ['id' => $sendList->getId()]);
+            $this->log->info([
+                'send_list_edit',
+                'Отредактирован список рассылки ' . $sendList->getId(),
+                'SendList',
+                $sendList->getId()
+            ]);
+
+            return $this->json([]);
         }
 
         return $this->render('send_list/edit.html.twig', [
