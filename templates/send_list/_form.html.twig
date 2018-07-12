@@ -1,4 +1,7 @@
 {{ form_start(form, {'action': action}) }}
+    <div class="progress">
+        <div class="indeterminate"></div>
+    </div>
     <div class="modal-title">
         <h5>{{ title }}</h5>
     </div>
@@ -24,7 +27,6 @@
         <button class="btn waves-effect waves-light" type="submit" name="action">{{ button_label|default('Сохранить') }}</button>
     </div>
 
-    </div>
 {{ form_end(form) }}
 <script>
     $(function () {
@@ -40,21 +42,27 @@
                 type: "POST",
                 url: $(this).attr('action'),
                 data: $(this).serialize(),
+                beforeSend: function( xhr ) {
+                    $('.progress').fadeTo(0, 1);
+                    $('[type="submit"]').prop('disabled', true);
+                },
                 success: function(data, textStatus, xhr) {
-                    if (xhr.status === 200){
-                        if (xhr.getResponseHeader('content-type') === 'application/json'){
-                            $('#feedback').addClass('light-green').text(sucessMessage).fadeTo(0, 1);
-                            setTimeout(function () {
-                                location.reload();
-                            }, 1000);
-                        }else{
-                            $('#send_list_modal_content').html(data);
-                        }
-                    }else{
-                        $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
+                    if (xhr.getResponseHeader('content-type') === 'application/json') {
+                        $('#feedback').addClass('light-green').text(sucessMessage).fadeTo(0, 1);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        $('#modal_content').html(data);
                     }
+                },
 
-                }
+                error: function(data, textStatus, xhr) {
+                    $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
+                },
+                complete: function( xhr ) {
+                    $('.progress').fadeTo(0, 0);
+                },
             });
         });
     });

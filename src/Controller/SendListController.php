@@ -91,7 +91,10 @@ class SendListController extends Controller
                 $sendList->getId()
             ]);
 
-            return $this->json([]);
+            return $this->json([
+                'result' => 'success',
+                'id' => $sendList->getId()
+            ]);
         }
 
         return $this->render('send_list/new.html.twig', [

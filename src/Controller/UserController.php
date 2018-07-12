@@ -58,7 +58,10 @@ class UserController extends Controller
                 $user->getId()
             ]);
 
-            return $this->json([]);
+            return $this->json([
+                'result' => 'success',
+                'id' => $user->getId()
+            ]);
         }
         return $this->render('user/new.html.twig', [
             'user' => $user,

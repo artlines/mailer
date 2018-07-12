@@ -6,14 +6,6 @@ $(document).ready(function () {
     $('.modal').modal();
     $('.fixed-action-btn').floatingActionButton();
 
-    // Кнопка вверх
-    $("#back-top").click(function () {
-        $("html").animate({
-            scrollTop: 0
-        }, 800);
-        return false;
-    });
-
     //создание новой сущности
     $('#create_entity').click(function (e) {
         $.ajax({

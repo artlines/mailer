@@ -22,7 +22,7 @@ class SendListRepository extends ServiceEntityRepository
 
     public function findAllQueryBuilder()
     {
-        return $this->createQueryBuilder('sendList');
+        return $this->createQueryBuilder('sendList')->addOrderBy('sendList.id', 'ASC');
     }
 
 
