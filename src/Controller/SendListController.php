@@ -85,7 +85,7 @@ class SendListController extends Controller
             $em->flush();
 
             $this->log->info([
-                'send_list_new',
+                __METHOD__,
                 'Создан новый список рассылки '.$sendList->getId(),
                 'SendList',
                 $sendList->getId()
@@ -116,13 +116,16 @@ class SendListController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([
-                'send_list_edit',
+                __METHOD__,
                 'Отредактирован список рассылки ' . $sendList->getId(),
                 'SendList',
                 $sendList->getId()
             ]);
 
-            return $this->json([]);
+            return $this->json([
+                'result' => 'success',
+                'id' => $sendList->getId()
+            ]);
         }
 
         return $this->render('send_list/edit.html.twig', [
@@ -141,6 +144,13 @@ class SendListController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($sendList);
             $em->flush();
+
+            $this->log->info([
+                __METHOD__,
+                'Удалён список рассылки ' . $sendList->getId(),
+                'SendList',
+                $sendList->getId()
+            ]);
         }
 
         return $this->redirectToRoute('send_list_index');

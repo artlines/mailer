@@ -52,7 +52,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->log->info([
-                'user_new',
+                __METHOD__,
                 'Создан новый пользователь '.$user->getId(),
                 'User',
                 $user->getId()
@@ -91,13 +91,16 @@ class UserController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([
-                'user_edit',
+                __METHOD__,
                 'Отредактирован пользователь ' . $user->getId(),
                 'User',
                 $user->getId()
             ]);
 
-            return $this->json([]);
+            return $this->json([
+                'result' => 'success',
+                'id' => $user->getId()
+            ]);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -118,7 +121,7 @@ class UserController extends Controller
             $em->flush();
 
             $this->log->info([
-                'user_delete',
+                 __METHOD__,
                 'Удалён пользователь' . $user->getId(),
                 'User',
                 $user->getId()

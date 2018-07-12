@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Entity\SendList;
 use App\Entity\Template;
 use DateTimeImmutable;
-use App\Service\Template as TemplateServise;
 
 
 class DataFixtures extends Fixture
@@ -18,10 +17,9 @@ class DataFixtures extends Fixture
     private $dateTime;
     private $templateServise;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, TemplateServise $templateService)
+    public function __construct(UserPasswordEncoderInterface $encoder)
     {
         $this->encoder = $encoder;
-        $this->templateServise = $templateService;
         $this->dateTime = new DateTimeImmutable();
     }
 
