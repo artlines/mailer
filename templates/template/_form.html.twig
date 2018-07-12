@@ -1,4 +1,87 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'action': action}) }}
+<div class="progress">
+    <div class="indeterminate"></div>
+</div>
+<div class="modal-title">
+    <h5>{{ title }}</h5>
+</div>
+<div class="modal-content">
+    <div class="row">
+        <div class="input-field col s6">
+            {{ form_widget(form.title) }}
+            <label for="template[title]">Имя</label>
+            <span class="red-text">{{ form_errors(form.title) }}</span>
+        </div>
+        <div class="input-field col s6">
+            {{ form_widget(form.alias) }}
+            <label for="template[alias]">Alias</label>
+            <span class="red-text">{{ form_errors(form.alias) }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s3">
+            <label>
+                {{ form_widget(form.isActive) }}
+                <span>Активен</span>
+            </label>
+        </div>
+        <div class="input-field col s3">
+            <label>
+                {{ form_widget(form.isPrivate) }}
+                <span>Приватный</span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            {{ form_widget(form.text) }}
+            <label for="template[text]">Текст шаблона</label>
+            <span class="red-text">{{ form_errors(form.text) }}</span>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="feedback-message" id="feedback"></div>
+    <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
+    <button class="btn waves-effect waves-light" type="submit" name="action">{{ button_label|default('Сохранить') }}</button>
+</div>
+
 {{ form_end(form) }}
+<script>
+    $(function () {
+        var invalidMessage = 'Ошибка на сервере, обратитесь к администратору';
+        var sucessMessage = 'Успешно сохранено!';
+
+        M.updateTextFields();
+
+        $('[name="template"]').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                beforeSend: function( xhr ) {
+                    $('.progress').fadeTo(0, 1);
+                    $('[type="submit"]').prop('disabled', true);
+                },
+                success: function(data, textStatus, xhr) {
+                    if (xhr.getResponseHeader('content-type') === 'application/json') {
+                        $('#feedback').addClass('light-green').text(sucessMessage).fadeTo(0, 1);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        $('#modal_content').html(data);
+                    }
+                },
+
+                error: function(data, textStatus, xhr) {
+                    $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
+                },
+                complete: function( xhr ) {
+                    $('.progress').fadeTo(0, 0);
+                },
+            });
+        });
+    });
+</script>

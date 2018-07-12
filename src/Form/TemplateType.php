@@ -17,7 +17,7 @@ class TemplateType extends AbstractType
             ->add('isActive')
             ->add('isPrivate')
             ->add('text')
-            ->add('clients')
+//            ->add('clients')
         ;
     }
 

@@ -63,7 +63,7 @@ class DataFixtures extends Fixture
             $template->setTitle('Шаблон ' . $i);
             $template->setAlias('template_' . $i);
             $template->setIsActive(true);
-            $template->setPrivate(true);
+            $template->setIsPrivate(true);
             $text = file_get_contents(__DIR__.'/../../templates/base.html.twig');
             $template->setText($text);
             $manager->persist($template);

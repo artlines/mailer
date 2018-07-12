@@ -187,7 +187,7 @@ class Template
     /**
      * @param $isPrivate boolean
      */
-    public function setPrivate($isPrivate)
+    public function setIsPrivate($isPrivate)
     {
         $this->isPrivate = $isPrivate;
     }

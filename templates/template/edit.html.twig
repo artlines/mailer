@@ -1,13 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Edit Template{% endblock %}
-
-{% block body %}
-    <h1>Edit Template</h1>
-
-    {{ include('template/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('template_index') }}">back to list</a>
-
-    {{ include('template/_delete_form.html.twig') }}
-{% endblock %}
+{{ include('template/_form.html.twig', {'action': '/template/'~template_id~'/edit', 'title': 'Редактирование шаблона'}) }}

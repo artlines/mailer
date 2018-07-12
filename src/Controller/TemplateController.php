@@ -90,6 +90,7 @@ class TemplateController extends Controller
         return $this->render('template/edit.html.twig', [
             'template' => $template,
             'form' => $form->createView(),
+            'template_id' => $template->getId()
         ]);
     }
 
