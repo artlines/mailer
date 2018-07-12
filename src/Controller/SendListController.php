@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ActionLogger;
 use DateTimeImmutable;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\TwitterBootstrap4View;
 
 /**
  * @Route("/send_list")
@@ -28,10 +31,40 @@ class SendListController extends Controller
     /**
      * @Route("/", name="send_list_index", methods="GET")
      */
-    public function index(SendListRepository $sendListRepository): Response
+    public function index(Request $request, SendListRepository $sendListRepository): Response
     {
+        $sendLists = [];
+        $page = $request->query->get('page', 1);
+        $qb = $this->getDoctrine()
+            ->getRepository(SendList::class)
+            ->findAllQueryBuilder();
+
+        $adapter = new DoctrineORMAdapter($qb);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(15);
+        $pagerfanta->setCurrentPage($page);
+
+        foreach ($pagerfanta->getCurrentPageResults() as $result) {
+            $sendLists[] = $result;
+        }
+
+        $routeGenerator = function($page) {
+            return '/send_list?page='.$page;
+        };
+
+        $view = new TwitterBootstrap4View();
+        $options = [
+            'prev_message' => '←',
+            'next_message' => '→',
+            'css_container_class' => 'pagination'
+        ];
+        $html = $view->render($pagerfanta, $routeGenerator, $options);
+
         return $this->render('send_list/index.html.twig', [
-            'send_lists' => $sendListRepository->findBy([], ['id' => 'ASC']),
+            'total' => $pagerfanta->getNbResults(),
+            'count' => count($sendLists),
+            'send_lists' => $sendLists,
+            'pagination' => $html,
         ]);
     }
 

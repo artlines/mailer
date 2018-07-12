@@ -145,3 +145,23 @@ textarea.materialize-textarea{
   padding: .8rem 0 3rem 0;
   resize: both;
 }
+
+.pagination{
+  text-align: center;
+
+  & li.prev a, & li.next a,
+  & li.prev span, & li.next span{
+    line-height: 1.2;
+  }
+
+  & li span{
+    display: inline-block;
+    font-size: 1.2rem;
+    padding: 0 10px;
+    line-height: 30px;
+  }
+
+  & li.active span{
+    color: #fff;
+  }
+}

@@ -19,22 +19,12 @@ class SendListRepository extends ServiceEntityRepository
         parent::__construct($registry, SendList::class);
     }
 
-//    /**
-//     * @return SendList[] Returns an array of SendList objects
-//     */
-    /*
-    public function findByExampleField($value)
+
+    public function findAllQueryBuilder()
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this->createQueryBuilder('sendList');
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?SendList
