@@ -57,9 +57,9 @@ class Template
     /**
      * @var string
      *
-     * @ORM\Column(name="template_text", type="text")
+     * @ORM\Column(name="text", type="text")
      */
-    private $templateText;
+    private $text;
 
     /**
      * @var ArrayCollection
@@ -137,17 +137,17 @@ class Template
     /**
      * @return string
      */
-    public function getTemplateText()
+    public function getText()
     {
-        return $this->templateText;
+        return $this->text;
     }
 
     /**
-     * @param string $templateText
+     * @param string $text
      */
-    public function setTemplateText(string $templateText): void
+    public function setText(string $text): void
     {
-        $this->templateText = $templateText;
+        $this->text = $text;
     }
 
     /**

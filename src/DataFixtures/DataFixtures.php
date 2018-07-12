@@ -7,24 +7,28 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 use App\Entity\SendList;
+use App\Entity\Template;
 use DateTimeImmutable;
+use App\Service\Template as TemplateServise;
 
 
 class DataFixtures extends Fixture
 {
     private $encoder;
     private $dateTime;
+    private $templateServise;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordEncoderInterface $encoder, TemplateServise $templateService)
     {
         $this->encoder = $encoder;
+        $this->templateServise = $templateService;
         $this->dateTime = new DateTimeImmutable();
     }
 
     public function load(ObjectManager $manager)
     {
         for ($i = 0; $i++ < 30;) {
-
+            //пользователи
             $user = new User();
             $user->setFullname('Пользователь ' . $i);
             $user->setEmail($i . 'test@test.ru');
@@ -35,6 +39,7 @@ class DataFixtures extends Fixture
             $manager->persist($user);
             $manager->flush();
 
+            //списки рассылки
             $sendList = new SendList();
             $sendList->setName('Список ' . $i);
             $sendList->setEmails(
@@ -53,6 +58,17 @@ class DataFixtures extends Fixture
             $sendList->setCreatedAt($this->dateTime->setDate('2018', 02, $i));
 
             $manager->persist($sendList);
+            $manager->flush();
+
+            //шаблоны
+            $template = new Template();
+            $template->setTitle('Шаблон ' . $i);
+            $template->setAlias('template_' . $i);
+            $template->setIsActive(true);
+            $template->setPrivate(true);
+            $text = file_get_contents(__DIR__.'/../../templates/base.html.twig');
+            $template->setText($text);
+            $manager->persist($template);
             $manager->flush();
         }
     }
