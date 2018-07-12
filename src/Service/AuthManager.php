@@ -21,21 +21,22 @@ class AuthManager
     /**
      * @param Request $request
      * @param Client $client
+     * @param array $data Request parameters
      */
-    public function checkAccessByClient(Request $request, Client $client)
+    public function checkAccessByClient(Request $request, Client $client, $data)
     {
         $this->request = $request;
         $this->client = $client;
 
-        $this->_validateHash();
+        $this->_validateHash($data['hash'], $data['timestamp']);
         $this->_checkPermissionByIp();
     }
 
-    private function _validateHash()
+    private function _validateHash($hash, $timestamp)
     {
-        $freshHash = hash('sha256', $this->client->getClientSecret() . $this->request->request->get('timestamp') . $this->client->getAlias());
+        $freshHash = hash('sha256', $this->client->getClientSecret() . $timestamp . $this->client->getAlias());
 
-        if ($this->request->request->get('hash') === $freshHash)
+        if ($hash === $freshHash)
             return true;
 
         throw new AccessDeniedHttpException("Hash not valid.");
