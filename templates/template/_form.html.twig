@@ -1,7 +1,5 @@
 {{ form_start(form, {'action': action}) }}
-<div class="progress">
-    <div class="indeterminate"></div>
-</div>
+
 <div class="modal-title">
     <h5>{{ title }}</h5>
 </div>
@@ -19,13 +17,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s3">
+        <div class="col s3">
             <label>
                 {{ form_widget(form.isActive) }}
                 <span>Активен</span>
             </label>
         </div>
-        <div class="input-field col s3">
+        <div class="col s3">
             <label>
                 {{ form_widget(form.isPrivate) }}
                 <span>Приватный</span>
@@ -35,6 +33,7 @@
     <div class="row">
         <div class="input-field col s12">
             {{ form_widget(form.text) }}
+            <div id="editor"></div>
             <label for="template[text]">Текст шаблона</label>
             <span class="red-text">{{ form_errors(form.text) }}</span>
         </div>
@@ -47,6 +46,11 @@
 </div>
 
 {{ form_end(form) }}
+<script src="{{ asset('assets/vendor/ace/ace.js') }}"></script>
+<script src="{{ asset('assets/vendor/ace/mode-twig.js') }}"></script>
+<script src="{{ asset('assets/vendor/ace/theme-github.js') }}"></script>
+
+
 <script>
     $(function () {
         var invalidMessage = 'Ошибка на сервере, обратитесь к администратору';
@@ -84,4 +88,40 @@
             });
         });
     });
+
+    var textarea = $('#template_text');
+    $('#editor').text(textarea.val());
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.getSession().setMode("ace/mode/twig");
+    editor.setShowPrintMargin(true);
+    textarea.val(editor.getSession().getValue());
+    editor.getSession().on("change", function () {
+        textarea.val(editor.getSession().getValue());
+    });
+
 </script>
+<style>
+    #editor {
+        height: 300px;
+    }
+    #template_text{
+        display: none;
+    }
+    ::-webkit-scrollbar {
+        width: 0.2em;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(100, 100, 100, 0.8);
+    }
+
+    ::-webkit-scrollbar-corner,
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(100, 100, 100, 0.4);
+    }
+</style>

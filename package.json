@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ace-code-editor": "^1.2.3",
     "jquery": "^3.2.1",
     "node-sass": "^4.9.2"
   },
