@@ -47,7 +47,7 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Создан новый список рассылки '.$template->getId(),
+                'Создан новый шаблон '.$template->getId(),
                 'Template',
                 $template->getId()
             ]);
@@ -76,7 +76,7 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Отредактирован список рассылки '.$template->getId(),
+                'Отредактирован шаблон '.$template->getId(),
                 'Template',
                 $template->getId()
             ]);
@@ -106,7 +106,7 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Удалён список рассылки '.$template->getId(),
+                'Удалён шаблон '.$template->getId(),
                 'Template',
                 $template->getId()
             ]);

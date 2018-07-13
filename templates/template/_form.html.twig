@@ -34,7 +34,11 @@
         <div class="input-field col s12">
             {{ form_widget(form.text) }}
             <div id="editor"></div>
-            <label for="template[text]">Текст шаблона</label>
+            <div class="fullscreen_toggle"></div>
+            <label for="template[text]" class="m2">
+                Текст шаблона
+                {#<a href="#" id="fullscreen_toggle"><i class="fas fa-expand" title="Развернуть редактор кода"></i></a></button>#}
+            </label>
             <span class="red-text">{{ form_errors(form.text) }}</span>
         </div>
     </div>
@@ -87,6 +91,7 @@
                 },
             });
         });
+
     });
 
     var textarea = $('#template_text');
@@ -101,27 +106,3 @@
     });
 
 </script>
-<style>
-    #editor {
-        height: 300px;
-    }
-    #template_text{
-        display: none;
-    }
-    ::-webkit-scrollbar {
-        width: 0.2em;
-    }
-
-    ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: rgba(100, 100, 100, 0.8);
-    }
-
-    ::-webkit-scrollbar-corner,
-    ::-webkit-scrollbar-thumb:window-inactive {
-        background: rgba(100, 100, 100, 0.4);
-    }
-</style>

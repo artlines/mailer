@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
 
     <title>{% block title %}{{ title_page }}{% endblock %} | Mailer SOA</title>
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0 />
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('assets/vendor/materialize/dist/css/materialize.min.css') }}">
@@ -46,21 +46,27 @@
                 <ul id="slide-out" class="sidenav sidenav-fixed leftside-navigation">
                     <li class="background">
                         <div class="row">
-                            <div class="col s4 m4 l4">
-                                <img src="{{ asset('/assets/img/avatar.jpg') }}" alt="Седов"
+                            <div class="col s4 m4 l4 center-align">
+                                {% if app.user.avatar is defined%}
+                                <img src="{{ asset(app.user.avatar) }}" alt=""
                                      class="circle responsive-img valign profile-image">
-                            </div>
+                                {% else %}
+                                <i class="far fa-user fa-user--white fa-3x" aria-hidden="true"></i>
+                                {% endif %}
 
+                            </div>
                             <div class="col col s8 m8 l8" id="user-details">
                                 <ul id="profile-dropdown" class="dropdown-content">
-                                    <li><a href="#!"><i class="material-icons">person_outline</i>Профиль</a></li>
+                                    <li><a href="#user_modal" data-action="{{ path('user_edit', {'id': app.user.id}) }}" class="get_modal"><i class="material-icons">person_outline</i>Профиль</a></li>
                                     <li class="divider" tabindex="-1"></li>
                                     <li><a href="/logout"><i class="material-icons">exit_to_app</i>Выход</a></li>
                                 </ul>
                                 <a class="btn-flat dropdown-trigger waves-effect waves-light white-text profile-btn"
-                                   href="#" data-target="profile-dropdown">Седов Станислав<i
+                                   href="#" data-target="profile-dropdown">{{ app.user.fullname }}<i
                                             class="material-icons right">arrow_drop_down</i></a>
-                                <p class="user-roal">Администратор</p>
+                                {% if app.user.role is defined%}
+                                    <p class="user-roal">{{ app.user.role }}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </li>
