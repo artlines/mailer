@@ -40,6 +40,7 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $id = $user->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -53,19 +54,21 @@ class UserController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Создан новый пользователь '.$user->getId(),
+                'Создан новый пользователь '.$id,
                 'User',
-                $user->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $user->getId()
+                'id' => $id
             ]);
         }
-        return $this->render('user/new.html.twig', [
+        return $this->render('user/_form.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'action' => '/user/new',
+            'title' => 'Создание пользователя',
         ]);
     }
 
@@ -77,6 +80,7 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user)->remove('password');
         $form->handleRequest($request);
         $data = $form->getData();
+        $id = $user->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -92,20 +96,22 @@ class UserController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Отредактирован пользователь ' . $user->getId(),
+                'Отредактирован пользователь ' . $id,
                 'User',
-                $user->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $user->getId()
+                'id' => $id
             ]);
         }
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('user/_form.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'action' => "/user/{$id}/edit",
+            'title' => 'Редактирование пользователя',
         ]);
     }
 
@@ -114,7 +120,8 @@ class UserController extends Controller
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+        $id = $user->getId();
+        if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $user->setIsActive(0);
             $em->persist($user);
@@ -122,9 +129,9 @@ class UserController extends Controller
 
             $this->log->info([
                  __METHOD__,
-                'Удалён пользователь' . $user->getId(),
+                'Удалён пользователь' . $id,
                 'User',
-                $user->getId()
+                $id
             ]);
         }
 

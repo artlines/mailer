@@ -74,6 +74,7 @@ class SendListController extends Controller
     public function new(Request $request): Response
     {
         $sendList = new SendList();
+        $id = $sendList->getId();
         $form = $this->createForm(SendListType::class, $sendList);
         $form->handleRequest($request);
 
@@ -86,21 +87,23 @@ class SendListController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Создан новый список рассылки '.$sendList->getId(),
+                'Создан новый список рассылки '.$id,
                 'SendList',
-                $sendList->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $sendList->getId()
+                'id' => $id
             ]);
         }
 
-        return $this->render('send_list/new.html.twig', [
+        return $this->render('send_list/_form.html.twig', [
             'send_list' => $sendList,
             'form' => $form->createView(),
             'user' => $this->getUser(),
+            'action' => '/send_list/new',
+            'title' => 'Создание списка рассылки',
         ]);
     }
 
@@ -111,27 +114,30 @@ class SendListController extends Controller
     {
         $form = $this->createForm(SendListType::class, $sendList);
         $form->handleRequest($request);
+        $id = $sendList->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([
                 __METHOD__,
-                'Отредактирован список рассылки ' . $sendList->getId(),
+                'Отредактирован список рассылки ' . $id,
                 'SendList',
-                $sendList->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $sendList->getId()
+                'id' => $id
             ]);
         }
 
-        return $this->render('send_list/edit.html.twig', [
+        return $this->render('send_list/_form.html.twig', [
             'send_list' => $sendList,
             'form' => $form->createView(),
             'user' => $this->getUser(),
+            'action' => "/send_list/{$id}/edit",
+            'title' => 'Редактирование списка рассылки',
         ]);
     }
 
@@ -140,16 +146,18 @@ class SendListController extends Controller
      */
     public function delete(Request $request, SendList $sendList): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sendList->getId(), $request->request->get('_token'))) {
+        $id = $sendList->getId();
+
+        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($sendList);
             $em->flush();
 
             $this->log->info([
                 __METHOD__,
-                'Удалён список рассылки ' . $sendList->getId(),
+                'Удалён список рассылки ' . $id,
                 'SendList',
-                $sendList->getId()
+                $id
             ]);
         }
 

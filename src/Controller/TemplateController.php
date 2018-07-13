@@ -39,6 +39,7 @@ class TemplateController extends Controller
         $template = new Template();
         $form = $this->createForm(TemplateType::class, $template);
         $form->handleRequest($request);
+        $id = $template->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -47,14 +48,14 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Создан новый шаблон '.$template->getId(),
+                'Создан новый шаблон '.$id,
                 'Template',
-                $template->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $template->getId()
+                'id' => $id
             ]);
         }
 
@@ -69,6 +70,7 @@ class TemplateController extends Controller
      */
     public function edit(Request $request, Template $template): Response
     {
+        $id = $template->getId();
         $form = $this->createForm(TemplateType::class, $template);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,21 +78,21 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Отредактирован шаблон '.$template->getId(),
+                'Отредактирован шаблон '.$id,
                 'Template',
-                $template->getId()
+                $id
             ]);
 
             return $this->json([
                 'result' => 'success',
-                'id' => $template->getId()
+                'id' => $id
             ]);
         }
 
         return $this->render('template/edit.html.twig', [
             'template' => $template,
             'form' => $form->createView(),
-            'template_id' => $template->getId()
+            'template_id' => $id
         ]);
     }
 
@@ -99,16 +101,17 @@ class TemplateController extends Controller
      */
     public function delete(Request $request, Template $template): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$template->getId(), $request->request->get('_token'))) {
+        $id = $template->getId();
+        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($template);
             $em->flush();
 
             $this->log->info([
                 __METHOD__,
-                'Удалён шаблон '.$template->getId(),
+                'Удалён шаблон '.$id,
                 'Template',
-                $template->getId()
+                $id
             ]);
         }
 
