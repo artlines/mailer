@@ -1,69 +1,35 @@
 {% extends 'base.html.twig' %}
-{% block title %}Шаблоны{% endblock %}
+{% block title %}Журнал действий{% endblock %}
 
 {% block inner %}
     {{ parent() }}
-    <h2>Шаблоны</h2>
+    <h2>Журнал действий</h2>
 
     <table class="table">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Имя</th>
-            <th>Alias</th>
-            <th>Активен</th>
-            <th>Приватный</th>
-            <th></th>
-            <th></th>
+            <th>Имя пользователя</th>
+            <th>Метод</th>
+            <th>Сущность | id</th>
+            <th>Дата</th>
+            <th>Сообщение</th>
         </tr>
         </thead>
-        <tbody>
-        {% for template in templates %}
-            <tr>
-                <td>{{ template.id }}</td>
-                <td>{{ template.title }}</td>
-                <td>{{ template.alias }}</td>
-                <td>
-                    <label>
-                        <input id="isActive" type="checkbox" disabled {{ template.isActive ? 'checked' : '' }} class="validate">
-                        <span></span>
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        <input id="isPrivate" type="checkbox" disabled {{ template.isPrivate ? 'checked' : '' }} class="validate">
-                        <span></span>
-                    </label>
-                </td>
-                <td>
-                    <a href="#template_modal" data-action="{{ path('template_edit', {'id': template.id}) }}" class="get_modal">
-                        <i class="far fa-edit" title="Редактировать элемент"></i>
-                    </a>
-                </td>
-                <td>
-                    <form method="post" action="{{ path('template_delete', {'id': template.id}) }}" onsubmit="return confirm('Вы уверены?');">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ template.id) }}">
-                        <button class="button--no-style"><i class="far fa-trash-alt" title="Удалить элемент"></i></button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">Нет записей</td>
-            </tr>
-        {% endfor %}
+        <tbody id="list">
+        {% include 'action_log/_list.html.twig' with {'logs': logs}  %}
         </tbody>
     </table>
+    {{ pagination|raw }}
 
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
-           data-action="{{ path('template_new') }}" href="#template_modal" id="create_entity">
+           data-action="{{ path('send_list_new') }}" href="#send_list_modal" id="create_entity">
             <i class="material-icons">add</i>
         </a>
     </div>
 
-    <div id="template_modal" class="modal">
+    <div id="send_list_modal" class="modal">
         <div class="progress">
             <div class="indeterminate"></div>
         </div>

@@ -1,9 +1,10 @@
 {% for log in logs %}
     <tr>
         <td>{{ log.id }}</td>
-        <td>{{ log.user.fullname }}</td>
+        <td>{{ log.userId.fullname }}</td>
         <td>{{ log.action }}</td>
         <td>{{ log.entity }} | {{ log.entityId }}</td>
+        <td>{{ log.datetime|date('d-m-Y H:i:s') }}</td>
         <td>{{ log.message }}</td>
     </tr>
 {% else %}
