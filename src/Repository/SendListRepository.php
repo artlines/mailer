@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\SendList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\TwitterBootstrap4View;
 
 /**
  * @method SendList|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,15 +29,38 @@ class SendListRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?SendList
+
+    public function getAllWithPagination($page)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->findAllQueryBuilder();
+
+        $adapter = new DoctrineORMAdapter($qb);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(15);
+        $pagerfanta->setCurrentPage($page);
+
+        foreach ($pagerfanta->getCurrentPageResults() as $result) {
+            $sendLists[] = $result;
+        }
+
+        $routeGenerator = function($page) {
+            return '/send_list?page='.$page;
+        };
+
+        $view = new TwitterBootstrap4View();
+        $options = [
+            'prev_message' => '←',
+            'next_message' => '→',
+            'css_container_class' => 'pagination'
+        ];
+        $html = $view->render($pagerfanta, $routeGenerator, $options);
+
+        return [
+            'total' => $pagerfanta->getNbResults(),
+            'count' => count($sendLists),
+            'send_lists' => $sendLists,
+            'pagination' => $html
+        ];
     }
-    */
+
 }

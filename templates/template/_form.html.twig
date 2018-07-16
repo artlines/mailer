@@ -39,7 +39,7 @@
                 Текст шаблона
                 {#<a href="#" id="fullscreen_toggle"><i class="fas fa-expand" title="Развернуть редактор кода"></i></a></button>#}
             </label>
-            <span class="red-text">{{ form_errors(form.text) }}</span>
+            <span class="red-text" id="code_editor_error">{{ form_errors(form.text) }}</span>
         </div>
     </div>
 </div>
@@ -104,5 +104,7 @@
     editor.getSession().on("change", function () {
         textarea.val(editor.getSession().getValue());
     });
+
+
 
 </script>

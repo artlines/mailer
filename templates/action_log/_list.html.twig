@@ -1,0 +1,13 @@
+{% for log in logs %}
+    <tr>
+        <td>{{ log.id }}</td>
+        <td>{{ log.user.fullname }}</td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.entity }} | {{ log.entityId }}</td>
+        <td>{{ log.message }}</td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="7">Нет записей</td>
+    </tr>
+{% endfor %}

@@ -17,17 +17,6 @@ class SendListType extends AbstractType
         $builder
             ->add('name')
             ->add('emails');
-
-        /* $builder->get('emails')->addModelTransformer(new CallbackTransformer(
-            function ($emailsAsArray) {
-                // transform the array to a string
-                return implode('\n', $emailsAsArray);
-            },
-            function ($emailsAsString) {
-                // transform the string back to an array
-                return explode('\n', $emailsAsString);
-            }
-        ));*/
     }
 
     public function configureOptions(OptionsResolver $resolver)

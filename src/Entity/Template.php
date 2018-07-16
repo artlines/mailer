@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Template
@@ -12,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="template")
  * @ORM\Entity(repositoryClass="App\Repository\TemplateRepository")
- *
+ * @UniqueEntity("title")
+ * @UniqueEntity("alias")
  * @ORM\HasLifecycleCallbacks()
  */
 class Template
@@ -57,7 +59,7 @@ class Template
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text")
+     * @ORM\Column(name="text", type="text", nullable=false)
      */
     private $text;
 

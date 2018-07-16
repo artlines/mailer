@@ -40,7 +40,6 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        $id = $user->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -51,6 +50,7 @@ class UserController extends Controller
             $user->setApiKey($api_key);
             $em->persist($user);
             $em->flush();
+            $id = $user->getId();
 
             $this->log->info([
                 __METHOD__,
@@ -98,7 +98,7 @@ class UserController extends Controller
                 __METHOD__,
                 'Отредактирован пользователь ' . $id,
                 'User',
-                $id
+                $id,
             ]);
 
             return $this->json([

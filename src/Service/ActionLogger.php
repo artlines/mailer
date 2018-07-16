@@ -19,36 +19,40 @@ use Symfony\Component\Security\Core\Security;
  */
 class ActionLogger
 {
-  private $em;
+    private $em;
+    private $security = null;
 
-  private $security = null;
+    function __construct(EntityManager $em, Security $security)
+    {
+        $this->em = $em;
+        $this->security = $security;
+    }
 
-  function __construct(EntityManager $em, Security $security)
-  {
-    $this->em   = $em;
-    $this->security = $security;
-  }
+    public function info(array $value, $diff=null)
+    {
+        $userId = $this->security->getUser();
 
-  public function info(array $value)
-  { 
-    $userId = $this->security->getUser();
+        [$action, $message, $entity, $entityId] = $value;
 
-    [$action, $message, $entity, $entityId] = $value;
-     
-    $log = new ActionLog;
+        $log = new ActionLog;
 
-    $log->setAction($action);
-    $log->setUserId($userId);
-    $log->setDatetime('');
-    $log->setMessage($message);
-    $log->setEntity($entity);
-    $log->setEntityId($entityId);
+        if (is_array($diff)){
+            $log->setDiff(json_encode($diff));
+        }
 
-    $this->em->persist($log);
-    $this->em->flush();
+        $log->setAction($action);
+        $log->setUserId($userId);
+        $log->setDatetime('');
+        $log->setMessage($message);
 
-    return true;
-  }
+        $log->setMessage($message);
+        $log->setEntity($entity);
+        $log->setEntityId($entityId);
 
+        $this->em->persist($log);
+        $this->em->flush();
+
+        return true;
+    }
 
 }

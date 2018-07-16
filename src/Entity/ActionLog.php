@@ -71,6 +71,11 @@ class ActionLog
      */
     private $message;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $diff;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -226,6 +231,18 @@ class ActionLog
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getDiff(): ?string
+    {
+        return $this->diff;
+    }
+
+    public function setDiff(?string $diff): self
+    {
+        $this->diff = $diff;
 
         return $this;
     }

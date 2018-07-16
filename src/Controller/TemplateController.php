@@ -39,16 +39,16 @@ class TemplateController extends Controller
         $template = new Template();
         $form = $this->createForm(TemplateType::class, $template);
         $form->handleRequest($request);
-        $id = $template->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($template);
             $em->flush();
+            $id = $template->getId();
 
             $this->log->info([
                 __METHOD__,
-                'Создан новый шаблон '.$id,
+                'Создан новый шаблон ' . $id,
                 'Template',
                 $id
             ]);
@@ -59,9 +59,11 @@ class TemplateController extends Controller
             ]);
         }
 
-        return $this->render('template/new.html.twig', [
+        return $this->render('template/_form.html.twig', [
             'template' => $template,
             'form' => $form->createView(),
+            'action' => '/template/new',
+            'title' => 'Создание шаблона',
         ]);
     }
 
@@ -71,6 +73,7 @@ class TemplateController extends Controller
     public function edit(Request $request, Template $template): Response
     {
         $id = $template->getId();
+        $old_text = $template->getText();
         $form = $this->createForm(TemplateType::class, $template);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -78,9 +81,12 @@ class TemplateController extends Controller
 
             $this->log->info([
                 __METHOD__,
-                'Отредактирован шаблон '.$id,
+                'Отредактирован шаблон ' . $id,
                 'Template',
                 $id
+            ], [
+                'field' => 'text',
+                'old_value' => $old_text
             ]);
 
             return $this->json([
@@ -89,10 +95,11 @@ class TemplateController extends Controller
             ]);
         }
 
-        return $this->render('template/edit.html.twig', [
+        return $this->render('template/_form.html.twig', [
             'template' => $template,
             'form' => $form->createView(),
-            'template_id' => $id
+            'action' => "/template/{$id}/edit",
+            'title' => 'Редактирование шаблона',
         ]);
     }
 
@@ -102,14 +109,14 @@ class TemplateController extends Controller
     public function delete(Request $request, Template $template): Response
     {
         $id = $template->getId();
-        if ($this->isCsrfTokenValid('delete'.$id, $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($template);
             $em->flush();
 
             $this->log->info([
                 __METHOD__,
-                'Удалён шаблон '.$id,
+                'Удалён шаблон ' . $id,
                 'Template',
                 $id
             ]);

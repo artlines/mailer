@@ -17,8 +17,8 @@ class TemplateType extends AbstractType
             ->add('isActive')
             ->add('isPrivate')
             ->add('text')
-//            ->add('clients')
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
