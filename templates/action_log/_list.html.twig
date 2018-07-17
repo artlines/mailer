@@ -1,14 +1,40 @@
-{% for log in logs %}
+<table class="table">
+    <thead>
     <tr>
-        <td>{{ log.id }}</td>
-        <td>{{ log.userId.fullname }}</td>
-        <td>{{ log.action }}</td>
-        <td>{{ log.entity }} | {{ log.entityId }}</td>
-        <td>{{ log.datetime|date('d-m-Y H:i:s') }}</td>
-        <td>{{ log.message }}</td>
+        <th>Id</th>
+        <th>Имя пользователя</th>
+        <th>Метод</th>
+        <th>Сущность | id</th>
+        <th>Дата</th>
+        <th>Сообщение</th>
+        <th class="center-align">Подробно</th>
     </tr>
-{% else %}
-    <tr>
-        <td colspan="7">Нет записей</td>
-    </tr>
-{% endfor %}
+    </thead>
+    <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.userId.fullname }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.entity }} | {{ log.entityId }}</td>
+                <td>{{ log.datetime|date('d-m-Y H:i:s') }}</td>
+                <td>{{ log.message }}</td>
+                <td class="center-align"><a href="#log_modal" data-key="diff-{{ log.id }}" class="get_modal_local {{ log.diff ? '' : 'link--disabled' }}">
+                        <i class="far fa-eye" title="Посмотреть подробности"></i>
+                    </a>
+                </td>
+            </tr>
+            <script>
+                {% if log.diff %}
+                    localStorage.setItem('diff-{{ log.id }}', {{ log.diff|json_encode|raw }})
+                {% endif %}
+            </script>
+        {% else %}
+            <tr>
+                <td colspan="7">Нет записей</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pagination|raw }}

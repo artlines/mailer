@@ -53,7 +53,6 @@ class DataFixtures extends Fixture
                 test@test.ru
             ');
             $sendList->setUserId($user);
-            $sendList->setCreatedAt($this->dateTime->setDate('2018', 02, $i));
 
             $manager->persist($sendList);
             $manager->flush();

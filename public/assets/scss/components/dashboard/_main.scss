@@ -204,3 +204,16 @@ textarea.materialize-textarea{
 html i.fa-user--white{
   color: #fff;
 }
+
+.link--disabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+html .datepicker-modal {
+  padding-bottom: 0;
+  & .modal-content{
+    padding: 0;
+  }
+}
