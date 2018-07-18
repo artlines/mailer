@@ -24,27 +24,31 @@
                 <td>{{ template.title }}</td>
                 <td>{{ template.alias }}</td>
                 <td>
-                    <label>
-                        <input id="isActive" type="checkbox" disabled {{ template.isActive ? 'checked' : '' }} class="validate">
+                    <label class="{{ template.isActive ? 'label--success' : 'label--danger' }}">
+                        <input id="indeterminate-checkbox" type="checkbox"
+                               disabled {{ template.isActive ? 'checked' : '' }} class="validate">
                         <span></span>
                     </label>
                 </td>
                 <td>
-                    <label>
-                        <input id="isPrivate" type="checkbox" disabled {{ template.isPrivate ? 'checked' : '' }} class="validate">
+                    <label class="{{ template.isPrivate ? 'label--success' : 'label--danger' }}">
+                        <input type="checkbox" disabled {{ template.isPrivate ? 'checked' : '' }} class="validate">
                         <span></span>
                     </label>
                 </td>
                 <td>
-                    <a href="#template_modal" data-action="{{ path('template_edit', {'id': template.id}) }}" class="get_modal">
+                    <a href="#template_modal" data-action="{{ path('template_edit', {'id': template.id}) }}"
+                       class="get_modal">
                         <i class="far fa-edit" title="Редактировать элемент"></i>
                     </a>
                 </td>
                 <td>
-                    <form method="post" action="{{ path('template_delete', {'id': template.id}) }}" onsubmit="return confirm('Вы уверены?');">
+                    <form method="post" action="{{ path('template_delete', {'id': template.id}) }}"
+                          onsubmit="return confirm('Вы уверены?');">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ template.id) }}">
-                        <button class="button--no-style"><i class="far fa-trash-alt" title="Удалить элемент"></i></button>
+                        <button class="button--no-style"><i class="far fa-trash-alt" title="Удалить элемент"></i>
+                        </button>
                     </form>
                 </td>
             </tr>

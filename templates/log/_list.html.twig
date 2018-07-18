@@ -14,7 +14,12 @@
                 <td>{{ log.id }}</td>
                 <td>{{ log.mailSubject }}</td>
                 <td>{{ log.sendDatetime|date('d-m-Y H:i:s') }}</td>
-                <td>{{ log.sendStatus }}</td>
+                <td>
+                    <label class="{{ log.sendStatus ? 'label--success' : 'label--danger'}}">
+                        <input type="checkbox" {{ log.sendStatus ? 'checked' : ''}} disabled="disabled" />
+                        <span></span>
+                    </label>
+                </td>
                 <td class="center-align"><a href="#log_modal"  data-action="{{ path('log_show', {'id': log.id}) }}" class="get_modal">
                         <i class="far fa-eye" title="Посмотреть подробности"></i>
                     </a>

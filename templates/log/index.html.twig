@@ -10,11 +10,13 @@
         <form method="post" action="{{ path('log_index') }}" name="filter">
 
             <div class="input-field col s3">
-                <input type="text" class="datepicker date_from" name="date_from" value="{{ filters.date_from is defined ? filters.date_from }}"/>
+                <input type="text" class="datepicker date_from" name="date_from"
+                       value="{{ filters.date_from is defined ? filters.date_from }}"/>
                 <label>Дата от</label>
             </div>
             <div class="input-field col s3">
-                <input type="text" class="datepicker date_to" name="date_to" value="{{ filters.date_to is defined ? filters.date_to}}"/>
+                <input type="text" class="datepicker date_to" name="date_to"
+                       value="{{ filters.date_to is defined ? filters.date_to }}"/>
                 <label>Дата до</label>
             </div>
         </form>
@@ -32,9 +34,14 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $('.date_from').datepicker({'setDate' : {{filters.date_from is defined ? filters.date_from : ''}}});
-            $('.date_to').datepicker({'setDate' : {{filters.date_to is defined ? filters.date_to : ''}}});
+        document.addEventListener('DOMContentLoaded', function () {
+            {% if  filters.date_from is defined %}
+                $('.date_from').datepicker({'setDate': {{ filters.date_from }}});
+            {% endif %}
+
+            {% if  filters.date_to is defined %}
+                $('.date_to').datepicker({'setDate': {{ filters.date_to }}});
+            {% endif %}
         });
     </script>
 

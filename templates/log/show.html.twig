@@ -3,31 +3,22 @@
 </div>
 <div class="modal-content">
     <div class="row">
-        <div class="col s2">
+        <div class="col s6">
             <p class="data_title">ID</p>
             <div>{{ log.id }} </div>
         </div>
-        <div class="col s4">
+        <div class="col s6">
             <p class="data_title">IP адрес</p>
             <div>{{ log.ipAddress }}</div>
         </div>
-        <div class="col s4">
+        <div class="col s6">
             <p class="data_title">Дата отправки</p>
             <div>{{ log.sendDatetime|date('d-m-Y H:i:s') }}</div>
         </div>
-        <div class="col s2">
-            <p class="data_title">Статус</p>
-            <div>
-                <label>
-                    <input type="checkbox" {{ log.sendStatus ? 'checked' : ''}} disabled="disabled" />
-                    <span>{{ log.sendStatus ? 'Доставлено' : 'Не доставлено'}}</span>
-                </label>
-            </div>
-        </div>
         <div class="col s6">
             <p class="data_title">Кому</p>
             <div>
-                {% for key, value in log.emailTo%}
+                {% for key, value in log.emailTo %}
                     {{ key }}
                 {% endfor %}
             </div>
@@ -40,31 +31,7 @@
             <p class="data_title">Копия</p>
             <div>
                 {% if log.emailCc|length > 0 %}
-                    {% for key, value in log.emailCc%}
-                        {{ key }}
-                    {% endfor %}
-                {% else %}
-                    Нет данных
-                {% endif %}
-            </div>
-        </div>
-        <div class="col s6">
-            <p class="data_title">Кому</p>
-            <div>
-                {% for key, value in log.emailTo%}
-                    {{ key }}
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col s6">
-            <p class="data_title">От кого</p>
-            <div>{{ log.emailFrom }}</div>
-        </div>
-        <div class="col s6">
-            <p class="data_title">Копия</p>
-            <div>
-                {% if log.emailCc|length > 0 %}
-                    {% for key, value in log.emailCc%}
+                    {% for key, value in log.emailCc %}
                         {{ key }}
                     {% endfor %}
                 {% else %}
@@ -76,13 +43,29 @@
             <p class="data_title">Скрытая копия</p>
             <div>
                 {% if log.emailBcc|length > 0 %}
-                    {% for key, value in log.emailBcc%}
+                    {% for key, value in log.emailBcc %}
                         {{ key }}
                     {% endfor %}
                 {% else %}
                     Нет данных
                 {% endif %}
             </div>
+        </div>
+        <div class="col s6">
+            <p class="data_title">Статус</p>
+            <div>
+                <label class="{{ log.sendStatus ? 'label--success' : 'label--danger' }}">
+                    <input type="checkbox" {{ log.sendStatus ? 'checked' : '' }} disabled="disabled"/>
+                    <span>{{ log.sendStatus ? 'Доставлено' : 'Не доставлено' }}</span>
+                </label>
+            </div>
+        </div>
+        <div class="col s6">
+            <p class="data_title">
+                <a href="{{ path('log_show', {'id': log.id}) }}" target="_blank">
+                    Отображение письма
+                </a>
+            </p>
         </div>
         <div class="col s12">
             <p class="data_title">Код шаблона</p>

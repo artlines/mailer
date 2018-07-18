@@ -50,10 +50,14 @@ class LogController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="log_show", methods="POST")
+     * @Route("/{id}", name="log_show", methods="GET|POST")
      */
-    public function show(Log $log): Response
+    public function show(Request $request, Log $log): Response
     {
+        if ($request->isMethod('GET')) {
+            return $this->render('log/show_template.html.twig', ['log' => $log->getMailBody()]);
+        }
+
         return $this->render('log/show.html.twig', ['log' => $log, 'title' => $log->getMailSubject()]);
     }
 
