@@ -169,8 +169,10 @@ textarea.materialize-textarea{
   margin-top: 0;
   opacity: 0;
 }
-
-#editor {
+#editor{
+  height: 400px;
+}
+.editor--space{
   height: 400px;
   margin-top: 1em;
 }

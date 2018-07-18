@@ -35,6 +35,7 @@ $(document).ready(function () {
     });
 
     //Лого-фильтр
+
     $('[name="filter"]').change(function (e) {
         e.preventDefault();
         $.ajax({
@@ -59,8 +60,9 @@ $(document).ready(function () {
             $('.modal--local').modal('open');
             var data = localStorage.getItem($(this).data('key'));
             var transform = {"<>":"li","html":[
-                    {"<>":"span","html":" ${field}"},
-                    {"<>":"div",'id':'editor',"text":" ${old_value}"}
+                    {"<>":"span","html":"Поле: ${field}"},
+                    {"<>":"div","text":"Прежнее значение: "},
+                    {"<>":"div",'id':'editor',"text":"${old_value}"}
                 ]};
             $('#diff_content').html(json2html.transform(data, transform));
 
