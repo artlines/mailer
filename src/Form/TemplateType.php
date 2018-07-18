@@ -6,17 +6,29 @@ use App\Entity\Template;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TemplateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('alias')
-            ->add('isActive')
-            ->add('isPrivate')
-            ->add('text')
+            ->add('title',  TextType::class, [
+                'required' => true,
+            ])
+            ->add('alias',  TextType::class, [
+                'required' => true,
+            ])
+            ->add('isActive',  CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('isPrivate',  CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('text',  TextType::class, [
+                'required' => true,
+            ])
         ;
 
     }
