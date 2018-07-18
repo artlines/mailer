@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     //создание/редактирование сущности
     $('#create_entity, .get_modal').click(function (e) {
-        $('.modal').modal('open');
+        $('.modal--data').modal('open');
         $.ajax({
             type: "POST",
             url: $(this).data('action'),

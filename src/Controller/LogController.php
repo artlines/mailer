@@ -11,13 +11,16 @@ use App\Repository\LogRepository;
 use Pagerfanta\View\TwitterBootstrap4View;
 
 /**
- * @Route("/action_log")
+ * @Route("/log")
  */
 class LogController extends Controller
 {
 
     /**
-     * @Route("/", name="action_log_index", methods="GET|POST")
+     * @Route("/", name="log_index", methods="GET|POST")
+     * @param Request $request
+     * @param LogRepository $LogRepository
+     * @return Response
      */
     public function index(Request $request, LogRepository $LogRepository): Response
     {
@@ -25,7 +28,6 @@ class LogController extends Controller
         $page = $request->query->get('page', 1);
         $filters = $request->query->all();
         $result = $LogRepository->getAllWithPagination($page, $filters);
-        $result['entities'] = $LogRepository->getEntities();
         $query = $result['query'];
         $paginationOptions = [
             'prev_message' => '←',
@@ -33,7 +35,7 @@ class LogController extends Controller
             'css_container_class' => 'pagination'
         ];
         $routeGenerator = function ($page) use ($query) {
-            return '/action_log?page=' . $page . $query;
+            return '/log?page=' . $page . $query;
         };
 
 
@@ -41,10 +43,18 @@ class LogController extends Controller
         $result['pagination'] = $pagination->render($result['pagerfanta'], $routeGenerator, $paginationOptions);
 
         if ($request->isXmlHttpRequest()) {
-            return $this->render('action_log/_list.html.twig', $result);
+            return $this->render('log/_list.html.twig', $result);
         }
 
-        return $this->render('action_log/index.html.twig', $result);
+        return $this->render('log/index.html.twig', $result);
+    }
+
+    /**
+     * @Route("/{id}", name="log_show", methods="POST")
+     */
+    public function show(Log $log): Response
+    {
+        return $this->render('log/show.html.twig', ['log' => $log, 'title' => $log->getMailSubject()]);
     }
 
 }

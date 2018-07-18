@@ -1,0 +1,31 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Тема собщения</th>
+        <th>Дата</th>
+        <th>Статус</th>
+        <th class="center-align">Подробно</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.mailSubject }}</td>
+                <td>{{ log.sendDatetime|date('d-m-Y H:i:s') }}</td>
+                <td>{{ log.sendStatus }}</td>
+                <td class="center-align"><a href="#log_modal"  data-action="{{ path('log_show', {'id': log.id}) }}" class="get_modal">
+                        <i class="far fa-eye" title="Посмотреть подробности"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Нет записей</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pagination|raw }}

@@ -29,7 +29,7 @@ class ActionLogRepository extends ServiceEntityRepository
     {
         $actionLogs = [];
         $qb = $this->createQueryBuilder('a')
-            ->orderBy('a.datetime', 'ASC');
+            ->orderBy('a.datetime', 'DESC');
 
         $query = $this->_checkFilters($qb, $filters);
 

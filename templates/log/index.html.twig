@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Отчёты об отправке{% endblock %}
+
+{% block inner %}
+    {{ parent() }}
+
+    <h2>Отчёты об отправке</h2>
+
+    <div class="row">
+        <form method="post" action="{{ path('log_index') }}" name="filter">
+
+            <div class="input-field col s3">
+                <input type="text" class="datepicker date_from" name="date_from" value="{{ filters.date_from is defined ? filters.date_from }}"/>
+                <label>Дата от</label>
+            </div>
+            <div class="input-field col s3">
+                <input type="text" class="datepicker date_to" name="date_to" value="{{ filters.date_to is defined ? filters.date_to}}"/>
+                <label>Дата до</label>
+            </div>
+        </form>
+
+    </div>
+    <div id="list">
+        {% include 'log/_list.html.twig' with {'logs': logs, 'pagination': pagination} %}
+    </div>
+
+    <div id="log_modal" class="modal modal--data">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+        <div id="modal_content"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.date_from').datepicker({'setDate' : {{filters.date_from is defined ? filters.date_from : ''}}});
+            $('.date_to').datepicker({'setDate' : {{filters.date_to is defined ? filters.date_to : ''}}});
+        });
+    </script>
+
+{% endblock %}

@@ -52,7 +52,7 @@ class Logger
         $log->setMailBody($sm->getBody());
 
         $log->setIpAddress($ipAddress);
-        $log->setIsSend($isSend);
+        $log->setSendstatus($isSend);
 
         $this->entityManager->persist($log);
         $this->entityManager->flush();

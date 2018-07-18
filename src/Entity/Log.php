@@ -28,14 +28,14 @@ class Log
      *
      * @ORM\Column(name="mail_subject", type="string", length=255, nullable=false)
      */
-    private $subject;
+    private $mail_subject;
 
     /**
      * @var string
      *
      * @ORM\Column(name="mail_body", type="text", nullable=false)
      */
-    private $body;
+    private $mail_body;
 
     /**
      * @var string
@@ -49,19 +49,19 @@ class Log
      *
      * @ORM\Column(name="send_datetime", type="datetime", nullable=false)
      */
-    private $time;
+    private $send_datetime;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="send_status", type="boolean")
      */
-    private $isSend;
+    private $send_status;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email_to", length=50, type="string", nullable=false)
+     * @ORM\Column(name="email_to", type="text", nullable=false)
      */
     private $emailTo;
 
@@ -96,9 +96,14 @@ class Log
     /**
      * @ORM\PrePersist
      */
-    public function setTime()
+    public function setSendDateTime()
     {
-        $this->time = new \DateTime();
+        $this->send_datetime = new \DateTime();
+    }
+
+    public function getSendDateTime()
+    {
+        return $this->send_datetime;
     }
 
     /**
@@ -114,15 +119,15 @@ class Log
      */
     public function getMailSubject()
     {
-        return $this->subject;
+        return $this->mail_subject;
     }
 
     /**
-     * @param string $subject
+     * @param string $mail_subject
      */
-    public function setMailSubject(string $subject): void
+    public function setMailSubject(string $mail_subject): void
     {
-        $this->subject = $subject;
+        $this->mail_subject = $mail_subject;
     }
 
     /**
@@ -130,7 +135,7 @@ class Log
      */
     public function getMailBody()
     {
-        return $this->body;
+        return $this->mail_body;
     }
 
     /**
@@ -138,7 +143,7 @@ class Log
      */
     public function setMailBody(string $body): void
     {
-        $this->body = $body;
+        $this->mail_body = $body;
     }
 
     /**
@@ -224,17 +229,17 @@ class Log
     /**
      * @return bool
      */
-    public function isSend()
+    public function getSendStatus()
     {
-        return $this->isSend;
+        return $this->send_status;
     }
 
     /**
-     * @param bool $isSend
+     * @param bool $send_status
      */
-    public function setIsSend(bool $isSend): void
+    public function setSendStatus(bool $send_status): void
     {
-        $this->isSend = $isSend;
+        $this->send_status = $send_status;
     }
 
 }
