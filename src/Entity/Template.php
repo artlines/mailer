@@ -72,12 +72,18 @@ class Template
     private $clients;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispatch", mappedBy="template")
+     */
+    private $dispatches;
+
+    /**
      * Template constructor.
      */
     public function __construct()
     {
         $this->isPrivate = true;
         $this->clients = new ArrayCollection();
+        $this->dispatches = new ArrayCollection();
     }
 
     /**
@@ -209,6 +215,18 @@ class Template
             return true;
 
         return false;
+    }
+
+    public function getDispatches(): ?Dispatch
+    {
+        return $this->dispatches;
+    }
+
+    public function setDispatches(?Dispatch $dispatches): self
+    {
+        $this->dispatches = $dispatches;
+
+        return $this;
     }
 
 }

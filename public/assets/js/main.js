@@ -34,8 +34,7 @@ $(document).ready(function () {
         });
     });
 
-    //Лого-фильтр
-
+    //Логи-фильтр
     $('[name="filter"]').change(function (e) {
         e.preventDefault();
         $.ajax({

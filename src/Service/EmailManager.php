@@ -77,7 +77,7 @@ class EmailManager
      *
      * @return array
      */
-    public function send(string $subject, array $bodyData, string $from, $to, array $cc = [], array $bcc = [])
+    public function send(string $subject, array $bodyData, string $from, $to, $cc = [], $bcc = [])
     {
         /** @var \Swift_Message $sm */
         $sm = new \Swift_Message($subject);

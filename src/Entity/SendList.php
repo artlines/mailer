@@ -40,6 +40,19 @@ class SendList
      */
     private $emails;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Dispatch", mappedBy="send_list")
+     */
+    private $dispatches;
+
+    /**
+     * SendList constructor.
+     */
+    public function __construct()
+    {
+        $this->dispatches = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -89,6 +102,18 @@ class SendList
     public function setEmails(?string $emails): self
     {
         $this->emails = $emails;
+
+        return $this;
+    }
+
+    public function getDispatches(): ?Dispatch
+    {
+        return $this->dispatches;
+    }
+
+    public function setDispatches(?Dispatch $dispatches): self
+    {
+        $this->dispatches = $dispatches;
 
         return $this;
     }
