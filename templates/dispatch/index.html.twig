@@ -1,39 +1,27 @@
 {% extends 'base.html.twig' %}
+{% block title %}Рассылки{% endblock %}
 
-{% block title %}Dispatch index{% endblock %}
+{% block inner %}
+    {{ parent() }}
 
-{% block body %}
-    <h1>Dispatch index</h1>
+    <h2>Рассылки</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Datetime</th>
-                <th>Subject</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for dispatch in dispatches %}
-            <tr>
-                <td>{{ dispatch.id }}</td>
-                <td>{{ dispatch.name }}</td>
-                <td>{{ dispatch.datetime ? dispatch.datetime|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ dispatch.subject }}</td>
-                <td>
-                    <a href="{{ path('dispatch_show', {'id': dispatch.id}) }}">show</a>
-                    <a href="{{ path('dispatch_edit', {'id': dispatch.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div id="list">
+        {% include 'dispatch/_list.html.twig' with {'dispatches': dispatches, 'pagination': pagination} %}
+    </div>
 
-    <a href="{{ path('dispatch_new') }}">Create new</a>
+    <div id="dispatch_modal" class="modal modal--data">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+        <div id="modal_content"></div>
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
+           data-action="{{ path('dispatch_new') }}" href="#dispatch_modal" id="create_entity">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+
 {% endblock %}

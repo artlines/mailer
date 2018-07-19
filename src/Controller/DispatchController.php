@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ActionLogger;
 use DateTimeImmutable;
+use Pagerfanta\View\TwitterBootstrap4View;
 
 /**
  * @Route("/dispatch")
@@ -29,9 +30,31 @@ class DispatchController extends Controller
     /**
      * @Route("/", name="dispatch_index", methods="GET")
      */
-    public function index(DispatchRepository $dispatchRepository): Response
+    public function index(Request $request, DispatchRepository $dispatchRepository): Response
     {
-        return $this->render('dispatch/index.html.twig', ['dispatches' => $dispatchRepository->findAll()]);
+        $pagination = new TwitterBootstrap4View();
+        $page = $request->query->get('page', 1);
+        $filters = $request->query->all();
+        $result = $dispatchRepository->getAllWithPagination($page, $filters);
+        $query = $result['query'];
+        $paginationOptions = [
+            'prev_message' => '←',
+            'next_message' => '→',
+            'css_container_class' => 'pagination'
+        ];
+        $routeGenerator = function ($page) use ($query) {
+            return '/dispatch?page=' . $page . $query;
+        };
+
+
+        $result['total'] = $result['pagerfanta']->getNbResults();
+        $result['pagination'] = $pagination->render($result['pagerfanta'], $routeGenerator, $paginationOptions);
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('dispatch/_list.html.twig', $result);
+        }
+
+        return $this->render('dispatch/index.html.twig', $result);
     }
 
     /**
@@ -49,55 +72,35 @@ class DispatchController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($dispatch);
             $em->flush();
+            $id = $dispatch->getId();
 
-            return $this->redirectToRoute('dispatch_index');
+            return $this->json([
+                'result' => 'success',
+                'id' => $id
+            ]);
         }
 
-        return $this->render('dispatch/new.html.twig', [
+        return $this->render('dispatch/_form.html.twig', [
             'dispatch' => $dispatch,
             'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'action' => '/dispatch/new',
+            'title' => 'Создание списка рассылки',
         ]);
+
+
     }
 
     /**
-     * @Route("/{id}", name="dispatch_show", methods="GET")
+     * @Route("/{id}", name="dispatch_show", methods="GET|POST")
      */
-    public function show(Dispatch $dispatch): Response
+    public function show(Request $request, Dispatch $dispatch): Response
     {
-        return $this->render('dispatch/show.html.twig', ['dispatch' => $dispatch]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="dispatch_edit", methods="GET|POST")
-     */
-    public function edit(Request $request, Dispatch $dispatch): Response
-    {
-        $form = $this->createForm(DispatchType::class, $dispatch);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('dispatch_edit', ['id' => $dispatch->getId()]);
+        if ($request->isMethod('GET')) {
+            return $this->render('dispatch/show_template.html.twig', ['dispatch' => $dispatch->getMailBody()]);
         }
 
-        return $this->render('dispatch/edit.html.twig', [
-            'dispatch' => $dispatch,
-            'form' => $form->createView(),
-        ]);
+        return $this->render('dispatch/show.html.twig', ['dispatch' => $dispatch, 'title' => $dispatch->getSubject()]);
     }
 
-    /**
-     * @Route("/{id}", name="dispatch_delete", methods="DELETE")
-     */
-    public function delete(Request $request, Dispatch $dispatch): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$dispatch->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($dispatch);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('dispatch_index');
-    }
 }

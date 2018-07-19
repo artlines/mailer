@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Dispatch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
  * @method Dispatch|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,37 +16,37 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class DispatchRepository extends ServiceEntityRepository
 {
+    const MAX_PER_PAGE = 15;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Dispatch::class);
     }
 
-//    /**
-//     * @return Dispatch[] Returns an array of Dispatch objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function getAllWithPagination($page, $filters = [])
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $dispatches = [];
+        $query = [];
+        $qb = $this->createQueryBuilder('l')
+            ->orderBy('l.datetime', 'DESC');
 
-    /*
-    public function findOneBySomeField($value): ?Dispatch
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+//        $query = $this->_checkFilters($qb, $filters);
+
+        $adapter = new DoctrineORMAdapter($qb);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(self::MAX_PER_PAGE);
+        $pagerfanta->setCurrentPage($page);
+
+        foreach ($pagerfanta->getCurrentPageResults() as $result) {
+            $dispatches[] = $result;
+        }
+
+        return [
+            'pagerfanta' => $pagerfanta,
+            'count' => count($dispatches),
+            'dispatches' => $dispatches,
+            'filters' => $filters,
+            'query' => $query
+        ];
     }
-    */
 }
