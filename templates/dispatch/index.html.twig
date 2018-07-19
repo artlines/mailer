@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dispatch index{% endblock %}
+
+{% block body %}
+    <h1>Dispatch index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Datetime</th>
+                <th>Subject</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dispatch in dispatches %}
+            <tr>
+                <td>{{ dispatch.id }}</td>
+                <td>{{ dispatch.name }}</td>
+                <td>{{ dispatch.datetime ? dispatch.datetime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ dispatch.subject }}</td>
+                <td>
+                    <a href="{{ path('dispatch_show', {'id': dispatch.id}) }}">show</a>
+                    <a href="{{ path('dispatch_edit', {'id': dispatch.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('dispatch_new') }}">Create new</a>
+{% endblock %}

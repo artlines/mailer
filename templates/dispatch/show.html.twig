@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dispatch{% endblock %}
+
+{% block body %}
+    <h1>Dispatch</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dispatch.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ dispatch.name }}</td>
+            </tr>
+            <tr>
+                <th>Datetime</th>
+                <td>{{ dispatch.datetime ? dispatch.datetime|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{{ dispatch.subject }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('dispatch_index') }}">back to list</a>
+
+    <a href="{{ path('dispatch_edit', {'id': dispatch.id}) }}">edit</a>
+
+    {{ include('dispatch/_delete_form.html.twig') }}
+{% endblock %}

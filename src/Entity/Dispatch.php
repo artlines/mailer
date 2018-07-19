@@ -45,6 +45,16 @@ class Dispatch
      */
     private $template;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name_from;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email_from;
+
     public function __construct()
     {
         $this->send_list = new ArrayCollection();
@@ -95,61 +105,54 @@ class Dispatch
     /**
      * @return Collection|SendList[]
      */
-    public function getSendList(): Collection
+    public function getSendList()
     {
         return $this->send_list;
-    }
-
-    public function addSendList(SendList $sendList): self
-    {
-        if (!$this->send_list->contains($sendList)) {
-            $this->send_list[] = $sendList;
-            $sendList->setDispatches($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSendList(SendList $sendList): self
-    {
-        if ($this->send_list->contains($sendList)) {
-            $this->send_list->removeElement($sendList);
-            // set the owning side to null (unless already changed)
-            if ($sendList->getDispatches() === $this) {
-                $sendList->setDispatches(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
      * @return Collection|Template[]
      */
-    public function getTemplate(): Collection
+    public function getTemplate()
     {
         return $this->template;
     }
 
-    public function addTemplate(Template $template): self
+
+    public function setSendList(?SendList $send_list): self
     {
-        if (!$this->template->contains($template)) {
-            $this->template[] = $template;
-            $template->setDispatches($this);
-        }
+        $this->send_list = $send_list;
 
         return $this;
     }
 
-    public function removeTemplate(Template $template): self
+    public function setTemplate(?Template $template): self
     {
-        if ($this->template->contains($template)) {
-            $this->template->removeElement($template);
-            // set the owning side to null (unless already changed)
-            if ($template->getDispatches() === $this) {
-                $template->setDispatches(null);
-            }
-        }
+        $this->template = $template;
+
+        return $this;
+    }
+
+    public function getNameFrom(): ?string
+    {
+        return $this->name_from;
+    }
+
+    public function setNameFrom(string $name_from): self
+    {
+        $this->name_from = $name_from;
+
+        return $this;
+    }
+
+    public function getEmailFrom(): ?string
+    {
+        return $this->email_from;
+    }
+
+    public function setEmailFrom(string $email_from): self
+    {
+        $this->email_from = $email_from;
 
         return $this;
     }
