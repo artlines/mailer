@@ -56,14 +56,14 @@ class ClientCreateCommand extends Command
          * Настройки IP для клиента
          */
         $_allowIPs_string = $ss->ask(
-                "Choose comma separated IP addresses which have access to this client OR leave empty for access from any IPs",
-                null,
-                function ($_ips) {
-                    if (null === $_ips)
-                        return null;
-                    return $_ips;
-                }
-            );
+            "Choose comma separated IP addresses which have access to this client OR leave empty for access from any IPs",
+            null,
+            function ($_ips) {
+                if (null === $_ips)
+                    return null;
+                return $_ips;
+            }
+        );
 
         $_allowIPs = isset($_allowIPs_string) ? explode(",", $_allowIPs_string) : null;
 
@@ -86,9 +86,7 @@ class ClientCreateCommand extends Command
                 'Secret key: ' . $client->getClientSecret(),
                 ''
             ]);
-        }
-        else
-        {
+        } else {
             $output->writeln([
                 'Error',
                 ''

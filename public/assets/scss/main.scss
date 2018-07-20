@@ -1,6 +1,7 @@
 @charset "utf-8";
 
-@import "../scss/components/init";
-@import "../scss/components/auth";
-@import "../scss/components/dashboard/header";
-@import "../scss/components/dashboard/main";
+@import "base/_base";
+@import "pages/_auth";
+@import "pages/_home";
+@import "layout/_header";
+//@import "utils/*";

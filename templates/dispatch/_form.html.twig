@@ -6,7 +6,7 @@
     <div class="row">
         <div class="input-field col s12">
             {{ form_widget(form.name) }}
-            <label for="dispatch[name]">Имя</label>
+            <label for="dispatch[name]">Название</label>
             <span class="red-text">{{ form_errors(form.name) }}</span>
         </div>
     </div>
@@ -15,18 +15,6 @@
             {{ form_widget(form.subject) }}
             <label for="dispatch[subject]">Тема</label>
             <span class="red-text">{{ form_errors(form.subject) }}</span>
-        </div>
-    </div>
-    <div class="row">
-        <div class="input-field col s6">
-            {{ form_widget(form.name_from) }}
-            <label for="dispatch[nameFrom]">Имя отправителя</label>
-            <span class="red-text">{{ form_errors(form.name_from) }}</span>
-        </div>
-        <div class="input-field col s6">
-            {{ form_widget(form.email_from) }}
-            <label for="dispatch[emailFrom]">Email отправителя</label>
-            <span class="red-text">{{ form_errors(form.email_from) }}</span>
         </div>
     </div>
     <div class="row">
@@ -41,6 +29,19 @@
             <span class="red-text">{{ form_errors(form.template) }}</span>
         </div>
     </div>
+    <div class="row">
+        <div class="input-field col s6">
+            {{ form_widget(form.name_from) }}
+            <label for="dispatch[nameFrom]">Имя отправителя</label>
+            <span class="red-text">{{ form_errors(form.name_from) }}</span>
+        </div>
+        <div class="input-field col s6">
+            {{ form_widget(form.email_from) }}
+            <label for="dispatch[emailFrom]">Email отправителя</label>
+            <span class="red-text">{{ form_errors(form.email_from) }}</span>
+        </div>
+    </div>
+
 </div>
 <div class="modal-footer">
     <div class="feedback-message" id="feedback"></div>

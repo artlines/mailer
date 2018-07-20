@@ -1,0 +1,33 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Имя</th>
+        <th>Тема</th>
+        <th>Дата создания</th>
+        <th>От кого</th>
+        <th class="center-align">Подробно</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for dispatch in dispatches %}
+            <tr>
+                <td>{{ dispatch.id }}</td>
+                <td>{{ dispatch.name }}</td>
+                <td>{{ dispatch.subject }}</td>
+                <td>{{ dispatch.datetime|date('d-m-Y H:i:s') }}</td>
+                <td>{{ dispatch.nameFrom}} | {{ dispatch.emailFrom}}</td>
+                <td class="center-align"><a href="#dispatch_modal"  data-action="{{ path('dispatch_show', {'id': dispatch.id}) }}" class="get_modal">
+                        <i class="far fa-eye" title="Посмотреть подробности"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Нет записей</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pagination|raw }}
