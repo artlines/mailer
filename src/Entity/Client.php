@@ -89,14 +89,6 @@ class Client
      */
     private $updatedAt;
 
-    /**
-     * @var int Идентификатор пользователя
-     * 
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="clients")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */
-    private $userId;
-
 
     /**
      * Client constructor.
@@ -284,29 +276,5 @@ class Client
 
         return $this;
     }
-    
-    /**
-     * Метод возвращает идентификатор пользователя.
-     * 
-     * @return User
-     */
-    public function getUserId(): ?User
-    {
-        return $this->userId;
-    }
-    
-    /**
-     * Метод устанавливает идентификатор пользователя.
-     * 
-     * @param User $userId Иденитификатор пользователя
-     *
-     * @return Client
-     */
-    public function setUserId(?User $userId): self
-    {
-        $this->userId = $userId;
 
-        return $this;
-    }
-    
 }

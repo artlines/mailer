@@ -12,8 +12,7 @@
                 <select name="entity">
                     <option value="" {{ filters.entity is defined ? '' : 'selected' }}>Все разделы</option>
                     {% for entity in entities %}
-                        <option value="{{ entity.entity }}" {% if filters.entity is defined %}{{ entity.entity == filters.entity ? 'selected' }} {% endif %}>
-                            {{ entity.entity }}
+                        <option value="{{ entity.entity }}" {% if filters.entity is defined %}{{ entity.entity == filters.entity ? 'selected' }} {% endif %}>{{ entity.entity }}
                         </option>
                     {% endfor %}
                 </select>

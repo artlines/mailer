@@ -73,20 +73,10 @@ class User implements UserInterface, \Serializable
      */
     private $actionLog;
 
-    /**
-     * @ORM\Column(name="api", type="boolean", nullable=false, options={"default":false})
-     */
-    private $api;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $apiKey;
 
     public function __construct()
     {
         $this->isActive = true;
-        $this->api = false;
         $this->clients = new ArrayCollection();
         $this->sendLists = new ArrayCollection();
         $this->actionLog = new ArrayCollection();
@@ -194,33 +184,6 @@ class User implements UserInterface, \Serializable
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-    
-    /**
-     * Метод возвращает флаг разрешения использования API.
-     *
-     * Если true - поле с ключом "client_secret" в таблице App\Entity\Client
-     * обязательно для заполнения.
-     * 
-     * @return bool
-     */
-    public function getApi(): ?bool
-    {
-        return $this->api;
-    }
-    
-    /**
-     * Метод устанавливает флаг разрешения использования API.
-     * 
-     * @param bool $api Флаг разрешения использования API.
-     *
-     * @return User
-     */
-    public function setApi(bool $api): self
-    {
-        $this->api = $api;
 
         return $this;
     }
@@ -409,18 +372,6 @@ class User implements UserInterface, \Serializable
                 $actionLog->setUsersId(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getApiKey(): ?string
-    {
-        return $this->apiKey;
-    }
-
-    public function setApiKey(?string $apiKey): self
-    {
-        $this->apiKey = $apiKey;
 
         return $this;
     }

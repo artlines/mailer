@@ -40,6 +40,16 @@
             <label for="dispatch[emailFrom]">Email отправителя</label>
             <span class="red-text">{{ form_errors(form.email_from) }}</span>
         </div>
+        <div class="input-field col s6">
+            {{ form_widget(form.email_cc) }}
+            <label for="dispatch[emailCc]">Копия</label>
+            <span class="red-text">{{ form_errors(form.email_cc) }}</span>
+        </div>
+        <div class="input-field col s6">
+            {{ form_widget(form.email_bcc) }}
+            <label for="dispatch[emailBcc]">Скрытая копия</label>
+            <span class="red-text">{{ form_errors(form.email_bcc) }}</span>
+        </div>
     </div>
 
 </div>

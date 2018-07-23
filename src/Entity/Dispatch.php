@@ -55,6 +55,16 @@ class Dispatch
      */
     private $email_from;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email_bcc;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $email_cc;
+
     public function __construct()
     {
         $this->send_list = new ArrayCollection();
@@ -153,6 +163,30 @@ class Dispatch
     public function setEmailFrom(string $email_from): self
     {
         $this->email_from = $email_from;
+
+        return $this;
+    }
+
+    public function getEmailBcc(): ?string
+    {
+        return $this->email_bcc;
+    }
+
+    public function setEmailBcc(?string $email_bcc): self
+    {
+        $this->email_bcc = $email_bcc;
+
+        return $this;
+    }
+
+    public function getEmailCc(): ?string
+    {
+        return $this->email_cc;
+    }
+
+    public function setEmailCc(?string $email_cc): self
+    {
+        $this->email_cc = $email_cc;
 
         return $this;
     }

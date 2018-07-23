@@ -25,13 +25,13 @@
     <div id="list">
         {% include 'log/_list.html.twig' with {'logs': logs, 'pagination': pagination} %}
     </div>
-
-    <div id="log_modal" class="modal modal--data">
+    <div id="send_list_modal" class="modal modal--data">
         <div class="progress">
             <div class="indeterminate"></div>
         </div>
         <div id="modal_content"></div>
     </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -28,6 +28,12 @@ class DispatchType extends AbstractType
             ->add('email_from', EmailType::class, [
                 'required' => true,
             ])
+            ->add('email_cc', EmailType::class, [
+                'required' => false,
+            ])
+            ->add('email_bcc', EmailType::class, [
+                'required' => false,
+            ])
             ->add('subject', TextType::class, [
                 'required' => true,
             ])

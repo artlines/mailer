@@ -34,3 +34,29 @@
 </table>
 
 {{ pagination|raw }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        $('.get_modal').click(function (e) {
+            $('.modal--data').modal('open');
+            $.ajax({
+                type: "POST",
+                url: $(this).data('action'),
+                data: {},
+                beforeSend: function( xhr ) {
+                    $('.progress').fadeTo(0, 1);
+                },
+                success: function(data) {
+                    $('#modal_content').html(data);
+                },
+                error: function(data, textStatus, xhr) {
+                    $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
+                },
+                complete: function( xhr ) {
+                    $('.progress').fadeTo(0, 0);
+                },
+            });
+        });
+    });
+</script>
