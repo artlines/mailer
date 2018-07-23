@@ -96,9 +96,6 @@ class DispatchController extends Controller
      */
     public function show(Request $request, Dispatch $dispatch): Response
     {
-        if ($request->isMethod('GET')) {
-            return $this->render('dispatch/show_template.html.twig', ['dispatch' => $dispatch->getMailBody()]);
-        }
 
         return $this->render('dispatch/show.html.twig', ['dispatch' => $dispatch, 'title' => $dispatch->getSubject()]);
     }
