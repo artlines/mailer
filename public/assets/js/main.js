@@ -70,7 +70,12 @@ $(document).ready(function () {
             editor.getSession().setMode("ace/mode/twig");
             editor.setShowPrintMargin(true);
         }
+    });
 
+    $('#filters_clear').click(function (e) {
+       e.preventDefault();
+        $('[name="filter"]').find("input").val("");
+        $('[name="filter"]').submit();
     });
 
 });

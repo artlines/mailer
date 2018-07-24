@@ -2,11 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\SendList;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
-use App\Entity\SendList;
 use App\Entity\Template;
 use DateTimeImmutable;
 
@@ -15,7 +15,6 @@ class DataFixtures extends Fixture
 {
     private $encoder;
     private $dateTime;
-    private $templateServise;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
@@ -39,19 +38,18 @@ class DataFixtures extends Fixture
 
             //списки рассылки
             $sendList = new SendList();
+            $this->dateTime = new DateTimeImmutable();
+            $sendList->setCreatedAt($this->dateTime);
             $sendList->setName('Список ' . $i);
-            $sendList->setEmails(
-                'test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-                test@test.ru
-            ');
+            $sendList->setEmails('test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru
+            test@test.ru');
             $sendList->setUserId($user);
 
             $manager->persist($sendList);

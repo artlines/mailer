@@ -13,7 +13,7 @@
             <tr>
                 <td>{{ log.id }}</td>
                 <td>{{ log.mailSubject }}</td>
-                <td>{{ log.sendDatetime|date('d-m-Y H:i:s') }}</td>
+                <td>{{ log.sendDatetime|date('d.m.Y H:i:s') }}</td>
                 <td>
                     <label class="{{ log.sendStatus ? 'label--success' : 'label--danger'}}">
                         <input type="checkbox" {{ log.sendStatus ? 'checked' : ''}} disabled="disabled" />

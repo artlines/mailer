@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use function PHPSTORM_META\map;
 
 /**
  * @ORM\Table(name="`send_list`")
@@ -97,7 +98,14 @@ class SendList
 
     public function getEmails(): ?string
     {
-        return $this->emails;
+        $emailsArr = explode(PHP_EOL, $this->emails);
+
+        $emailsArr = array_map(function ($el){
+            return trim($el);
+        }, $emailsArr);
+
+
+        return implode(PHP_EOL, $emailsArr);
     }
 
     public function setEmails(?string $emails): self

@@ -4,15 +4,22 @@
 </div>
 <div class="modal-content">
     <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s5">
             {{ form_widget(form.fullname) }}
             <label for="user[fullname]">Имя</label>
             <span class="red-text">{{ form_errors(form.fullname) }}</span>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s5">
             {{ form_widget(form.email) }}
             <label for="user[email]">Email</label>
             <span class="red-text">{{ form_errors(form.email) }}</span>
+        </div>
+        <div class="input-field col s2">
+            <label>
+                {{ form_widget(form.isActive) }}
+                <span>Активен</span>
+                <span class="red-text">{{ form_errors(form.isActive) }}</span>
+            </label>
         </div>
     </div>
     {% if form.password is defined %}
@@ -29,26 +36,6 @@
             </div>
         </div>
     {% endif %}
-    <div class="row">
-        <div class="input-field col s2">
-            <label>
-                {{ form_widget(form.isActive) }}
-                <span>Активен</span>
-                <span class="red-text">{{ form_errors(form.isActive) }}</span>
-            </label>
-        </div>
-        <div class="input-field col s4">
-            <label>
-                {{ form_widget(form.api) }}
-                <span>Разрешены запросы по api</span>
-                <span class="red-text">{{ form_errors(form.api) }}</span>
-            </label>
-        </div>
-        <div class="input-field col s6">
-            {{ form_widget(form.apiKey, {'attr': {'disabled': 'disabled'}}) }}
-            <label for="api_generate">api-ключ</label>
-        </div>
-    </div>
 </div>
 <div class="modal-footer">
     <div class="feedback-message" id="feedback"></div>

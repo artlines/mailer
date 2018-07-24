@@ -15,7 +15,7 @@
                 <td>{{ dispatch.id }}</td>
                 <td>{{ dispatch.name }}</td>
                 <td>{{ dispatch.subject }}</td>
-                <td>{{ dispatch.datetime|date('d-m-Y H:i:s') }}</td>
+                <td>{{ dispatch.datetime|date('d.m.Y H:i:s') }}</td>
                 <td>{{ dispatch.nameFrom}} | {{ dispatch.emailFrom}}</td>
                 <td class="center-align"><a href="#dispatch_modal"  data-action="{{ path('dispatch_show', {'id': dispatch.id}) }}" class="get_modal">
                         <i class="far fa-eye" title="Посмотреть подробности"></i>

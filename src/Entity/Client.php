@@ -168,7 +168,7 @@ class Client
      */
     public function setClientSecret()
     {
-        $this->clientSecret = md5(uniqid());
+        $this->clientSecret = md5(random_bytes(18));
     }
 
     /**

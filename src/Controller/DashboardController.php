@@ -21,11 +21,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
-      $content = [
-        'title_page' => 'Панель администратора'
-      ];
-
-      return $this->render('dashboard/index.html.twig', $content);
+        return $this->redirect('log');
     }
   }

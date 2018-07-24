@@ -21,7 +21,6 @@ class ClientType extends AbstractType
             ->add('createdAt')
             ->add('updatedAt')
             ->add('templates')
-            ->add('userId')
         ;
     }
 

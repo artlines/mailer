@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TemplateType extends AbstractType
 {
@@ -26,7 +27,7 @@ class TemplateType extends AbstractType
             ->add('isPrivate',  CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('text',  TextType::class, [
+            ->add('text',  TextareaType::class, [
                 'required' => true,
             ])
         ;

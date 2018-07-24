@@ -46,8 +46,6 @@ class UserController extends Controller
             $data = $form->getData();
             $encoded = $encoder->encodePassword($user, $data->getPassword());
             $user->setPassword($encoded);
-            $api_key = $data->getApi() ? md5(random_bytes(18)) : null;
-            $user->setApiKey($api_key);
             $em->persist($user);
             $em->flush();
             $id = $user->getId();
@@ -79,18 +77,9 @@ class UserController extends Controller
     {
         $form = $this->createForm(UserType::class, $user)->remove('password');
         $form->handleRequest($request);
-        $data = $form->getData();
         $id = $user->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if (!$user->getApiKey()) {
-                $api_key = $data->getApi() ? md5(random_bytes(18)) : null;
-            }else{
-                $api_key = $data->getApi() ? $user->getApiKey() : null;
-            }
-
-            $user->setApiKey($api_key);
 
             $this->getDoctrine()->getManager()->flush();
 

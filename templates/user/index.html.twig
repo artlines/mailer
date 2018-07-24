@@ -11,8 +11,7 @@
             <th>Id</th>
             <th>Имя</th>
             <th>Email</th>
-            <th>Количество клиентов</th>
-            <th>Api</th>
+            <th>Активен</th>
             <th></th>
             <th></th>
         </tr>
@@ -23,10 +22,9 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.fullname }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.clients|length }}</td>
                 <td>
-                    <label class="{{ user.api ? 'label--success' : 'label--danger'}}">
-                        <input type="checkbox" {{ user.api ? 'checked' : ''}} disabled="disabled" />
+                    <label class="{{ user.isActive ? 'label--success' : 'label--danger'}}">
+                        <input type="checkbox" {{ user.isActive ? 'checked' : ''}} disabled="disabled" />
                         <span></span>
                     </label>
                 </td>
