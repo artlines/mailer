@@ -65,10 +65,17 @@ class Dispatch
      */
     private $email_cc;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DispatchStatus")
+     * @ORM\JoinColumn(nullable=false, name="status_id", referencedColumnName="id")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->send_list = new ArrayCollection();
         $this->template = new ArrayCollection();
+        $this->status = new ArrayCollection();
     }
 
     public function getId()
@@ -187,6 +194,23 @@ class Dispatch
     public function setEmailCc(?string $email_cc): self
     {
         $this->email_cc = $email_cc;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DispatchStatus[]
+     */
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
+    public function setStatus(?DispatchStatus $dispatchStatus): self
+    {
+        $this->status = $dispatchStatus;
 
         return $this;
     }

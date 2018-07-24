@@ -100,4 +100,42 @@ class DispatchController extends Controller
         return $this->render('dispatch/show.html.twig', ['dispatch' => $dispatch, 'title' => $dispatch->getSubject()]);
     }
 
+
+    /**
+     * @Route("/{id}/edit", name="dispatch_edit", methods="GET|POST")
+     * @param Request $request
+     * @param Dispatch $dispatch
+     * @return Response
+     */
+    public function edit(Request $request, Dispatch $dispatch): Response
+    {
+        $form = $this->createForm(DispatchType::class, $dispatch);
+        $form->handleRequest($request);
+        $id = $dispatch->getId();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->log->info([
+                __METHOD__,
+                'Отредактирована рассылка ' . $id,
+                'Dispatch',
+                $id
+            ]);
+
+            return $this->json([
+                'result' => 'success',
+                'id' => $id
+            ]);
+        }
+
+        return $this->render('dispatch/_form.html.twig', [
+            'dispatch' => $dispatch,
+            'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'action' => "/dispatch/{$id}/edit",
+            'title' => 'Редактирование рассылки',
+        ]);
+    }
+
 }

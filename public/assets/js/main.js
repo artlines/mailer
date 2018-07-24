@@ -8,7 +8,7 @@ $(document).ready(function () {
     $('.fixed-action-btn').floatingActionButton();
     $('.datepicker').datepicker({
         'firstDay': 1,
-        'format': 'dd-mm-yyyy',
+        'format': 'dd.mm.yyyy',
     });
     $('select').formSelect();
 

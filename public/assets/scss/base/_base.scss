@@ -95,12 +95,15 @@ html {
     padding-bottom: 15px;
     max-height: 800px;
 
-    &.datepicker-modal{
+    &.datepicker-modal, &.timepicker-modal{
       padding-bottom: 0;
     }
 
-    .modal-content:not(.datepicker-container), .modal-footer, .modal-title {
+    .modal-content, .modal-footer, .modal-title {
       padding: 10px 50px;
+      &.datepicker-container, &.timepicker-container{
+        padding: 0;
+      }
     }
 
     .modal-title {

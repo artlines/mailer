@@ -18,15 +18,20 @@
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s4">
             {{ form_widget(form.send_list) }}
             <label for="dispatch[nameFrom]">Список рассылки</label>
             <span class="red-text">{{ form_errors(form.send_list) }}</span>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s4">
             {{ form_widget(form.template) }}
             <label for="dispatch[template]">Шаблон</label>
             <span class="red-text">{{ form_errors(form.template) }}</span>
+        </div>
+        <div class="input-field col s4">
+            {{ form_widget(form.status) }}
+            <label for="dispatch[status]">Статус</label>
+            <span class="red-text">{{ form_errors(form.status) }}</span>
         </div>
     </div>
     <div class="row">
@@ -51,6 +56,18 @@
             <span class="red-text">{{ form_errors(form.email_bcc) }}</span>
         </div>
     </div>
+    <div class="row">
+        <div class="input-field col s6">
+            <input type="text" class="datepicker dateSend" name="dateSend"
+                   value="{{ dispatch.dateSend is defined ? dispatch.dateSend }}"/>
+            <label>Дата отправки</label>
+        </div>
+        <div class="input-field col s6">
+            <input type="text" class="timepicker timeSend" name="timeSend"
+                   value="{{ dispatch.timeSend is defined ? dispatch.timeSend }}"/>
+            <label>Время отправки</label>
+        </div>
+    </div>
 
 </div>
 <div class="modal-footer">
@@ -66,7 +83,24 @@
         var sucessMessage = 'Успешно сохранено!';
 
         M.updateTextFields();
+
         $('select').formSelect();
+        $('.timepicker').timepicker({
+            'twelveHour': false,
+            'autoClose': true,
+            'showClearBtn': true,
+        });
+
+        var instance = M.Timepicker.getInstance($('.timepicker'));
+        $('.datepicker').datepicker({
+            'firstDay': 1,
+            'format': 'dd.mm.yyyy',
+            'showClearBtn': true,
+            'autoClose': true,
+            'onSelect': function (date) {
+                instance.open();
+            }
+        });
 
 
         $('[name="dispatch"]').submit(function (e) {
@@ -98,5 +132,6 @@
                 },
             });
         });
+
     });
 </script>

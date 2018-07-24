@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Dispatch;
+use App\Entity\DispatchStatus;
 use App\Entity\SendList;
 use App\Entity\Template;
 use Symfony\Component\Form\AbstractType;
@@ -51,6 +52,14 @@ class DispatchType extends AbstractType
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.title', 'ASC');
+                },
+            ])
+            ->add('status', EntityType::class,[
+                'class' => DispatchStatus::class,
+                'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.id', 'ASC');
                 },
             ])
         ;
