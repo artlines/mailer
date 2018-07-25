@@ -19,12 +19,10 @@ use Pagerfanta\View\TwitterBootstrap4View;
 class DispatchController extends Controller
 {
     private $log = null;
-    private $dateTime;
 
     function __construct(ActionLogger $log)
     {
         $this->log = $log;
-        $this->dateTime = new DateTimeImmutable();
     }
 
     /**
@@ -67,8 +65,8 @@ class DispatchController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->dateTime = new DateTimeImmutable();
-            $dispatch->setDatetime($this->dateTime);
+            $dateTime = new DateTimeImmutable();
+            $dispatch->setDatetime($dateTime);
             $em = $this->getDoctrine()->getManager();
             $em->persist($dispatch);
             $em->flush();
@@ -106,16 +104,16 @@ class DispatchController extends Controller
      * @param Request $request
      * @param Dispatch $dispatch
      * @return Response
+     * @throws \Exception
      */
     public function edit(Request $request, Dispatch $dispatch): Response
     {
         $form = $this->createForm(DispatchType::class, $dispatch);
         $form->handleRequest($request);
+        $data = $form->getData();
         $id = $dispatch->getId();
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             $this->log->info([
                 __METHOD__,
                 'Отредактирована рассылка ' . $id,

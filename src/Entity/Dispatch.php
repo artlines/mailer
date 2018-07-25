@@ -71,6 +71,11 @@ class Dispatch
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_send;
+
     public function __construct()
     {
         $this->send_list = new ArrayCollection();
@@ -211,6 +216,18 @@ class Dispatch
     public function setStatus(?DispatchStatus $dispatchStatus): self
     {
         $this->status = $dispatchStatus;
+
+        return $this;
+    }
+
+    public function getDateSend()
+    {
+        return $this->date_send;
+    }
+
+    public function setDateSend($date_send): self
+    {
+        $this->date_send = $date_send;
 
         return $this;
     }

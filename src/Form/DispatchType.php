@@ -9,10 +9,12 @@ use App\Entity\Template;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\CallbackTransformer;
 
 class DispatchType extends AbstractType
 {
@@ -38,6 +40,9 @@ class DispatchType extends AbstractType
             ->add('subject', TextType::class, [
                 'required' => true,
             ])
+            ->add('date_send', HiddenType::class, [
+                'required' => false,
+            ])
             ->add('send_list', EntityType::class,[
                 'class' => SendList::class,
                 'choice_label' => 'name',
@@ -59,9 +64,25 @@ class DispatchType extends AbstractType
                 'choice_label' => 'name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
+                        ->where('u.editable = :editable')
+                        ->setParameter('editable', true)
                         ->orderBy('u.id', 'ASC');
                 },
             ])
+        ;
+
+        $builder->get('date_send')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($datetime) {
+                    if ($datetime){
+                        return $datetime->format('d.m.y H:i:s');
+                    }
+                },
+                function ($string) {
+                    $datetime = new \DateTimeImmutable($string);
+                    return $datetime->setTimezone(new \DateTimeZone('Asia/Yekaterinburg'));
+                }
+            ))
         ;
     }
 

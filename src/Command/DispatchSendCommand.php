@@ -51,10 +51,32 @@ class DispatchSendCommand extends Command
 
         /**
          * Получение всех рассылок со статусом "готова к отправке"
+         * Сформировать письма и отправить в очередь
+         * Если отправлена в очередь, сменить статус рассылки
+         * Получать статусы отправленных рассылок (количество email)
+         * По завершении менять статус
          */
-        //$dispatches = $this->dispatchManager->getDispatches(STATUS_READY);
+        $dispatches = $this->dispatchManager->getDispatches(self::STATUS_READY);
 
-        $output->writeln(['Твоя команда работает!']);
+        foreach ($dispatches as $dispatch){
+            $output->writeln([$dispatch->getSendList()->getEmails()]);
+            /*$subject = $dispatch->getSubject();
+            $from = $dispatch->getEmailFrom();
+            $to = $dispatch->getEmailTo();
+            $cc = $dispatch->getEmailCC();
+            $bcc = $dispatch->getEmailBcc();
+            $bodyData = [
+                'body' => $dispatch->getTemplate()->getText(),
+                'charset' => 'utf-8'
+            ];*/
+                $emails = explode(PHP_EOL, $dispatch->getSendList()->getEmails());
+            foreach ($emails as $email){
+                //
+            }
+
+        }
+
+        $output->writeln(['Отправлено в очередь '. count($dispatches) .'рассылок']);
 
     }
 

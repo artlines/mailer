@@ -28,15 +28,26 @@ class DispatchManager
         $this->entityManager = $entityManager;
     }
 
+    private function _getStatusIdByAlias($alias)
+    {
+        return $this->entityManager
+            ->getRepository(DispatchStatus::class)
+            ->findOneBy(['alias' => $alias])
+        ;
+    }
+
     public function getDispatches($status)
     {
         $dispatches = $this->entityManager->getRepository(Dispatch::class);
-        $dispatchStatus = $this->entityManager
-            ->getRepository(DispatchStatus::class)
-            ->findOneBy(['alias' => $status])
-        ;
+        $dispatchStatus = $this->_getStatusIdByAlias($status);
 
-        return $dispatches->findBy(['status_id' => $dispatchStatus->getId()],['date_send' => 'ASC']);
+        return $dispatches->createQueryBuilder('d')
+            ->where('d.date_send <= :date_send')
+            ->setParameter('date_send', new \DateTimeImmutable('now'))
+            ->andWhere('d.status = :status')
+            ->setParameter('status', $dispatchStatus)
+            ->getQuery()
+            ->getResult();
     }
 
 

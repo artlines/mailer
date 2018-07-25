@@ -59,12 +59,12 @@
     <div class="row">
         <div class="input-field col s6">
             <input type="text" class="datepicker dateSend" name="dateSend"
-                   value="{{ dispatch.dateSend is defined ? dispatch.dateSend }}"/>
+                   value=""/>
             <label>Дата отправки</label>
         </div>
         <div class="input-field col s6">
             <input type="text" class="timepicker timeSend" name="timeSend"
-                   value="{{ dispatch.timeSend is defined ? dispatch.timeSend }}"/>
+                   value=""/>
             <label>Время отправки</label>
         </div>
     </div>
@@ -81,6 +81,12 @@
     $(function () {
         var invalidMessage = 'Ошибка на сервере, обратитесь к администратору';
         var sucessMessage = 'Успешно сохранено!';
+        var date, time, datetime;
+
+        if ($('#dispatch_date_send').val()){
+            datetime = $('#dispatch_date_send').val();
+            $('[name="dateSend"]').val(datetime);
+        }
 
         M.updateTextFields();
 
@@ -89,6 +95,12 @@
             'twelveHour': false,
             'autoClose': true,
             'showClearBtn': true,
+            'onSelect': function (h,m) {
+                time = h +':'+m+ ':00';
+                datetime = new Date(date + ' ' + time).toISOString();
+                console.log(datetime);
+                $('#dispatch_date_send').val(datetime);
+            }
         });
 
         var instance = M.Timepicker.getInstance($('.timepicker'));
@@ -97,10 +109,12 @@
             'format': 'dd.mm.yyyy',
             'showClearBtn': true,
             'autoClose': true,
-            'onSelect': function (date) {
+            'onSelect': function (d) {
                 instance.open();
+                date = d.toDateString();
             }
         });
+
 
 
         $('[name="dispatch"]').submit(function (e) {
@@ -132,6 +146,7 @@
                 },
             });
         });
+
 
     });
 </script>
