@@ -148,6 +148,8 @@ class MailerController extends AbstractController
         } else {
             $this->requestData = $request->request->all();
         }
+
+        $this->logger->syslog('')->debug('Очередь', ['data' => $this->requestData]);
     }
 
     /**

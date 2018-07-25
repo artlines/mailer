@@ -46,7 +46,7 @@ class EmailManager
      */
     public function generateBodyFromTemplate($template, array $data, $contentType = null, $charset = null)
     {
-        $template_text = $template->getTemplateText();
+        $template_text = $template->getText();
 
         try {
             $body = $this->twig->createTemplate($template_text)->render(['data' => $data]);

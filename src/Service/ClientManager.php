@@ -53,4 +53,12 @@ class ClientManager
         return $client;
     }
 
+    public function findOneByAlias($alias)
+    {
+        return $this->entityManager
+            ->getRepository(Client::class)
+            ->findOneBy(['alias' => $alias])
+        ;
+    }
+
 }

@@ -30,16 +30,12 @@ services:
 
     App\Service\EmailManager:
         arguments: ['']
-
     App\Service\ClientManager:
         arguments: ['@doctrine.orm.entity_manager']
-
     App\Service\Logger:
         arguments: ['@doctrine.orm.entity_manager']
-
     App\Service\AuthManager:
         arguments: []
-
     App\Service\ActionLogger:
         arguments: ['@doctrine.orm.entity_manager']
     App\Service\DispatchManager:
