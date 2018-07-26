@@ -90,7 +90,8 @@ class EmailManager
 
         return [
             'sm' => $sm,
-            'status' => $this->mailer->send($sm) > 0
+            'status' => $this->mailer->send($sm) > 0,
+            'data' => $this->mailer->send($sm)
         ];
     }
 

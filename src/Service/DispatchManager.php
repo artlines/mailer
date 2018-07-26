@@ -28,12 +28,28 @@ class DispatchManager
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param $alias
+     * @return null|object
+     */
     private function _getStatusIdByAlias($alias)
     {
         return $this->entityManager
             ->getRepository(DispatchStatus::class)
             ->findOneBy(['alias' => $alias])
         ;
+    }
+
+    public function setDispatchStatus($alias, Dispatch $dispatch)
+    {
+        $status =  $this->_getStatusIdByAlias($alias);
+        $dispatch->setStatus($status);
+
+        $this->entityManager->persist($dispatch);
+        $this->entityManager->flush();
+
+        return $status;
+
     }
 
     public function getDispatches($status)
@@ -49,6 +65,8 @@ class DispatchManager
             ->getQuery()
             ->getResult();
     }
+
+
 
 
 

@@ -24,7 +24,11 @@
                     </tr>
                     <tr>
                         <th>Дата создания</th>
-                        <td>{{ dispatch.datetime ? dispatch.datetime|date('m-m-Y H:i:s') : '' }}</td>
+                        <td>{{ dispatch.datetime ? dispatch.datetime|date('d.m.Y H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Дата рассылки</th>
+                        <td>{{ dispatch.dateSend|date('d.m.Y H:i:s') }}</td>
                     </tr>
                     <tr>
                         <th>Шаблон</th>
@@ -35,8 +39,16 @@
                         <td>{{ dispatch.sendList.name }}</td>
                     </tr>
                     <tr>
-                        <th>Количество email | Отправлено | Доставлено</th>
-                        <td>{{ dispatch.sendList.emails|split('\n')|length }} | 0 | 0</td>
+                        <th>Количество email</th>
+                        <td>{{ dispatch.sendList.emails|split('\n')|length }}</td>
+                    </tr>
+                    <tr>
+                        <th>Копия | Скрытая копия</th>
+                        <td>{{ dispatch.emailCc ? dispatch.emailCc : '-' }} | {{ dispatch.emailBcc ? dispatch.emailBcc : '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Статус</th>
+                        <td>{{ dispatch.status.name}}</td>
                     </tr>
                 </tbody>
             </table>

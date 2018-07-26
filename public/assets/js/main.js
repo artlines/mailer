@@ -9,6 +9,7 @@ $(document).ready(function () {
     $('.datepicker').datepicker({
         'firstDay': 1,
         'format': 'dd.mm.yyyy',
+        'autoClose': true,
     });
     $('select').formSelect();
 

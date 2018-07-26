@@ -22,13 +22,13 @@
                         <i class="far fa-eye" title="Посмотреть подробности"></i>
                     </a>
                 </td>
-                {% if dispatch.status.editable%}
                     <td>
+                        {% if dispatch.status.editable%}
                         <a href="#send_list_modal" data-action="{{ path('dispatch_edit', {'id': dispatch.id}) }}" class="get_modal">
                             <i class="far fa-edit" title="Редактировать элемент"></i>
                         </a>
+                        {% endif %}
                     </td>
-                {% endif %}
             </tr>
         {% else %}
             <tr>
@@ -37,5 +37,6 @@
         {% endfor %}
     </tbody>
 </table>
-
-{{ pagination|raw }}
+{% if(total and total/count > 1) %}
+    {{ pagination|raw }}
+{% endif %}

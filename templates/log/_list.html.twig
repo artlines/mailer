@@ -32,8 +32,10 @@
         {% endfor %}
     </tbody>
 </table>
+{% if(total and total/count > 1) %}
+    {{ pagination|raw }}
+{% endif %}
 
-{{ pagination|raw }}
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client index{% endblock %}
+{% block title %}Клиенты{% endblock %}
 
-{% block body %}
-    <h1>Client index</h1>
+{% block inner %}
+    {{ parent() }}
+    <h2>Клиенты</h2>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Title</th>
+                <th>Имя</th>
                 <th>Alias</th>
-                <th>Sender</th>
-                <th>AllowIPs</th>
-                <th>ClientSecret</th>
-                <th>IsActive</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>Отправитель</th>
+                <th>Дата создания</th>
+                <th>Дата обновления</th>
+                <th>Активен</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,23 +27,46 @@
                 <td>{{ client.title }}</td>
                 <td>{{ client.alias }}</td>
                 <td>{{ client.sender }}</td>
-                <td>{{ client.allowIPs }}</td>
-                <td>{{ client.clientSecret }}</td>
-                <td>{{ client.isActive ? 'Yes' : 'No' }}</td>
-                <td>{{ client.createdAt ? client.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ client.updatedAt ? client.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ client.createdAt ? client.createdAt|date('d.m.Y H:i:s') : '-' }}</td>
+                <td>{{ client.updatedAt ? client.updatedAt|date('d.m.Y H:i:s') : '-' }}</td>
                 <td>
-                    <a href="{{ path('client_show', {'id': client.id}) }}">show</a>
-                    <a href="{{ path('client_edit', {'id': client.id}) }}">edit</a>
+                    <label class="{{ client.isActive ? 'label--success' : 'label--danger'}}">
+                        <input type="checkbox" {{ client.isActive ? 'checked' : ''}} disabled="disabled" />
+                        <span></span>
+                    </label>
+                </td>
+                <td>
+                    <a href="#client_modal" data-action="{{ path('client_edit', {'id':client.id}) }}" class="get_modal">
+                        <i class="far fa-edit" title="Редактировать элемент"></i>
+                    </a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('client_delete', {'id': client.id}) }}" onsubmit="return confirm('Вы уверены?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                        <button class="button--no-style"><i class="far fa-trash-alt" title="Удалить элемент"></i></button>
+                    </form>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="10">no records found</td>
+                <td colspan="10">Нет записей</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('client_new') }}">Create new</a>
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
+           data-action="{{ path('client_new') }}" href="#clent_modal" id="create_entity">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="clent_modal" class="modal modal--data">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+        <div id="modal_content"></div>
+    </div>
 {% endblock %}

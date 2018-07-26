@@ -62,7 +62,7 @@
                    value=""/>
             <label>Дата отправки</label>
         </div>
-        <div class="input-field col s6">
+        <div class="input-field col s6 hide timepicker-c">
             <input type="text" class="timepicker timeSend" name="timeSend"
                    value=""/>
             <label>Время отправки</label>
@@ -110,6 +110,7 @@
             'showClearBtn': true,
             'autoClose': true,
             'onSelect': function (d) {
+                $('.timepicker-c').removeClass('hide');
                 instance.open();
                 date = d.toDateString();
             }

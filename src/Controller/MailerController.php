@@ -108,7 +108,7 @@ class MailerController extends AbstractController
             return $this->_error($request, $e->getMessage());
         }
 
-        return new JsonResponse(['status' => 'ok'], 200);
+        return new JsonResponse(['status' => 'ok', 'sent' => $response], 200);
     }
 
     /**
@@ -148,8 +148,6 @@ class MailerController extends AbstractController
         } else {
             $this->requestData = $request->request->all();
         }
-
-        $this->logger->syslog('')->debug('Очередь', ['data' => $this->requestData]);
     }
 
     /**

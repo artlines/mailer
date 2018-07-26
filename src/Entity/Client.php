@@ -164,11 +164,11 @@ class Client
     }
 
     /**
-     * @ORM\PrePersist()
+     * @param string $secret
      */
-    public function setClientSecret()
+    public function setClientSecret($secret)
     {
-        $this->clientSecret = md5(random_bytes(18));
+        $this->clientSecret = $secret ?? md5(random_bytes(18));
     }
 
     /**

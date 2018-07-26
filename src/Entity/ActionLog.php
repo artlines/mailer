@@ -46,7 +46,7 @@ class ActionLog
     /**
      * @var string Список действий пользователя
      * 
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100)
      */
     private $action;
 

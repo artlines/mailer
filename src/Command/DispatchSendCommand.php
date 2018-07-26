@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Service\DispatchManager;
 use App\Service\ClientManager;
+use App\Service\Logger;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,16 +29,23 @@ class DispatchSendCommand extends Command
      */
     private $container;
     private $clientManager;
+    private $logger;
 
     /**
      * CreateClientCommand constructor.
      * @param DispatchManager $dispatchManager
      */
-    public function __construct(DispatchManager $dispatchManager, ContainerInterface $container, ClientManager $clientManager)
+    public function __construct(
+        DispatchManager $dispatchManager,
+        ContainerInterface $container,
+        ClientManager $clientManager,
+        Logger $logger
+    )
     {
         $this->dispatchManager = $dispatchManager;
         $this->clientManager = $clientManager;
         $this->container = $container;
+        $this->logger = $logger;
 
         parent::__construct();
     }
@@ -53,7 +61,7 @@ class DispatchSendCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @var ProducerInterface $rmq
-    */
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
@@ -61,14 +69,6 @@ class DispatchSendCommand extends Command
         $ss->title('Dispatches sender');
         $ss->section("Check ready dispatches");
 
-
-        /**
-         * Получение всех рассылок со статусом "готова к отправке"
-         * Сформировать письма и отправить в очередь
-         * Если отправлена в очередь, сменить статус рассылки
-         * Получать статусы отправленных рассылок (количество email)
-         * По завершении менять статус
-         */
         $client = $this->clientManager->findOneByAlias(self::CLIENT);
         $dispatches = $this->dispatchManager->getDispatches(self::STATUS_READY);
         $rmq = $this->container->get('old_sound_rabbit_mq.mail_producer');
@@ -80,7 +80,11 @@ class DispatchSendCommand extends Command
                 'timestamp' => $timestamp,
                 'hash' => hash('sha256', $client->getClientSecret() . $timestamp . $client->getAlias()),
                 'template_alias' => $dispatch->getTemplate()->getAlias(),
-                'params' => ['title_page' => 'title'],
+                'params' => [
+                    'title_page' => $dispatch->getSubject(),
+                    'name_from' => $dispatch->getNameFrom(),
+                    'email_from' => $dispatch->getEmailFrom()
+                ],
                 'subject' => $dispatch->getSubject(),
                 'send_to' => explode(PHP_EOL, $dispatch->getSendList()->getEmails()),
                 'send_cc' => $dispatch->getEmailCc(),
@@ -89,13 +93,9 @@ class DispatchSendCommand extends Command
             ]);
 
             $rmq->publish($data, self::CLIENT, ['content_type' => 'application/json']);
-
-            $output->writeln([$dispatch->getSendList()->getEmails()]);
-
+            $this->logger->syslog('')->debug("Отправлено в очередь " . count($dispatches) . " рассылок mailer soa");
+            $status = $this->dispatchManager->setDispatchStatus(self::STATUS_PROCESS, $dispatch);
+            $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
         }
-
-        $output->writeln(['Отправлено в очередь ' . count($dispatches) . 'рассылок']);
-
     }
-
 }

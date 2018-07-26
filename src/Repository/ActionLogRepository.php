@@ -77,7 +77,7 @@ class ActionLogRepository extends ServiceEntityRepository
                         break;
                     case 'date_from':
                     case 'date_to':
-                        $value_array = explode('-', $value);
+                        $value_array = explode('.', $value);
                         $value_date = $dateTime->setDate($value_array[2], $value_array[1], $value_array[0]);
                         $qb->andWhere("a.datetime {$operator} :{$key}")
                             ->setParameter($key, $value_date);
