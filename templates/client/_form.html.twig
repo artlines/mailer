@@ -34,9 +34,11 @@
             <span class="red-text client-secret">{{ form_errors(form.clientSecret) }}</span>
         </div>
         <div class="input-field col s2">
+            {% if(client.id > 0) %}
             <a href="javascript:;" id="update_secret" title="Получить новый ключ" data-action="{{ path('update_secret', {'id':client.id}) }}">
                 <i class="small material-icons">sync</i>
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="row">

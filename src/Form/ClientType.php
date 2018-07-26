@@ -49,7 +49,10 @@ class ClientType extends AbstractType
                     }
                 },
                 function ($str) {
-                   return explode(',', $str);
+                    if (empty($str)){
+                        return null;
+                    }
+                    return explode(',', $str);
                 }
             ));
     }

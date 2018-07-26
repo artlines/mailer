@@ -81,6 +81,7 @@ class EmailManager
     {
         /** @var \Swift_Message $sm */
         $sm = new \Swift_Message($subject);
+        
         $sm
             ->setFrom($from)
             ->setTo($to)

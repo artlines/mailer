@@ -44,6 +44,7 @@ class ClientController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $client->setClientSecret(md5(random_bytes(18)));
             $em = $this->getDoctrine()->getManager();
             $em->persist($client);
             $em->flush();

@@ -90,6 +90,7 @@ class DispatchSendCommand extends Command
                 'send_cc' => $dispatch->getEmailCc(),
                 'send_bcc' => $dispatch->getEmailBcc(),
                 'sender' => $dispatch->getEmailFrom(),
+                'dispatch_id' => $dispatch->getId(),
             ]);
 
             $rmq->publish($data, self::CLIENT, ['content_type' => 'application/json']);

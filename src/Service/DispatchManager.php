@@ -66,6 +66,12 @@ class DispatchManager
             ->getResult();
     }
 
+    public function getDispatchById($id)
+    {
+        $dispatch = $this->entityManager->getRepository(Dispatch::class);
+        return $dispatch->findOneBy(['id' => $id]);
+    }
+
 
 
 

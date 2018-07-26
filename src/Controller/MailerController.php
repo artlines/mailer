@@ -7,6 +7,7 @@ use App\Entity\Template;
 use App\Service\EmailManager;
 use App\Service\AuthManager;
 use App\Service\Logger;
+use App\Service\DispatchManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class MailerController extends AbstractController
 {
+
+    const STATUS_COMPLETE = 'complete';
+
     /**
      * @var Template
      */
@@ -58,7 +62,7 @@ class MailerController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function send(Request $request, EmailManager $emailManager, AuthManager $auth)
+    public function send(Request $request, EmailManager $emailManager, AuthManager $auth, DispatchManager $dispatchManager)
     {
         $this->_getRequestParams($request);
 
@@ -96,6 +100,12 @@ class MailerController extends AbstractController
                 throw new \Swift_SwiftException("E-mail was not sent. | Status: {$response['status']} | Log ID: $id");
             }
 
+            //Логируем завершение рассылки
+            $dispatch = $dispatchManager->getDispatchById($this->requestData['dispatch_id']);
+            $status = $dispatchManager->setDispatchStatus(self::STATUS_COMPLETE, $dispatch);
+            $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
+
+
         } catch (BadRequestHttpException $e) {
             return $this->_error($request, $e->getMessage());
         } catch (\LogicException $e) {
@@ -108,7 +118,7 @@ class MailerController extends AbstractController
             return $this->_error($request, $e->getMessage());
         }
 
-        return new JsonResponse(['status' => 'ok', 'sent' => $response], 200);
+        return new JsonResponse(['status' => 'ok', 'dispatch_status' => $status->getName()], 200);
     }
 
     /**
