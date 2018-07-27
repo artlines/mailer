@@ -19,7 +19,6 @@ class EmailManager
      */
     private $twig;
 
-
     /**
      * EmailManager constructor.
      *
@@ -77,22 +76,31 @@ class EmailManager
      *
      * @return array
      */
-    public function send(string $subject, array $bodyData, string $from, $to, $cc = [], $bcc = [])
+    public function send(string $subject, array $bodyData, string $from, $to, $cc = [], $bcc = [], $dispatch, $dispatchManager)
     {
         /** @var \Swift_Message $sm */
         $sm = new \Swift_Message($subject);
-        
-        $sm
-            ->setFrom($from)
-            ->setTo($to)
-            ->setCc($cc)
-            ->setBcc($bcc)
-            ->setBody($bodyData['body'], $bodyData['contentType'], $bodyData['charset']);
+
+        if (!is_array($to)){
+            $to = [0 => $to];
+        }
+
+        foreach ($to as $email){
+            $sm
+                ->setFrom($from)
+                ->setTo($to)
+                ->setCc($cc)
+                ->setBcc($bcc)
+                ->setBody($bodyData['body'], $bodyData['contentType'], $bodyData['charset']);
+
+            if ($this->mailer->send($sm)){
+                $dispatchManager->cleanDispatchLog($dispatch, $email);
+            }
+        }
 
         return [
             'sm' => $sm,
-            'status' => $this->mailer->send($sm) > 0,
-            'data' => $this->mailer->send($sm)
+            'status' => true,
         ];
     }
 

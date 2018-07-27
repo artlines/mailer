@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Dispatch;
 use App\Service\DispatchManager;
 use App\Service\ClientManager;
 use App\Service\Logger;
@@ -70,10 +71,21 @@ class DispatchSendCommand extends Command
         $ss->section("Check ready dispatches");
 
         $client = $this->clientManager->findOneByAlias(self::CLIENT);
-        $dispatches = $this->dispatchManager->getDispatches(self::STATUS_READY);
+        $dispatches = $this->dispatchManager->getDispatches([self::STATUS_READY,self::STATUS_PROCESS]);
         $rmq = $this->container->get('old_sound_rabbit_mq.mail_producer');
 
         foreach ($dispatches as $dispatch) {
+            $email_to = explode(PHP_EOL, $dispatch->getSendList()->getEmails());
+
+            //если рассылка уже была в отправке и не завершена, смотрим логи и по каким адресам письма ещё не ушли
+            if ($dispatch->getStatus()->getAlias() == self::STATUS_PROCESS){
+                $email_to = $this->dispatchManager->getUndeliveredEmails($dispatch);
+                $this->logger->syslog('')->debug("Неотправленные адреса " . print_r($email_to, true) . " рассылок mailer soa");
+            }else{
+                //все адреса в лог со статусом false
+                $this->dispatchManager->setDispatchLog($dispatch, $email_to);
+            }
+
             $timestamp = time();
             $data = json_encode([
                 'client_alias' => self::CLIENT,
@@ -86,7 +98,7 @@ class DispatchSendCommand extends Command
                     'email_from' => $dispatch->getEmailFrom()
                 ],
                 'subject' => $dispatch->getSubject(),
-                'send_to' => explode(PHP_EOL, $dispatch->getSendList()->getEmails()),
+                'send_to' => $email_to,
                 'send_cc' => $dispatch->getEmailCc(),
                 'send_bcc' => $dispatch->getEmailBcc(),
                 'sender' => $dispatch->getEmailFrom(),

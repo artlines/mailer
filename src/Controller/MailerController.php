@@ -64,7 +64,9 @@ class MailerController extends AbstractController
      */
     public function send(Request $request, EmailManager $emailManager, AuthManager $auth, DispatchManager $dispatchManager)
     {
+
         $this->_getRequestParams($request);
+        $dispatch = $dispatchManager->getDispatchById($this->requestData['dispatch_id']);
 
         try {
             $this->_checkRequireParamsExists();
@@ -91,7 +93,9 @@ class MailerController extends AbstractController
                 $this->requestData['sender'] ?? $this->client->getSender(),
                 $this->requestData['send_to'],
                 $this->requestData['send_cc'] ?? [],
-                $this->requestData['send_bcc'] ?? []
+                $this->requestData['send_bcc'] ?? [],
+                $dispatch,
+                $dispatchManager
             );
 
             $id = $this->logger->logMail($response['sm'], $request, $response['status']);
@@ -99,11 +103,6 @@ class MailerController extends AbstractController
             if (!$response['status']) {
                 throw new \Swift_SwiftException("E-mail was not sent. | Status: {$response['status']} | Log ID: $id");
             }
-
-            //Логируем завершение рассылки
-            $dispatch = $dispatchManager->getDispatchById($this->requestData['dispatch_id']);
-            $status = $dispatchManager->setDispatchStatus(self::STATUS_COMPLETE, $dispatch);
-            $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
 
 
         } catch (BadRequestHttpException $e) {
@@ -118,7 +117,11 @@ class MailerController extends AbstractController
             return $this->_error($request, $e->getMessage());
         }
 
-        return new JsonResponse(['status' => 'ok', 'dispatch_status' => $status->getName()], 200);
+        // Завершение рассылки, смена статуса и лог
+        $status = $dispatchManager->setDispatchStatus(self::STATUS_COMPLETE, $dispatch);
+        $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
+
+        return new JsonResponse(['status' => 'ok', 'dispatch_status' => $status->getAlias()], 200);
     }
 
     /**

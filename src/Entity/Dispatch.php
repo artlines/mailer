@@ -76,11 +76,17 @@ class Dispatch
      */
     private $date_send;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DispatchLog", mappedBy="dispatch_id")
+     */
+    private $dispatch_logs;
+
     public function __construct()
     {
         $this->send_list = new ArrayCollection();
         $this->template = new ArrayCollection();
         $this->status = new ArrayCollection();
+        $this->dispatch_logs = new ArrayCollection();
     }
 
     public function getId()
@@ -228,6 +234,37 @@ class Dispatch
     public function setDateSend($date_send): self
     {
         $this->date_send = $date_send;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DispatchLog[]
+     */
+    public function getDispatchLogs(): Collection
+    {
+        return $this->dispatch_logs;
+    }
+
+    public function addDispatchLogs(DispatchLog $dispatch_logs): self
+    {
+        if (!$this->dispatch_logs->contains($dispatch_logs)) {
+            $this->dispatch_logs[] = $dispatch_logs;
+            $dispatch_logs->setDispatchId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDispatchLogs(DispatchLog $dispatch_logs): self
+    {
+        if ($this->dispatch_logs->contains($dispatch_logs)) {
+            $this->dispatch_logs->removeElement($dispatch_logs);
+            // set the owning side to null (unless already changed)
+            if ($dispatch_logs->getDispatchId() === $this) {
+                $dispatch_logs->setDispatchId(null);
+            }
+        }
 
         return $this;
     }
