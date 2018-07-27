@@ -20,7 +20,7 @@ security:
             security: false
         main:
             # this firewall applies to all URLs
-            pattern: ^/(?!send)
+            pattern: ^/(?!send$)
             # http_basic: ~
             provider: our_db_provider
             # but the firewall does not require login on every page
@@ -51,5 +51,5 @@ security:
           # This is a catch-all for the admin area
           # additional security lives in the controllers
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/login, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/*, roles: IS_AUTHENTICATED_REMEMBERED }
