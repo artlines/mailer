@@ -64,9 +64,10 @@ class MailerController extends AbstractController
      */
     public function send(Request $request, EmailManager $emailManager, AuthManager $auth, DispatchManager $dispatchManager)
     {
-
         $this->_getRequestParams($request);
-        $dispatch = $dispatchManager->getDispatchById($this->requestData['dispatch_id']);
+        $dispatch = isset($this->requestData['dispatch_id']) 
+            ? $dispatchManager->getDispatchById($this->requestData['dispatch_id'])
+            : false;
 
         try {
             $this->_checkRequireParamsExists();
@@ -117,11 +118,16 @@ class MailerController extends AbstractController
             return $this->_error($request, $e->getMessage());
         }
 
-        // Завершение рассылки, смена статуса и лог
-        $status = $dispatchManager->setDispatchStatus(self::STATUS_COMPLETE, $dispatch);
-        $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
+        $response = ['status' => 'ok'];
 
-        return new JsonResponse(['status' => 'ok', 'dispatch_status' => $status->getAlias()], 200);
+        // Завершение рассылки, смена статуса и лог
+        if ($dispatch) {
+            $status = $dispatchManager->setDispatchStatus(self::STATUS_COMPLETE, $dispatch);
+            $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
+            $response['dispatch_status'] = $status->getAlias();
+        }
+
+        return new JsonResponse($response, 200);
     }
 
     /**
