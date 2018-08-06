@@ -24,7 +24,7 @@
         "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^4.0",
         "white-october/pagerfanta-bundle": "^1.2",
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.0"git 
     },
     "require-dev": {
         "symfony/dotenv": "^4.0",
