@@ -93,7 +93,9 @@ class EmailManager
                 ->setBcc($bcc)
                 ->setBody($bodyData['body'], $bodyData['contentType'], $bodyData['charset']);
 
-            if ($this->mailer->send($sm)){
+            $sendResult = $this->mailer->send($sm);
+
+            if ($dispatch && $sendResult) {
                 $dispatchManager->cleanDispatchLog($dispatch, $email);
             }
         }
