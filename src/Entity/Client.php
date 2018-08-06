@@ -166,7 +166,7 @@ class Client
     /**
      * @param string $secret
      */
-    public function setClientSecret($secret)
+    public function setClientSecret($secret=null)
     {
         $this->clientSecret = $secret ?? md5(random_bytes(18));
     }

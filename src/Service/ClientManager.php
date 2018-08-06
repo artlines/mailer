@@ -41,6 +41,7 @@ class ClientManager
         $client->setTitle($title);
         $client->setAlias($alias);
         $client->setSender($sender);
+        $client->setClientSecret();
         $client->setAllowIPs($allowIPs);
 
         try {

@@ -32,8 +32,8 @@ class SendListRepository extends ServiceEntityRepository
 
     public function getAllWithPagination($page)
     {
+        $sendLists = [];
         $qb = $this->findAllQueryBuilder();
-
         $adapter = new DoctrineORMAdapter($qb);
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage(15);

@@ -49,7 +49,9 @@
         {% endfor %}
         </tbody>
     </table>
-    {{ pagination|raw }}
+    {% if(total and total/count > 1) %}
+        {{ pagination|raw }}
+    {% endif %}
 
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
