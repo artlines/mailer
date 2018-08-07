@@ -79,7 +79,8 @@ class DispatchType extends AbstractType
                     }
                 },
                 function ($string) {
-                    $datetime = new \DateTimeImmutable($string);
+
+                    $datetime = \DateTimeImmutable::createFromFormat('d.m.y H:i:s', $string);
                     return $datetime->setTimezone(new \DateTimeZone('Asia/Yekaterinburg'));
                 }
             ))

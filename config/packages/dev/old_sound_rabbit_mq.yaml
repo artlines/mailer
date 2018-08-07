@@ -5,7 +5,7 @@ old_sound_rabbit_mq:
     producers:
         mail:
             connection: default
-            exchange_options: { name: 'dev_mailer_mail', type: direct }
-            queue_options:    { name: 'dev_mailer_mail', routing_keys: ['mailer'] }
+            exchange_options: { name: 'mailer', type: topic }
+            queue_options:    { name: 'mailer' }
 
 
