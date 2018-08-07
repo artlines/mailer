@@ -6,6 +6,3 @@ old_sound_rabbit_mq:
         mail:
             connection: default
             exchange_options: { name: 'mailer', type: topic }
-            queue_options:    { name: 'mailer' }
-
-
