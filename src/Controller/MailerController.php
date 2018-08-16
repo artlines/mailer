@@ -91,6 +91,7 @@ class MailerController extends AbstractController
             $response = $emailManager->send(
                 $this->requestData['subject'],
                 $bodyData,
+                $this->client->getTitle(),
                 $this->requestData['sender'] ?? $this->client->getSender(),
                 $this->requestData['send_to'],
                 $this->requestData['send_cc'] ?? [],

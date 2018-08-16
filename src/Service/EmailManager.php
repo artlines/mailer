@@ -69,6 +69,7 @@ class EmailManager
      *
      * @param string $subject
      * @param array $bodyData
+     * @param string $from_name
      * @param string $from
      * @param mixed $to
      * @param array|null $cc
@@ -76,7 +77,7 @@ class EmailManager
      *
      * @return array
      */
-    public function send(string $subject, array $bodyData, string $from, $to, $cc = [], $bcc = [], $dispatch, $dispatchManager)
+    public function send(string $subject, array $bodyData, string $from_name, string $from, $to, $cc = [], $bcc = [], $dispatch, $dispatchManager)
     {
         /** @var \Swift_Message $sm */
         $sm = new \Swift_Message($subject);
@@ -87,7 +88,7 @@ class EmailManager
 
         foreach ($to as $email){
             $sm
-                ->setFrom($from)
+                ->setFrom($from, $from_name)
                 ->setTo($to)
                 ->setCc($cc)
                 ->setBcc($bcc)
