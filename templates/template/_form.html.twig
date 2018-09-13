@@ -31,14 +31,21 @@
         </div>
     </div>
     <div class="row">
-        <div class="input-field col s12">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s6"><a class="active" href="#wysiwyg-wrap">WYSIWYG</a></li>
+                <li class="tab col s6"><a href="#editor-wrap">Code editor</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12" id="editor-wrap">
             {{ form_widget(form.text) }}
             <div id="editor" class="editor--space"></div>
-            <div class="fullscreen_toggle"></div>
-            <label for="template[text]" class="m2">
-                Текст шаблона
-            </label>
             <span class="red-text" id="code_editor_error">{{ form_errors(form.text) }}</span>
+        </div>
+        <div class="input-field col s12" id="wysiwyg-wrap">
+            <textarea id="editor-wysiwyg" class="editor--space"></textarea>
         </div>
     </div>
 </div>
@@ -52,6 +59,7 @@
 <script src="{{ asset('assets/vendor/ace/ace.js') }}"></script>
 <script src="{{ asset('assets/vendor/ace/mode-twig.js') }}"></script>
 <script src="{{ asset('assets/vendor/ace/theme-github.js') }}"></script>
+<script src="{{ asset('assets/vendor/ckeditor/ckeditor.js') }}"></script>
 
 
 <script>
@@ -60,6 +68,7 @@
         var sucessMessage = 'Успешно сохранено!';
 
         M.updateTextFields();
+        $('.tabs').tabs();
 
         $('[name="template"]').submit(function (e) {
             e.preventDefault();
@@ -95,6 +104,9 @@
 
     var textarea = $('#template_text');
     $('#editor').text(textarea.val());
+    $('#editor-wysiwyg').text(textarea.val());
+
+    var editor_wysiwyg = CKEDITOR.replace( 'editor-wysiwyg' );
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/github");
     editor.getSession().setMode("ace/mode/twig");
@@ -102,6 +114,10 @@
     textarea.val(editor.getSession().getValue());
     editor.getSession().on("change", function () {
         textarea.val(editor.getSession().getValue());
+    });
+    editor_wysiwyg.on('change', function (e) {
+        textarea.val(e.editor.getData());
+        editor.getSession().setValue(e.editor.getData());
     });
 
 
