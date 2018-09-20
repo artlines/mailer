@@ -98,7 +98,6 @@
             'onSelect': function (h,m) {
                 time = h +':'+m+ ':00';
                 datetime = new Date(date + ' ' + time).toISOString();
-                console.log(datetime);
                 $('#dispatch_date_send').val(datetime);
             }
         });
@@ -135,7 +134,7 @@
                             location.reload();
                         }, 1000);
                     } else {
-                        $('#modal_content').html(data);
+                        $('.modal_content').html(data);
                     }
                 },
 

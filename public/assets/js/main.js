@@ -16,6 +16,7 @@ $(document).ready(function () {
     //создание/редактирование сущности
     $('#create_entity, .get_modal').click(function (e) {
         $('.modal--data').modal('open');
+
         $.ajax({
             type: "POST",
             url: $(this).data('action'),
@@ -24,7 +25,7 @@ $(document).ready(function () {
                 $('.progress').fadeTo(0, 1);
             },
             success: function(data) {
-                $('#modal_content').html(data);
+                $('.modal_content').html(data);
             },
             error: function(data, textStatus, xhr) {
                 $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);

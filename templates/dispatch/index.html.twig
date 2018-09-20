@@ -10,16 +10,9 @@
         {% include 'dispatch/_list.html.twig' with {'dispatches': dispatches, 'pagination': pagination} %}
     </div>
 
-    <div id="dispatch_modal" class="modal modal--data">
-        <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-        <div id="modal_content"></div>
-    </div>
-
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
-           data-action="{{ path('dispatch_new') }}" href="#dispatch_modal" id="create_entity">
+           data-action="{{ path('dispatch_new') }}" href="javascript:;" id="create_entity">
             <i class="material-icons">add</i>
         </a>
     </div>

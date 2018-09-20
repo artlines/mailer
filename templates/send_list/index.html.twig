@@ -23,14 +23,14 @@
                 <td>{{ send_list.id }}</td>
                 <td>{{ send_list.name }}</td>
                 <td>
-                    <a href="#send_list_modal" data-action="{{ path('send_list_edit', {'id': send_list.id}) }}" class="get_modal">
+                    <a href="javascript:;" data-action="{{ path('send_list_edit', {'id': send_list.id}) }}" class="get_modal">
                         {{ send_list.emails|split('\n')|length }}
                     </a>
                 </td>
                 <td>{{ send_list.createdAt ? send_list.createdAt|date('d.m.Y H:i:s') : '' }}</td>
                 <td>{{ send_list.UserId.fullname }}</td>
                 <td>
-                    <a href="#send_list_modal" data-action="{{ path('send_list_edit', {'id': send_list.id}) }}" class="get_modal">
+                    <a href="javascript:;" data-action="{{ path('send_list_edit', {'id': send_list.id}) }}" class="get_modal">
                         <i class="far fa-edit" title="Редактировать элемент"></i>
                     </a>
                 </td>
@@ -55,15 +55,9 @@
 
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
-           data-action="{{ path('send_list_new') }}" href="#send_list_modal" id="create_entity">
+           data-action="{{ path('send_list_new') }}" href="javascript:;" id="create_entity">
             <i class="material-icons">add</i>
         </a>
     </div>
 
-    <div id="send_list_modal" class="modal modal--data">
-        <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-        <div id="modal_content"></div>
-    </div>
 {% endblock %}
