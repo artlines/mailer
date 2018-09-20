@@ -22,10 +22,31 @@ $(document).ready(function () {
             url: $(this).data('action'),
             data: {},
             beforeSend: function( xhr ) {
-                $('.progress').fadeTo(0, 1);
+                $('.progress_bottom').fadeTo(0, 1);
             },
             success: function(data) {
                 $('.modal_content').html(data);
+            },
+            error: function(data, textStatus, xhr) {
+                $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
+            },
+            complete: function( xhr ) {
+                $('.progress_bottom').fadeTo(0, 0);
+            },
+        });
+    });
+
+    $('.get_form').click(function (e) {
+
+        $.ajax({
+            type: "POST",
+            url: $(this).data('action'),
+            data: {},
+            beforeSend: function( xhr ) {
+                $('.progress').fadeTo(0, 1);
+            },
+            success: function(data) {
+                $('#edit-form').html(data).show();
             },
             error: function(data, textStatus, xhr) {
                 $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);

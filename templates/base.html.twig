@@ -40,6 +40,9 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="{{ asset('/build/main.css') }}">
     {% endblock %}
+    <script>
+        UPLOADCARE_PUBLIC_KEY = 'e413624e11fdef587518';
+    </script>
 </head>
 
 <body>
@@ -124,6 +127,7 @@
                         </div>
                     </div>
                 </section>
+                <div class="card-panel edit-form" id="edit-form"></div>
             {% endblock %}
         </div>
     </main>

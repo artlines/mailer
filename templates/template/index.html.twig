@@ -38,7 +38,7 @@
                 </td>
                 <td>
                     <a href="javascript:;" data-action="{{ path('template_edit', {'id': template.id}) }}"
-                       class="get_modal">
+                       class="get_form">
                         <i class="far fa-edit" title="Редактировать элемент"></i>
                     </a>
                 </td>
@@ -59,7 +59,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <div class="progress progress_bottom">
+        <div class="indeterminate"></div>
+    </div>
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large waves-effect waves-light red modal-trigger"
            data-action="{{ path('template_new') }}" href="javascript:;" id="create_entity">

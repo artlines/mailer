@@ -236,3 +236,6 @@ textarea.materialize-textarea{
 [type="checkbox"]:disabled+span:not(.lever){
   cursor: default;
 }
+.edit-form{
+  display: none;
+}
