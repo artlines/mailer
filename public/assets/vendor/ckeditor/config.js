@@ -4,7 +4,5 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-/*    config.extraPlugins = 'uploadimage';
-    config.uploadUrl = '/assets/img';
-    config.removePlugins = 'easyimage';*/
+    config.removePlugins = 'easyimage';
 };

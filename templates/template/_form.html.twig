@@ -50,9 +50,9 @@
     </div>
 </div>
 <div class="modal-footer">
-    <div class="feedback-message" id="feedback"></div>
-    <button class="modal-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
     <button class="btn waves-effect waves-light" type="submit" name="action">{{ button_label|default('Сохранить') }}</button>
+    <button class="form-close waves-effect waves-green btn-flat" type="reset" name="reset">Отменить</button>
+    <div class="feedback-message" id="feedback"></div>
 </div>
 
 {{ form_end(form) }}
@@ -98,6 +98,10 @@
                     $('.progress').fadeTo(0, 0);
                 },
             });
+        });
+
+        $('.form-close').click(function (e) {
+            $('#edit-form').empty().hide();
         });
 
     });

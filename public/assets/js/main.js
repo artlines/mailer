@@ -36,8 +36,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.get_form').click(function (e) {
-
+    $('.get_form, #create_template').click(function (e) {
         $.ajax({
             type: "POST",
             url: $(this).data('action'),
@@ -57,7 +56,7 @@ $(document).ready(function () {
         });
     });
 
-    //Логи-фильтр
+        //Логи-фильтр
     $('[name="filter"]').change(function (e) {
         e.preventDefault();
         $.ajax({
