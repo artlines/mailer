@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Template;
+use App\Entity\Client;
 use App\Form\TemplateType;
 use App\Repository\TemplateRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,6 +17,7 @@ use App\Service\ActionLogger;
  */
 class TemplateController extends Controller
 {
+    const CLIENT = 'mailer';
     private $log = null;
 
     function __construct(ActionLogger $log)
@@ -42,6 +44,8 @@ class TemplateController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $client = $em->getRepository(Client::class)->findOneBy(['alias' => self::CLIENT]);
+            $template->addClient($client);
             $em->persist($template);
             $em->flush();
             $id = $template->getId();
