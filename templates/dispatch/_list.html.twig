@@ -3,7 +3,7 @@
     <tr>
         <th>Id</th>
         <th>Имя</th>
-        <th>Дата создания</th>
+        <th>Дата отправки</th>
         <th>От кого, имя | email</th>
         <th>Статус</th>
         <th class="center-align">Подробно</th>
@@ -15,7 +15,7 @@
             <tr>
                 <td>{{ dispatch.id }}</td>
                 <td>{{ dispatch.name }}</td>
-                <td>{{ dispatch.datetime|date('d.m.Y H:i:s') }}</td>
+                <td>{{ dispatch.dateSend|date('d.m.Y H:i:s') }}</td>
                 <td>{{ dispatch.nameFrom}} | {{ dispatch.emailFrom}}</td>
                 <td>{{ dispatch.status.name}}</td>
                 <td class="center-align"><a href="#dispatch_modal"  data-action="{{ path('dispatch_show', {'id': dispatch.id}) }}" class="get_modal">
