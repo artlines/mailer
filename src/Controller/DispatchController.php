@@ -83,7 +83,7 @@ class DispatchController extends Controller
             'form' => $form->createView(),
             'user' => $this->getUser(),
             'action' => '/dispatch/new',
-            'title' => 'Создание списка рассылки',
+            'title' => 'Создание рассылки',
         ]);
 
 
