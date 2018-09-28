@@ -88,11 +88,14 @@ class MailerController extends AbstractController
             }
 
             $bodyData = $emailManager->generateBodyFromTemplate($this->template, $this->requestData['params'], EmailManager::CONTENT_HTML);
+            $from = $this->requestData['sender'] ?? $this->client->getSender();
+            if ($this->requestData['params']['name_from']){
+                $from = [$this->requestData['params']['name_from'] => $from];
+            }
             $response = $emailManager->send(
                 $this->requestData['subject'],
                 $bodyData,
-                $this->client->getTitle(),
-                $this->requestData['sender'] ?? $this->client->getSender(),
+                $from,
                 $this->requestData['send_to'],
                 $this->requestData['send_cc'] ?? [],
                 $this->requestData['send_bcc'] ?? [],
