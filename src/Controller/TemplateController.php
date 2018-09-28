@@ -81,6 +81,10 @@ class TemplateController extends Controller
         $form = $this->createForm(TemplateType::class, $template);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $client = $em->getRepository(Client::class)->findOneBy(['alias' => self::CLIENT]);
+            $template->addClient($client);
+
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([
