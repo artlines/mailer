@@ -105,7 +105,7 @@ class DispatchSendCommand extends Command
                 'dispatch_id' => $dispatch->getId(),
             ]);
 
-            $rmq->publish($data, self::CLIENT, ['content_type' => 'application/json']);
+            $rmq->publish($data, '', ['content_type' => 'application/json']);
             $this->logger->syslog('')->debug("Отправлено в очередь " . count($dispatches) . " рассылок mailer soa");
             $status = $this->dispatchManager->setDispatchStatus(self::STATUS_PROCESS, $dispatch);
             $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
