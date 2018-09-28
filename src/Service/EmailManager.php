@@ -69,7 +69,6 @@ class EmailManager
      *
      * @param string $subject
      * @param array $bodyData
-     * @param string $from_name
      * @param string $from
      * @param mixed $to
      * @param array|null $cc

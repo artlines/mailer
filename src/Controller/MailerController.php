@@ -92,6 +92,7 @@ class MailerController extends AbstractController
                 $this->requestData['subject'],
                 $bodyData,
                 $this->requestData['params']['name_from'] ?? $this->client->getTitle(),
+                $this->requestData['sender'] ?? $this->client->getSender(),
                 $this->requestData['send_to'],
                 $this->requestData['send_cc'] ?? [],
                 $this->requestData['send_bcc'] ?? [],
