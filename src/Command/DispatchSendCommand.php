@@ -101,7 +101,7 @@ class DispatchSendCommand extends Command
                 'send_to' => $email_to,
                 'send_cc' => $dispatch->getEmailCc(),
                 'send_bcc' => $dispatch->getEmailBcc(),
-                'sender' => $dispatch->getEmailFrom(),
+                'sender' => $dispatch->getNameFrom(),
                 'dispatch_id' => $dispatch->getId(),
             ]);
 

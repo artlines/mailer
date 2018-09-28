@@ -55,7 +55,6 @@ $(document).ready(function () {
             },
         });
     });
-
         //Логи-фильтр
     $('[name="filter"]').change(function (e) {
         e.preventDefault();
@@ -98,6 +97,24 @@ $(document).ready(function () {
        e.preventDefault();
         $('[name="filter"]').find("input").val("");
         $('[name="filter"]').submit();
+    });
+
+    //отправить ласточку на сервер
+    $('.send_request').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).data('action'),
+            beforeSend: function( xhr ) {
+                $('.progress').fadeTo(0, 1);
+            },
+            success: function(data) {
+                $(`#status-${data.id}`).text(data.status);
+            },
+            complete: function( xhr ) {
+                $('.progress').fadeTo(0, 0);
+            },
+        });
     });
 
 });

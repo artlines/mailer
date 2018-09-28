@@ -8,6 +8,7 @@
         <th>Статус</th>
         <th class="center-align">Подробно</th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -17,18 +18,25 @@
                 <td>{{ dispatch.name }}</td>
                 <td>{{ dispatch.dateSend|date('d.m.Y H:i:s') }}</td>
                 <td>{{ dispatch.nameFrom}} | {{ dispatch.emailFrom}}</td>
-                <td>{{ dispatch.status.name}}</td>
+                <td id="status-{{ dispatch.id }}">{{ dispatch.status.name}}</td>
                 <td class="center-align"><a href="#dispatch_modal"  data-action="{{ path('dispatch_show', {'id': dispatch.id}) }}" class="get_modal">
                         <i class="far fa-eye" title="Посмотреть подробности"></i>
                     </a>
                 </td>
-                    <td>
-                        {% if dispatch.status.editable%}
-                        <a href="#send_list_modal" data-action="{{ path('dispatch_edit', {'id': dispatch.id}) }}" class="get_modal">
-                            <i class="far fa-edit" title="Редактировать элемент"></i>
-                        </a>
-                        {% endif %}
-                    </td>
+                {% if dispatch.status.alias == 'complete'%}
+                <td class="center-align">
+                    <a href="javascript:;"  data-action="{{ path('dispatch_repeat', {'id': dispatch.id}) }}" class="send_request">
+                        <i class="fas fa-redo" title="Повторить рассылку"></i>
+                    </a>
+                </td>
+                {% endif %}
+                <td>
+                {% if dispatch.status.editable%}
+                <a href="#send_list_modal" data-action="{{ path('dispatch_edit', {'id': dispatch.id}) }}" class="get_modal">
+                    <i class="far fa-edit" title="Редактировать элемент"></i>
+                </a>
+                {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>

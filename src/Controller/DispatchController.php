@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ActionLogger;
+use App\Service\DispatchManager;
 use DateTimeImmutable;
 use Pagerfanta\View\TwitterBootstrap4View;
 
@@ -18,11 +19,14 @@ use Pagerfanta\View\TwitterBootstrap4View;
  */
 class DispatchController extends Controller
 {
+    const STATUS_READY = 'ready';
     private $log = null;
+    private $dispatchManager;
 
-    function __construct(ActionLogger $log)
+    function __construct(ActionLogger $log, DispatchManager $dispatchManager)
     {
         $this->log = $log;
+        $this->dispatchManager = $dispatchManager;
     }
 
     /**
@@ -133,6 +137,28 @@ class DispatchController extends Controller
             'user' => $this->getUser(),
             'action' => "/dispatch/{$id}/edit",
             'title' => 'Редактирование рассылки',
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/repeat", name="dispatch_repeat", methods="POST")
+     */
+    public function repeat(Request $request, DispatchRepository $dispatchRepository): Response
+    {
+        $id = $request->attributes->get('id');
+        if ($dispatch = $dispatchRepository->findOneBy(['id' => $id])){
+            $status = $this->dispatchManager->setDispatchStatus(self::STATUS_READY, $dispatch);
+
+            return $this->json([
+                'result' => 'success',
+                'status' => $status->getName(),
+                'id' => $dispatch->getId()
+            ]);
+        }
+
+        return $this->json([
+            'result' => 'failed',
+            'status' => ''
         ]);
     }
 
