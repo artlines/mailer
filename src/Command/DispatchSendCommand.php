@@ -86,6 +86,9 @@ class DispatchSendCommand extends Command
                 $this->dispatchManager->setDispatchLog($dispatch, $email_to);
             }
 
+            $cc =  !empty($dispatch->getEmailCc()) ? explode(',', $dispatch->getEmailCc()) : [];
+            $bcc = !empty($dispatch->getEmailВCc()) ? explode(',', $dispatch->getEmailВCc()) : [];
+
             $timestamp = time();
             $data = json_encode([
                 'client_alias' => self::CLIENT,
@@ -99,8 +102,8 @@ class DispatchSendCommand extends Command
                 ],
                 'subject' => $dispatch->getSubject(),
                 'send_to' => $email_to,
-                'send_cc' => $dispatch->getEmailCc(),
-                'send_bcc' => $dispatch->getEmailBcc(),
+                'send_cc' => $cc,
+                'send_bcc' => $bcc,
                 'sender' => $dispatch->getEmailFrom(),
                 'dispatch_id' => $dispatch->getId(),
             ]);
