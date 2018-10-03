@@ -124,7 +124,7 @@ class DispatchManager
             ->getResult();
 
         return array_map(function($el){
-            return $el['email'];
+            return trim($el['email']);
         }, $result);
     }
 

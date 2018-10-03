@@ -86,8 +86,12 @@ class DispatchSendCommand extends Command
                 $this->dispatchManager->setDispatchLog($dispatch, $email_to);
             }
 
-            $cc =  !empty($dispatch->getEmailCc()) ? explode(',', $dispatch->getEmailCc()) : [];
-            $bcc = !empty($dispatch->getEmailBcc()) ? explode(',', $dispatch->getEmailBcc()) : [];
+            $cc =  !empty($dispatch->getEmailCc())
+                ? $this->_ckeckEmails(explode(',', $dispatch->getEmailCc()))
+                : [];
+            $bcc =  !empty($dispatch->getEmailBcc())
+                ? $this->_ckeckEmails(explode(',', $dispatch->getEmailBcc()))
+                : [];
 
             $timestamp = time();
             $data = json_encode([
@@ -113,5 +117,12 @@ class DispatchSendCommand extends Command
             $status = $this->dispatchManager->setDispatchStatus(self::STATUS_PROCESS, $dispatch);
             $this->logger->syslog('')->debug("Статус рассылки " . $dispatch->getId() . " изменён на " . $status->getName());
         }
+    }
+
+    private function _ckeckEmails(array $emails): array
+    {
+        return array_map(function ($el){
+            return trim($el);
+        }, $emails);
     }
 }
