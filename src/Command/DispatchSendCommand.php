@@ -87,7 +87,7 @@ class DispatchSendCommand extends Command
             }
 
             $cc =  !empty($dispatch->getEmailCc()) ? explode(',', $dispatch->getEmailCc()) : [];
-            $bcc = !empty($dispatch->getEmailВCc()) ? explode(',', $dispatch->getEmailВCc()) : [];
+            $bcc = !empty($dispatch->getEmailВcc()) ? explode(',', $dispatch->getEmailВcc()) : [];
 
             $timestamp = time();
             $data = json_encode([
