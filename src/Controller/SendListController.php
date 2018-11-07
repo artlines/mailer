@@ -49,6 +49,8 @@ class SendListController extends Controller
             $em = $this->getDoctrine()->getManager();
             $sendList->setUserId($this->getUser());
             $sendList->setCreatedAt($this->dateTime);
+            $emails = $this->_checkList($sendList->getEmails());
+            $sendList->setEmails($emails);
             $em->persist($sendList);
             $em->flush();
             $id = $sendList->getId();
@@ -85,6 +87,8 @@ class SendListController extends Controller
         $id = $sendList->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $emails = $this->_checkList($sendList->getEmails());
+            $sendList->setEmails($emails);
             $this->getDoctrine()->getManager()->flush();
 
             $this->log->info([
@@ -130,5 +134,24 @@ class SendListController extends Controller
         }
 
         return $this->redirectToRoute('send_list_index');
+    }
+
+    /**
+     * Проверка списка расслыки на формат,
+     * удобоваримый в дальнейшем;
+     * при необходимости конвертит
+     *
+     * @author Artur Gazetdinov
+     * @param string $list юзеровведённый список
+     * @return string проверенный/отредактированный список
+     */
+    private function _checkList(string $list): string
+    {
+        $emails = preg_split('(,|;| |/n)', $list);
+        $emails = array_filter($emails, function ($el){
+            return filter_var($el, FILTER_VALIDATE_EMAIL);
+        });
+
+        return implode(PHP_EOL, $emails);
     }
 }

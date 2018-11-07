@@ -55,6 +55,7 @@
                 },
 
                 error: function(data, textStatus, xhr) {
+                    if (textStatus) 
                     $('#feedback').addClass('red').text(invalidMessage).fadeTo(0, 1);
                 },
                 complete: function( xhr ) {
