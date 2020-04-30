@@ -3,7 +3,7 @@
     "@ckeditor/ckeditor5-build-classic": "^11.0.1",
     "ace-code-editor": "^1.2.3",
     "copy-webpack-plugin": "^4.5.2",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "node-sass": "^4.9.2"
   },
   "devDependencies": {
