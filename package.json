@@ -9,7 +9,7 @@
   "devDependencies": {
     "@ckeditor/ckeditor5-alignment": "^10.0.2",
     "@symfony/webpack-encore": "^0.19.0",
-    "favicons-webpack-plugin": "0.0.9",
+    "favicons-webpack-plugin": "6.0.0-alpha.1",
     "html-webpack-plugin": "^3.2.0",
     "sass-loader": "^6.0.7",
     "webpack-notifier": "^1.6.0"
